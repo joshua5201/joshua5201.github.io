@@ -4,7 +4,7 @@
   <title><![CDATA[The quick brown fox jumps over the lazy dog.]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-05-25T22:51:34+08:00</updated>
+  <updated>2015-05-25T22:54:34+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,5 +12,14 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hello, Octopress]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/05/25/hello/"/>
+    <updated>2015-05-25T22:52:28+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/05/25/hello</id>
+    <content type="html"><![CDATA[<p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+]]></content>
+  </entry>
   
 </feed>
