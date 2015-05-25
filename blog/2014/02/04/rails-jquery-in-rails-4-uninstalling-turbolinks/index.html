@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, Octopress - The quick brown fox jumps over the lazy dog.</title>
+  <title>[Rails] jQuery in Rails 4 -- Uninstalling Turbolinks - The quick brown fox jumps over the lazy dog.</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="While working on the Rails project, I have problems using jQuery. The problem is from the Turbolink, when you click a link, it uses AJAX to get &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2014/02/04/rails-jquery-in-rails-4-uninstalling-turbolinks/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello, Octopress</h1>
+      <h1 class="entry-title">[Rails] jQuery in Rails 4 -- Uninstalling Turbolinks</h1>
     
     
       <p class="meta">
@@ -78,14 +77,26 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2014-02-04T15:09:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:09 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><p>While working on the Rails project, I have problems using jQuery. The problem is from the Turbolink, when you click a link, it uses AJAX to get content from Rails without reloading page. So the <code>$(document).ready()</code> in jQuery won&rsquo;t work. It can be fixed simply by uninstalling the Turbolinks gem.</p>
+
+<ol>
+<li>Remove <code>gem 'turbolinks'</code> in <code>Gemfile</code></li>
+<li>Run <code>bundle install</code></li>
+<li>Remove <code>//=require turbolinks</code> in <code>app/assets/javascripts/application.js</code></li>
+<li>Remove all code related to <code>turbolinks</code> in the include tags in your layout pages.</li>
+</ol>
+
+
+<p>There are other workarounds but this is the simplest.</p>
+
+<p>Reference: <a href="http://blog.flightswithfriends.com/post/53943440505/how-to-disable-turbolinks-in-rails-4">How to disable Turbolinks in Rails 4</a></p>
 </div>
 
 
@@ -101,7 +112,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2014-02-04T15:09:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:09 pm</span></time>
       
 
 
@@ -118,8 +129,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2014/02/04/rails-add-markdown-support-in-rails/" title="Previous Post: [Rails] Add Markdown Support in Rails">&laquo; [Rails] Add Markdown Support in Rails</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2014/08/01/experience-the-exam-said-he-would-write-are-dragged-on-for-a-months-experience/" title="Next Post: [心得] 指考完說要寫卻拖了一個月的心得">[心得] 指考完說要寫卻拖了一個月的心得 &raquo;</a>
       
     </p>
   </footer>
@@ -214,8 +227,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2014/02/04/rails-jquery-in-rails-4-uninstalling-turbolinks/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2014/02/04/rails-jquery-in-rails-4-uninstalling-turbolinks/';
         var disqus_script = 'embed.js';
       
     (function () {

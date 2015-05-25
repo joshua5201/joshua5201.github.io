@@ -96,7 +96,574 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-21T15:36:00+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2015</span></span> <span class='time'>3:36 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在domain的管理頁面上（長這樣）
+<img src="http://user-image.logdown.io/user/3004/blog/3028/post/276821/l2dFvaQ1SPSBB0IAtJuL_snapshot5.png" alt="snapshot5.png" />
+找到 Host Names 加入你自己的nameserver，在之後的設定要用到兩個(ns1.example.com, ns2.example.com) 。
+然後在Name Servers的選項裡，選Custom，加上剛剛加的兩個nameserver。</p>
+
+<p><a href="https://support.godaddy.com/help/article/12320/creating-your-own-nameserver-registering-your-own-domain-hosts?locale=en">Creating Your Own Nameserver (Registering Your Own Domain Hosts)</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/23/c-c-fgets-and-scanf/">[C/C++] Scanf造成之後的fgets不正常</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-23T06:02:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>6:02 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>常常在Online Judge出現的小問題 太久沒寫忘記害我debug好久zz</p>
+
+<p>比如說 這樣寫看起來很合理 不過總是會莫名多輸出一行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">101</span><span class="p">];</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EOF</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">puts</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其實只要在<code>scanf</code>後面加上個<code>getchar()</code>像這樣</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">101</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EOF</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">while</span><span class="p">(</span><span class="n">getchar</span><span class="p">()</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="c1">//removeing the trailing &#39;\n&#39;</span>
+</span><span class='line'>              <span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">puts</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>原因是<code>scanf</code>把input的n吃掉之後 在那行會留下一個'\n' 造成後面運作不正常</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/09/03/rails-could-not-read-gem-solutions/">[Rails] Could Not Read Gem 解決方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-09-03T17:17:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>5:17 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>bundle install的時候</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Bundler::GemspecError: Could not <span class="nb">read </span>gem at /home/joshua5201/.rvm/gems/ruby-2.0.0-p247/cache/coffee-script-2.3.0.gem. It may be corrupted.
+</span><span class='line'>An error occurred <span class="k">while</span> installing coffee-script <span class="o">(</span>2.3.0<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
+</span><span class='line'>Make sure that <span class="sb">`</span>gem install coffee-script -v <span class="s1">&#39;2.3.0&#39;</span><span class="sb">`</span> succeeds before bundling.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解決方法是把gem的cache刪掉</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rm ~/.rvm/gems/ruby-2.0.0-p247/cache/<span class="o">[</span>出問題的gem名稱 或乾脆整個資料夾刪<span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://taimoorchangaizpucitian.wordpress.com/2013/08/29/bundlergemspecerror-could-not-read-gem-at-homecoeus-rvmgemsruby-2-0-0-p0horoscopecache-it-may-be-corrupted/">參考連結</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/01/experience-the-exam-said-he-would-write-are-dragged-on-for-a-months-experience/">[心得] 指考完說要寫卻拖了一個月的心得</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-01T04:12:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2014</span></span> <span class='time'>4:12 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>前言</h3>
+
+<p>為了增加可信度(？)先講一下我的狀況。
+高二因為數學物理焦頭爛額(加上自己耍廢)所以學的很挫折，數學還被當。
+高三覺得自己學測一定會上，所以數物化完全沒認真念(極式、Ka、Kb、光程差是啥都不知道)
+所以考完學測物化幾乎是零。(學測根本不考物化)
+數學段考都只有40~60、物理30~50、化學好一點大概60~70 (英文70~80、國文60~80、社會科70~90)
+學測模擬考63->66 學測68(國14 英14 數11 自14 社15) 其實也不是考太差 如果我是一類的話orzzz
+指考模擬考第一次 250 (國60 英75 數40 物25 化50 )
+指考模擬考第二次 300 (國51 英68 數60 物52 化69 )
+指考 401.6 (國70 英88 數66.4 物90.5 化86.7 )
+學測成績單發的隔天就開始準備指考 完全放棄申請
+所以這篇是寫給對數物化沒自信(每個學期都想過要轉組orz) 甚至懷疑自己是不是選錯組
+但是其實有志於二類科系的學弟妹 不限於學測or指考。
+至於那種理科神人就算了啦也不用看我這篇。</p>
+
+<h3>一、文具</h3>
+
+<p>第一個講文具其實蠻奇怪的XDDD 不過一句老話「工欲善其事 必先利其器」。
+為什麼要講文具，因為我在開始準備指考前，是「一支黑筆打天下」的人。
+也就是說鉛筆袋裡只有十塊錢的 黑筆、紅筆、2B鉛筆、修正帶、橡皮擦 (沒有尺XDDDD)
+而且覺得畫很多線、用很多顏色寫筆記的人潮娘der
+第一次跟同學去試聽陳建宏的時候，就見識了「阿 原來考73級的人都會這樣唸書」(雖然後來也是考指考 ㄎㄎ)
+所以就一下子轉性(？) 跑去書局買了 四個顏色 的0.38 uni那種(黑、藍、紅基本款 另外一個顏色我喜歡紫色 有人用綠色 我覺得很噁)
+還有螢光筆、尺、小標籤紙、post-it等等 後來覺得0.38太細 還改成0.28 (之後可以曬圖XDDD)
+總之就是，你在想著要用什麼顏色寫的時候，就是一邊在思考哪裡是重點了。螢光筆的效果也是一樣(有人會整本書畫滿嗎XDDD)</p>
+
+<p>所以整理一下 必備文具  = [ 細字中性筆<em>4, 螢光筆</em>1, post-it, 尺*1, 小標籤紙, 自動鉛筆, 橡皮擦, 修正帶 ]</p>
+
+<h3>二、筆記</h3>
+
+<p>筆記很重要，個人是很懶惰啦不太用筆記本(學測前找買了一堆北一筆記本後來也沒什麼用 當收藏XXDDDDDD)
+所以我都直接在補習班講義上做筆記(所以才要用到0.28 陳建宏講義真的是ㄎㄅ擠)
+至於做什麼筆記，我喜歡在不熟或容易錯的題目旁貼標籤，然後寫一行字講為什麼錯要注意什麼之類，要想一下，精鍊一點(有點像CCH的「對策」)。
+很蠢的東西也可以寫上去，比如說我嘗嘗看錯sin30跟cos30，也常常算反矩陣忘了除行列式值。
+很多東西要整理的那種，我用了高中三年從來沒用過的東西—活頁簿 可以把一些東西整理在一起
+(比如說化學的各種法(索耳未法之類)  當初可是憑空寫出來好幾頁整理+化學方程式+考題重點 (可惜化學考爛QAQ 毛毛蟲週期表題 被扣6分)
+這也可以附圖。</p>
+
+<h3>三、教材</h3>
+
+<p>關於教材我只想說，用一套就好。覺得把一套認真做好幾遍，比刷好幾本參考書有用(阿內容都差不多啊)
+我都是用補習班講義啦，外面的講義 @趙一穎有一篇推荐文 不過有些太難的可以不要裡他 他太強了不算)
+第一次精讀、做筆記完之後，第二次可以再快速整本翻一遍，第三次就把有tag的題目再做一次就好。
+之前上智的許哲老師說的話覺得很棒(其實是高斯說的) Few, but ripe. (我自己翻成 不多但精熟)
+至於模擬考題很多人在問，我覺得可以先當作檢測(不管分數，管你錯哪些單元)
+真的變很強發現可以輕鬆電模擬考的時候再來當練習，嘿嘿考前刷了一大疊物化模擬考，培養自信。
+但是模擬考會摧殘自信(我寫數學的時候)的話，就不要當練習了XDDD 就拿講義的例題多寫幾遍
+考古題也是，不要管分數(因為會很高)，學測就是寫考古題之後過度自信才爛掉XDDDDDD
+絕對把每題都搞懂才重要，甚至可以做第二遍我覺得。</p>
+
+<h3>四、補習</h3>
+
+<p>倒覺得這個要看個人，我到學測前都沒有補習，決定考指考的當天就跑去報名了哈哈。
+數學在上智(建中附近的小班) 物理在楊竣翔 化學在陳建宏 (後面兩個都很多人)
+自己覺得很有幫助，不用有什麼怪怪的堅持，有資源的話就可以選擇補(感謝爸爸媽媽阿公阿嬤姑姑叔叔幫我QAQ)。
+另外考前衝刺班很有用(我是在楊竣翔)，就是從早上8:00把你關到晚上10:00，周圍圍繞很多北一的JK 唸書就很起勁(X)
+不得不說楊竣翔北一的真的超多XDDDD 不過魯蛇如我這幾個月補習下來新認識的全部都是建中的。</p>
+
+<h3>五、時間管理</h3>
+
+<p>關於時間管理，就是花時間的多餘事情就不要做。能利用的時間都拿來唸書，千萬不要晚睡。
+我把ptt跟OSU戒掉，因為學測前天天花很多時間orzzzz FB的話有關一陣子，後來變成潛水(覺得不會花太多時間)。
+然後有留個噗浪給我發廢文XDDDDD
+關於這方面我也做了很多沒做過的事，比如說午休跟下課唸書。
+最後衝刺時間很重要，絕對要請長假去衝刺班or你能認真從8:00~22:00唸書的地方，千萬不要在學校打混(社辦打OSU)。
+絕對要睡午覺(我覺得啦)一天睡大概四五十分鐘午覺超級有幫助。
+不知道聽音樂的問題要放哪，就放這好了。有人習慣讀書聽音樂(我也是)不過後來發現聽音樂會比較無法專心，就算我都聽日文。
+覺得音樂主要的功能是隔離嘈雜的環境，我覺得耳塞也很有用(或者不開音樂帶耳道式耳機) 不過最好是找完全不會有噪音的地方啦</p>
+
+<h3>六、心理建設</h3>
+
+<p>超級重要的一點。目標放高放你心目中的夢想科系。尤其是學測，每科都要以15級為目標，因為難度太低。
+你永遠沒辦法在考試時候發揮100% 所以要準備愈多愈好 200%都沒關係。就是100等去打1等嫩寶的感覺就Win了
+最好的是有一種每天進步的感覺，每天都要有「我照這樣進步下去絕對會嚇死別人」的感覺。
+不要想著，阿阿考70級就好類似的感覺，反正就是一直讀一直讀，千萬不要去算分數(考前在那邊算有屁用)
+另外，我考前在衝刺班，每天中午跟晚上都夢到我在補習班唸書or上課(沒有例外) 這種境界不知道是好還是不好啦
+總之就是排除所有雜念只想著唸書就好，什麼事都不管(有一段時間被太陽花影響心情，後來儘量不看新聞)
+從起床到睡前就想著考試就好(最後長假衝刺期 一開始就這樣應該會瘋掉)
+考試真的很痛苦，不過也會是一段難忘的回憶，總之就要找幾個戰友跟幾個固定倒垃圾訴苦的對象。</p>
+
+<h3>七、考試技巧</h3>
+
+<p>這段是講在考場當天的考試技巧。第一就是不要在那邊聊天、討論答案。有人問你就說「超簡單的，那題你不會嗎？」之類的垃圾話。
+反正就是以自己的心理狀態為唯一，唸書唸到預備鈴想，進教室閉眼睛沈澱心情一下。檢查一下各種准考證阿文具啊桌上的小貼紙啊。
+千萬不要把手機帶到考場，放在休息區就好，緊張的時候誰知道會發生什麼。
+鈴響了深呼吸一下，第一科(物理)絕對超緊張，先把題目翻完一遍緩和一下再開始寫。
+理科的話建議是，單選->非選->多選 我這樣寫在數學根本賺到，因為多選根本整人)
+先把會的抓起來，穩穩拿到分數之後再來想要思考的東西，不會的絕對要消去法猜一下。
+非選題可以蝦掰一下，比如說物理不會列式或來不及寫，但是你知道是力學能守恆，就寫「依力學能守恆得」
+然後掰個式子之類。如果遇到數字很ㄏ的題目就先列式放著(絕對要列符號)，最後有時間再來算。
+學測自然有給毛毛蟲的「應選幾項」，所以如果刪掉兩個又是應選兩項的話，全選比猜兩個期望值高。
+如果是刪掉一個然後是應選三項的話好像也是，之前算過現在有點忘了。</p>
+
+<h3>結語</h3>
+
+<p>打了一大堆屁話，總之就是希望有些幫助。有什麼問題或煩惱都可以來問(男女不拘喔>.^)，反正就是希望各位能順利追夢。
+學測就直接衝一發，若是失利千萬不要因為怕考指考不衝，會後悔。
+不管是學測還是指考，不要怕失敗，想想你當初想要考什麼，就考就對了。
+覺得指考對我的改變很大，各種方面，應該沒有機會這麼拼了吧orzzz</p>
+
+<p><img src="http://user-image.logdown.io/user/3004/blog/3028/post/212240/5LhozcbASoSr4AFFNnqa_2014-08-01%2011.59.52.jpg" alt="2014-08-01 11.59.52.jpg" /></p>
+
+<p><img src="http://user-image.logdown.io/user/3004/blog/3028/post/212240/3HNHcpC8TjOIa3SuJyMX_2014-08-01%2012.00.09.jpg" alt="2014-08-01 12.00.09.jpg" /></p>
+
+<p><img src="http://user-image.logdown.io/user/3004/blog/3028/post/212240/SLHHUaASRWEYP84B2vcY_2014-08-01%2012.00.31.jpg" alt="2014-08-01 12.00.31.jpg" />
+<img src="http://user-image.logdown.io/user/3004/blog/3028/post/212240/kTAt123XSoGTDRRBAaTq_2014-08-01%2012.00.24.jpg" alt="2014-08-01 12.00.24.jpg" />
+<img src="http://user-image.logdown.io/user/3004/blog/3028/post/212240/pAvYLdWsRi9URoisLg9d_2014-08-01%2012.01.17.jpg" alt="2014-08-01 12.01.17.jpg" />
+<img src="http://user-image.logdown.io/user/3004/blog/3028/post/212240/LIm49BhAQ0aeTNL62OED_2014-08-01%2012.00.57-2.jpg" alt="2014-08-01 12.00.57-2.jpg" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/04/rails-jquery-in-rails-4-uninstalling-turbolinks/">[Rails] jQuery in Rails 4 -- Uninstalling Turbolinks</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-02-04T15:09:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:09 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While working on the Rails project, I have problems using jQuery. The problem is from the Turbolink, when you click a link, it uses AJAX to get content from Rails without reloading page. So the <code>$(document).ready()</code> in jQuery won&rsquo;t work. It can be fixed simply by uninstalling the Turbolinks gem.</p>
+
+<ol>
+<li>Remove <code>gem 'turbolinks'</code> in <code>Gemfile</code></li>
+<li>Run <code>bundle install</code></li>
+<li>Remove <code>//=require turbolinks</code> in <code>app/assets/javascripts/application.js</code></li>
+<li>Remove all code related to <code>turbolinks</code> in the include tags in your layout pages.</li>
+</ol>
+
+
+<p>There are other workarounds but this is the simplest.</p>
+
+<p>Reference: <a href="http://blog.flightswithfriends.com/post/53943440505/how-to-disable-turbolinks-in-rails-4">How to disable Turbolinks in Rails 4</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/04/rails-add-markdown-support-in-rails/">[Rails] Add Markdown Support in Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-02-04T14:46:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:46 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前那個TIOJ本來說要用Node做的，最後搞得很麻煩還是回來用Rails做XDDD</p>
+
+<p>Reference:
+<a href="http://danielboggs.com/articles/authoring-with-markdown-in-rails/">Authoring with Markdown in Rails</a></p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;redcarpet&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/helpers/application_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ApplicationHelper</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">renderer</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Render</span><span class="o">::</span><span class="no">HTML</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">hard_wrap</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">filter_html</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>      <span class="ss">autolink</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">no_intra_emphasis</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">fenced_code_blocks</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">lax_html_blocks</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">strikethrough</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">superscript</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Markdown</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/27/linux-kde-no-sound/">[Linux] KDE 沒聲音</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-27T16:11:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>4:11 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>剛剛手殘用觸控板在聲音圖示上滑來滑去(把音量調高又調低)</p>
+
+<p>然後就突然沒聲音了！！！</p>
+
+<p>如果你也遇到這個問題 先看看alsamixer裏面有沒有被靜音吧= =</p>
+
+<p>看了一大堆其他設定都不行 結果是這麼簡單的原因</p>
+
+<p>差點沒被搞瘋&hellip;&hellip;..</p>
+
+<p>Linux有些地方真的會讓人想抓狂阿阿阿阿！！！！！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/25/linux-archlinux-installation-kde411/">[Linux] Archlinux安裝KDE4.11</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-25T11:01:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:01 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前用KDE的經驗非常差（KDE4.3的時代）印象中就是個又頓又buggy的東西。
+這次心血來潮裝裝看，發現現在的KDE不但順，BUG也少很多。整個使用經驗非常愉快。
+不過既然Linux遇到中文 不免俗的（？）會遇到不少問題。就分享一下解決方案和一些有的沒的。</p>
+
+<p>關於安裝過程就不贅述了，請自行參考<a href="https://wiki.archlinux.org/index.php/KDE">Arch Wiki的條目</a>。</p>
+
+<ol>
+<li>Firefox很醜（照理說就是所有的GTK程式都會這樣）
+可以參考這個條目<a href="https://wiki.archlinux.org/index.php/Uniform_Look_for_Qt_and_GTK_Applications">Uniform Look for Qt and GTK Applications</a>
+安裝完oxygen-gtk和kde-gtk-config之後，到Settings -> Application Appearance -> gtk 裡把theme換成oxygen-gtk就好</li>
+<li>Dolphin亂碼（Amarok不能播放檔名非ascii字元的歌 是同個問題）
+直接在<code>~/.xprofile</code>裡加上<code>export LC_ALL=en_US.utf-8 (或 zh_TW.utf-8之類的)</code></li>
+<li>網路管理員
+這裡我用wicd和wicd-kde(<a href="https://aur.archlinux.org/packages/wicd-kde/">AUR</a>)</li>
+<li>yakuake
+好用的下柆式Terminal Emulator，配合F12快速鍵非常方便實用。</li>
+<li>Custom keyboard Shorcuts
+想把Konsole弄到F10上，在K選單暗右鍵開Edit Applications，在那個條目的右邊Advanced分頁就可以自訂。</li>
+</ol>
+
+
+<p>有些一時忘掉了 以後有機會再補</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/">[Linux] Convert and Resize Images From Command Line Using ImageMagick</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-02T16:59:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># installing</span>
+</span><span class='line'>sudo pacman -S imagemagick
+</span><span class='line'><span class="c"># converting from png to jpg</span>
+</span><span class='line'>convert image.png image.jpg
+</span><span class='line'><span class="c">#resizing</span>
+</span><span class='line'>convert image.png -resize 1024x768 resized.png
+</span><span class='line'>convert image.png -resize <span class="m">1024</span> resized.png
+</span><span class='line'>convert image.png -resize x768 resized.png
+</span><span class='line'>convert image.png -resize 1000x200! resized.png
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -110,6 +677,22 @@
     
       <li class="post">
         <a href="/blog/2015/05/25/hello/">Hello, Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/23/c-c-fgets-and-scanf/">[C/C++] Scanf造成之後的fgets不正常</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/03/rails-could-not-read-gem-solutions/">[Rails] Could Not Read Gem 解決方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/01/experience-the-exam-said-he-would-write-are-dragged-on-for-a-months-experience/">[心得] 指考完說要寫卻拖了一個月的心得</a>
       </li>
     
   </ul>

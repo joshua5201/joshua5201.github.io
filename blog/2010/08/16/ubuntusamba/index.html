@@ -1,0 +1,407 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>[Ubuntu]在samba中分享光碟機 - The quick brown fox jumps over the lazy dog.</title>
+  <meta name="author" content="Tsung-en Hsiao">
+
+  
+  <meta name="description" content="在ubuntu10.04中的samba分享光碟機 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2010/08/16/ubuntusamba/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">The quick brown fox jumps over the lazy dog.</a></h1>
+  
+    <h2>[Notes, GNU/Linux, Open Source, Ruby on Rails, Computer Science, Archlinux]</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="joshua5201.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">[Ubuntu]在samba中分享光碟機</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-08-16T06:36:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>6:36 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在ubuntu10.04中的samba分享光碟機</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo aptitude install samba
+</span><span class='line'><span class="nv">$ </span>sudo touch /etc/samba/smbpasswd <span class="c">#建立密碼檔案  </span>
+</span><span class='line'><span class="nv">$ </span>sudo chmod <span class="m">600</span> /etc/samba/smbpasswd <span class="c">#調整權限為600(只有擁有者root可以讀寫)  </span>
+</span><span class='line'><span class="nv">$ </span>ls -l /etc/samba
+</span><span class='line'>-rw------- <span class="m">1</span> root root <span class="m">720</span> 2010-08-10 23:44 smbpasswd
+</span><span class='line'><span class="nv">$ </span>sudo smbpasswd -a joshua <span class="c">#建立samba使用者(joshua改為你的名字)  </span>
+</span><span class='line'>New SMB password： <span class="c">#不一定要和你的密碼一樣(也可以是空白)  </span>
+</span><span class='line'>Retype new SMB password:
+</span><span class='line'><span class="nv">$ </span>sudo vim /etc/samba/smb.conf <span class="c">#vim可換成你習慣的編輯器(如：gedit, kate...)  </span>
+</span><span class='line'><span class="c">#加入這幾行在[global]底下  </span>
+</span><span class='line'>unix <span class="nv">charset</span> <span class="o">=</span> utf8
+</span><span class='line'>display <span class="nv">charset</span> <span class="o">=</span> utf8&lt;
+</span><span class='line'>dos <span class="nv">charset</span> <span class="o">=</span> cp950
+</span><span class='line'><span class="nv">security</span> <span class="o">=</span> user
+</span><span class='line'><span class="c">#在最底下加入這幾行  </span>
+</span><span class='line'><span class="o">[</span>cdrom<span class="o">]</span>
+</span><span class='line'><span class="nv">comment</span> <span class="o">=</span> CD-ROM
+</span><span class='line'><span class="nb">read </span><span class="nv">only</span> <span class="o">=</span> no
+</span><span class='line'><span class="nv">locking</span> <span class="o">=</span> no
+</span><span class='line'><span class="nv">path</span> <span class="o">=</span> /media/cdrom
+</span><span class='line'><span class="nv">browsable</span> <span class="o">=</span> yes
+</span><span class='line'><span class="nv">public</span> <span class="o">=</span> yes
+</span><span class='line'>guest <span class="nv">ok</span> <span class="o">=</span> yes
+</span><span class='line'><span class="c">#儲存並退出  </span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>testparm
+</span><span class='line'><span class="nv">$ </span>sudo /etc/init.d/smbd restart
+</span><span class='line'><span class="nv">$ </span>smbclient -L <span class="se">\\</span>127.0.0.1 -U joshua
+</span><span class='line'>Enter joshua<span class="err">&#39;</span>s password:
+</span><span class='line'><span class="nv">Domain</span><span class="o">=[</span>WORKGROUP<span class="o">]</span> <span class="nv">OS</span><span class="o">=[</span>Unix<span class="o">]</span> <span class="nv">Server</span><span class="o">=[</span>Samba 3.4.7<span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>Sharename Type Comment
+</span><span class='line'>--------- ---- -------
+</span><span class='line'>cdrom Disk CD-ROM
+</span><span class='line'>IPC<span class="nv">$ </span>IPC IPC Service <span class="o">(</span>ubuntu<span class="o">)</span>
+</span><span class='line'><span class="nv">Domain</span><span class="o">=[</span>WORKGROUP<span class="o">]</span> <span class="nv">OS</span><span class="o">=[</span>Unix<span class="o">]</span> <span class="nv">Server</span><span class="o">=[</span>Samba 3.4.7<span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>Server Comment
+</span><span class='line'>--------- -------
+</span><span class='line'>UBUNTU ubuntu
+</span><span class='line'>
+</span><span class='line'>Workgroup Master
+</span><span class='line'>--------- -------
+</span><span class='line'>WORKGROUP UBUNTU
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>sudo mount -t iso9660 /dev/cdrom /media/cdrom
+</span><span class='line'><span class="nv">$ </span>nautilus smb://127.0.0.1
+</span><span class='line'><span class="c"># 應該可以看到你的分享資料夾  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另外<br/>
+也可以掛載iso<br/>
+像這樣</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo mount -o loop <span class="o">[</span>檔案名稱<span class="o">]</span>.iso /media/cdrom
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>參考資料<br/>
+<a href="http://linux.vbird.org/">鳥哥的Linux私房菜</a><br/>
+<a href="http://linux.vbird.org/linux_server/0370samba.php">SAMBA伺服器</a><br/>
+<a href="http://linux.vbird.org/linux_basic/0230filesystem.php">磁碟與檔案系統</a></p>
+
+<p>如有錯誤<br/>
+請幫忙指出<br/>
+謝謝！</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tsung-en Hsiao</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2010-08-16T06:36:00+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>6:36 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2010/10/17/ubuntuubuntuipod-shuffle/" title="Next Post: [ubuntu]在ubuntu下用ipod shuffle">[ubuntu]在ubuntu下用ipod shuffle &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/05/25/hello/">Hello, Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/23/c-c-fgets-and-scanf/">[C/C++] Scanf造成之後的fgets不正常</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/03/rails-could-not-read-gem-solutions/">[Rails] Could Not Read Gem 解決方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/01/experience-the-exam-said-he-would-write-are-dragged-on-for-a-months-experience/">[心得] 指考完說要寫卻拖了一個月的心得</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/joshua5201">@joshua5201</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'joshua5201',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Tsung-en Hsiao -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'joshua5201';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2010/08/16/ubuntusamba/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2010/08/16/ubuntusamba/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

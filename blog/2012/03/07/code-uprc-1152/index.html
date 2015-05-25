@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, Octopress - The quick brown fox jumps over the lazy dog.</title>
+  <title>[Code] UPRC-1152 佈置問題 - The quick brown fox jumps over the lazy dog.</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152 樹型依賴背包 看了學長的培訓講義才會的 #include &lt;stdio.h&gt; #include &lt;vector&gt; #include &lt; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2012/03/07/code-uprc-1152/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello, Octopress</h1>
+      <h1 class="entry-title">[Code] UPRC-1152 佈置問題</h1>
     
     
       <p class="meta">
@@ -78,14 +77,66 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2012-03-07T20:30:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:30 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><p><a href="zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152">zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152</a></p>
+
+<p>樹型依賴背包</p>
+
+<p>看了學長的<a href="http://pisces.ck.tp.edu.tw/%7Epeng/index.php?action=showfile&amp;file=f188adc37106a26bb977e1327591c00f960509e3a">培訓講義</a>才會的</p>
+
+<p><a href=""></a></p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+#include &lt;vector&gt;  
+#include &lt;algorithm&gt;  
+using namespace std;  
+
+int dp[501][5001];  
+int v[501], w[501];  
+int n, m;  
+vector&lt;int&gt; G[501];  
+int dfs(int mom, int W)  
+{  
+ for (int i = 0; i &lt; G[mom].size(); i++) {  
+ int chl = G[mom][i];  
+ dp[chl][W] = dp[mom][W];  
+ dp[mom][W] = max(dp[mom][W], dfs(chl, W));  
+ }  
+ if (w[mom] &gt; W) {  
+ return 0;  
+ }  
+ return dp[mom][W - w[mom]] + v[mom];  
+}  
+int main()  
+{  
+ int t;  
+ scanf("%d", &amp;t);  
+ while (t--) {  
+ scanf("%d%d", &amp;n, &amp;m);  
+ v[0] = w[0] = 0;  
+ int dep;  
+ for (int i = 1; i &lt;= n; i++) {  
+ scanf("%d%d%d", &amp;dep, &amp;w[i], &amp;v[i]);  
+ G[dep].push_back(i);  
+ }  
+ for (int i = 1; i &lt;= m; i++) {  
+ dp[0][i] = 0;  
+ dp[0][i] = max(dp[0][i], dfs(0, i));  
+ }  
+ printf("%d\n", dp[0][m]);  
+ for (int i = 0; i &lt;= n; i++) {  
+ G[i].clear();  
+ }  
+ }  
+ return 0;  
+}  
+</code></pre>
 </div>
 
 
@@ -101,7 +152,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2012-03-07T20:30:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:30 pm</span></time>
       
 
 
@@ -118,8 +169,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2012/03/07/code-uprc-1149-toi2007pd/" title="Previous Post: [code] UPRC-1149 太空船(TOI初選2007pD)">&laquo; [code] UPRC-1149 太空船(TOI初選2007pD)</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2012/03/16/gnulinux-mate-themes-in-archlinux/" title="Next Post: [GNU/Linux] MATE themes in ArchLinux">[GNU/Linux] MATE themes in ArchLinux &raquo;</a>
       
     </p>
   </footer>
@@ -214,8 +267,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2012/03/07/code-uprc-1152/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2012/03/07/code-uprc-1152/';
         var disqus_script = 'embed.js';
       
     (function () {

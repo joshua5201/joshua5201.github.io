@@ -5,12 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, Octopress - The quick brown fox jumps over the lazy dog.</title>
+  <title>[GNU/Linux] MATE Themes in ArchLinux - The quick brown fox jumps over the lazy dog.</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="用了一陣子的gnome3 實在綁手綁腳
+也開始想念gnome2了 TOI爆了以後有時間 就來試試gnome2的fork&mdash;MATE Desktop Environment 安裝過程就看Archwiki就好 這裡不詳述
+裝display manager 結果gdm、mdm(MATE &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2012/03/16/gnulinux-mate-themes-in-archlinux/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
@@ -69,7 +70,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello, Octopress</h1>
+      <h1 class="entry-title">[GNU/Linux] MATE Themes in ArchLinux</h1>
     
     
       <p class="meta">
@@ -78,14 +79,42 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2012-03-16T08:27:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:27 am</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><p>用了一陣子的gnome3 實在綁手綁腳<br/>
+也開始想念gnome2了 <br/>
+TOI爆了以後有時間 就來試試gnome2的fork&mdash;<a href="http://mate-desktop.org/">MATE Desktop Environment</a></p>
+
+<p>安裝過程就看<a href="https://wiki.archlinux.org/index.php/MATE">Archwiki</a>就好 這裡不詳述<br/>
+裝display manager 結果gdm、mdm(MATE display manager)都有問題= =<br/>
+只有lxdm又快又穩定 不過長得太醜 懶得弄主題什麼的<br/>
+最後決定直接用startx 這樣登入的時候也比較酷(？</p>
+
+<p>用起來很順暢 遇到的問題也只有主題的部份 <br/>
+發現預設主題(ex: Clearlooks)的都不能用<br/>
+無意中發現了解決方案：</p>
+
+<p>這裡以經典主題——Clearlooks為例</p>
+
+<pre><code>$cd /usr/share/themes/Clearlooks  
+$ls  
+gtk-2.0 index.theme marco-1 #會出現這三樣東西  
+$mv marco-1 metacity-1 #猜測是MATE把metacity改名為marco   
+ #但主題程式未同步更改導致讀取不到主題檔案的錯誤  
+$cd metacity-1  
+$ls  
+marco-theme-1.xml  
+$mv marco-theme-1.xml metacity-theme-1.xml  
+$sudo vim metacity-theme-1.xml  
+#把標籤改成  
+#記得文件最後一行的關閉標籤也要改  
+這樣就可以用我最愛的Clearlooks了XD
+</code></pre>
 </div>
 
 
@@ -101,7 +130,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2012-03-16T08:27:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:27 am</span></time>
       
 
 
@@ -118,8 +147,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2012/03/07/code-uprc-1152/" title="Previous Post: [code] UPRC-1152 佈置問題">&laquo; [code] UPRC-1152 佈置問題</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2012/03/24/code-tioj-1463/" title="Next Post: [code] TIOJ - 1463 打不倒的樹木人">[code] TIOJ - 1463 打不倒的樹木人 &raquo;</a>
       
     </p>
   </footer>
@@ -214,8 +245,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2012/03/16/gnulinux-mate-themes-in-archlinux/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2012/03/16/gnulinux-mate-themes-in-archlinux/';
         var disqus_script = 'embed.js';
       
     (function () {

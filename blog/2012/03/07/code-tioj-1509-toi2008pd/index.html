@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, Octopress - The quick brown fox jumps over the lazy dog.</title>
+  <title>[Code] TIOJ-1509 地道問題 (TOI初選2008pD) - The quick brown fox jumps over the lazy dog.</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1509 如果TIOJ又掛了的話= = http://zerosea.tfcis.org:8080/JudgeOnline/showproblem? &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2012/03/07/code-tioj-1509-toi2008pd/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello, Octopress</h1>
+      <h1 class="entry-title">[Code] TIOJ-1509 地道問題 (TOI初選2008pD)</h1>
     
     
       <p class="meta">
@@ -78,14 +77,141 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2012-03-07T04:38:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>4:38 am</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1509">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1509</a></p>
+
+<p>如果TIOJ又掛了的話= = <br/>
+<a href="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1128">http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1128</a></p>
+
+<p>做第一次dijkstra -> 把邊反過來 -> 再做一次</p>
+
+<p>P.S. 冏我都被J睿捏好玩的 不捏我都想不到&hellip;</p>
+
+<p><a href=""></a></p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+#include &lt;vector&gt;  
+#include &lt;queue&gt;  
+#include &lt;algorithm&gt;  
+#include &lt;string.h&gt;  
+#define INF 1000000001  
+using namespace std;  
+
+typedef struct {  
+ int to;  
+ int cost;  
+} edge;  
+typedef pair&lt;int, int&gt; P;  
+vector&lt;edge&gt; G[1000001];  
+vector&lt;edge&gt; R[1000001];  
+long long d[1000001];  
+bool visited[1000001];  
+priority_queue&lt;P, vector&lt;P&gt;, greater&lt;P&gt; &gt; que;  
+int main()  
+{  
+ int s, t, c, V, E;  
+ long long sum;  
+ while (~scanf("%d%d", &amp;V, &amp;E)) {  
+ sum = 0;  
+ fill(d, d + V + 1, INF);  
+ memset(visited, false, sizeof(visited));  
+ edge e;  
+ for (int i = 1; i &lt;= V; i++) {  
+ G[i].clear();  
+ R[i].clear();  
+ }  
+ for (int i = 0; i &lt; E; i++) {  
+ scanf("%d%d%d", &amp;s, &amp;t, &amp;c);  
+ e.to = t;  
+ e.cost = c;  
+ G[s].push_back(e);  
+ e.to = s;  
+ R[t].push_back(e);  
+ }  
+ d[1] = 0;  
+ que.push(P(0, 1));  
+ while (que.size()) {  
+ P p;  
+ while (que.size()) {  
+ p = que.top();  
+ que.pop();  
+ if (!visited[p.second]) {  
+ break;  
+ }  
+ }  
+ visited[p.second] = true;  
+ int v = p.second;  
+ if (d[v] &lt; p.first) {  
+ continue;  
+ }  
+ for (int i = 0; i &lt; G[v].size(); i++) {  
+ edge e = G[v][i];  
+ if (d[v] + e.cost &lt; d[e.to]) {  
+ d[e.to] = d[v] + e.cost;  
+ que.push(P(d[e.to], e.to));  
+ }  
+ }  
+ }  
+ bool jump = false;  
+ for (int i = 1; i &lt;= V; i++) {  
+ if (d[i] == INF) {  
+ jump = true;  
+ break;  
+ }  
+ sum += d[i];  
+ }  
+ if (jump) {  
+ puts("0");  
+ continue;  
+ }  
+ que.push(P(0, 1));  
+ fill(d, d + V + 1, INF);  
+ memset(visited, false, sizeof(visited));  
+ d[1] = 0;  
+ while (que.size()) {  
+ P p;  
+ while (que.size()) {  
+ p = que.top();  
+ que.pop();  
+ if (!visited[p.second]) {  
+ break;  
+ }  
+ }  
+ visited[p.second] = true;  
+ int v = p.second;  
+ if (d[v] &lt; p.first) {  
+ continue;  
+ }  
+ for (int i = 0; i &lt; R[v].size(); i++) {  
+ edge e = R[v][i];  
+ if (d[v] + e.cost &lt; d[e.to]) {  
+ d[e.to] = d[v] + e.cost;  
+ que.push(P(d[e.to], e.to));  
+ }  
+ }  
+ }  
+ for (int i = 1; i &lt;= V; i++) {  
+ if (d[i] == INF) {  
+ jump = true;  
+ break;  
+ }  
+ sum += d[i];  
+ }  
+ if (jump) {  
+ puts("0");  
+ continue;  
+ }  
+ printf("%I64d\n", sum);  
+ }  
+ return 0;  
+}  
+</code></pre>
 </div>
 
 
@@ -101,7 +227,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2012-03-07T04:38:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>4:38 am</span></time>
       
 
 
@@ -118,8 +244,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2012/03/07/code-uva-11069-graph-problem/" title="Previous Post: [code] Uva-11069 A Graph Problem">&laquo; [code] Uva-11069 A Graph Problem</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2012/03/07/code-tioj-1240-lis-but-not-lis/" title="Next Post: [code] TIOJ-1240 LIS but not LIS">[code] TIOJ-1240 LIS but not LIS &raquo;</a>
       
     </p>
   </footer>
@@ -214,8 +342,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2012/03/07/code-tioj-1509-toi2008pd/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2012/03/07/code-tioj-1509-toi2008pd/';
         var disqus_script = 'embed.js';
       
     (function () {

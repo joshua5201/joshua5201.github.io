@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, Octopress - The quick brown fox jumps over the lazy dog.</title>
+  <title>Linux翻轉螢幕輸出 - The quick brown fox jumps over the lazy dog.</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="$ xrandr Screen 0: minimum 320 x 200, current 1366 x 768, maximum 8192 x 8192 LVDS-1 connected 1366x768+0+0 (normal left inverted right x axis y axis &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2013/01/27/blog-post/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello, Octopress</h1>
+      <h1 class="entry-title">Linux翻轉螢幕輸出</h1>
     
     
       <p class="meta">
@@ -78,14 +77,29 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2013-01-27T14:32:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:32 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><pre><code>$ xrandr  
+Screen 0: minimum 320 x 200, current 1366 x 768, maximum 8192 x 8192  
+LVDS-1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 309mm x 174mm  
+ 1366x768 60.0*+  
+ 1024x768 59.9   
+ 800x600 59.9   
+ 640x480 59.4   
+ 720x400 59.6   
+ 640x400 60.0   
+ 640x350 59.8   
+VGA-1 disconnected (normal left inverted right x axis y axis)  
+HDMI-1 disconnected (normal left inverted right x axis y axis)  
+#查看輸出裝置 我的輸出是LVDS-1  
+$ xrandr --output LVDS-1 --rotate right #這裡可以是 right left inverted normal  
+$ xrandr --output LVDS-1 --rotate normal #這樣子改回來  
+</code></pre>
 </div>
 
 
@@ -101,7 +115,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2013-01-27T14:32:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:32 pm</span></time>
       
 
 
@@ -118,8 +132,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2012/04/12/vim-vim-5/" title="Previous Post: [Vim] Vim 5 分鐘快速入門">&laquo; [Vim] Vim 5 分鐘快速入門</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2013/08/28/some-thoughts-about-the-future-and-goals/" title="Next Post: [思考] 一些關於未來和目標的想法">[思考] 一些關於未來和目標的想法 &raquo;</a>
       
     </p>
   </footer>
@@ -214,8 +230,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2013/01/27/blog-post/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2013/01/27/blog-post/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -5,12 +5,16 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hello, Octopress - The quick brown fox jumps over the lazy dog.</title>
+  <title>[Ubuntu]在ubuntu下用ipod Shuffle - The quick brown fox jumps over the lazy dog.</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="安裝工具程式
+$ sudo aptitude install gnupod-tools
+初始化ipod
+$ gnupod_INIT -m /media/IPOD
+gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuild_db
+可以直接把音樂檔案放在ipod裡 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2010/10/17/ubuntuubuntuipod-shuffle/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
@@ -69,7 +73,7 @@
   
   <header>
     
-      <h1 class="entry-title">Hello, Octopress</h1>
+      <h1 class="entry-title">[Ubuntu]在ubuntu下用ipod Shuffle</h1>
     
     
       <p class="meta">
@@ -78,14 +82,40 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2010-10-17T10:08:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>10:08 am</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><p><a href=""></a><br/>
+安裝工具程式<br/>
+<code>$ sudo aptitude install gnupod-tools</code><br/>
+初始化ipod<br/>
+<code>$ gnupod_INIT -m /media/IPOD</code><br/>
+gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuild_db<br/>
+可以直接把音樂檔案放在ipod裡<br/>
+不用再透過itunes, gtkpod等等軟體<br/>
+<a href="http://sourceforge.net/projects/shuffle-db/files/">下載rebuild_db</a><br/>
+下載回來的檔案解壓縮後放在ipod的根目錄(通常是/media/IPOD)<br/>
+<code>$ cd /media/ipod</code><br/>
+然後把你的音樂放在ipod資料夾</p>
+
+<p>注意 rebuild_db不支援中文檔名 因此請務必在歌曲或資料夾名稱前依自己喜好的順序加上數字<br/>
+如 1 - 曲目名稱<br/>
+然後<br/>
+<code>$ python ./rebuild_db.py -r</code><br/>
+注意 以後每次在ipod中有變動時 都要執行一次<br/>
+現在 <br/>
+<code>$ umount /media/IPOD</code><br/>
+移除ipod插頭 就可以了</p>
+
+<p>參考資料<br/>
+<a href="http://www.gnu.org/software/gnupod/gnupod.html">GNUpod Manual</a><br/>
+<a href="http://shuffle-db.sourceforge.net/">rebuild_db</a><br/>
+<a href="http://abev66.blogspot.com/2009/02/ipod-shuffle-ubuntu-rebuilddb.html">http://abev66.blogspot.com/2009/02/ipod-shuffle-ubuntu-rebuilddb.html</a><br/>
+<a href="http://nullfield.org/LinuxPod.html">http://nullfield.org/LinuxPod.html</a></p>
 </div>
 
 
@@ -101,7 +131,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2010-10-17T10:08:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>10:08 am</span></time>
       
 
 
@@ -118,8 +148,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2010/08/16/ubuntusamba/" title="Previous Post: [ubuntu]在samba中分享光碟機">&laquo; [ubuntu]在samba中分享光碟機</a>
       
+      
+        <a class="basic-alignment right" href="/blog/2010/12/03/gnulinuxubuntudebian-netinstall/" title="Next Post: [GNU/Linux]Ubuntu/Debian netinstall (Unetbootin)">[GNU/Linux]Ubuntu/Debian netinstall (Unetbootin) &raquo;</a>
       
     </p>
   </footer>
@@ -214,8 +246,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2010/10/17/ubuntuubuntuipod-shuffle/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2010/10/17/ubuntuubuntuipod-shuffle/';
         var disqus_script = 'embed.js';
       
     (function () {
