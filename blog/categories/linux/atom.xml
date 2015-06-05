@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | 炸蝦碎碎念。]]></title>
+  <link href="http://joshua5201.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://joshua5201.github.io/"/>
+  <updated>2015-06-06T03:34:51+08:00</updated>
+  <id>http://joshua5201.github.io/</id>
+  <author>
+    <name><![CDATA[Tsung-en Hsiao]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config/"/>
+    <updated>2015-06-06T03:29:53+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config</id>
+    <content type="html"><![CDATA[<p>其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的<a href="https://github.com/adobe-fonts/source-han-sans/">Source Han Sans TWHK</a> 好看、又有台灣的中文寫法。
+但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。
+在Linux下是透過<a href="https://www.archlinux.org/packages/extra/i686/fontconfig/">fontconfig</a>這個套件來管理跟控制字型，所以這個問題主要是因為預設的<a href="https://wiki.archlinux.org/index.php/Font_configuration">Font Config</a>中的很多中文字型可能已經過時，或者是沒裝，或者因為是中國的簡體字型所以不好看或者是會缺字。
+在<code>/etc/fonts/conf.d</code>下能看到主要的字型設定檔，用xml的方式設定。這裡不贅述設定的細節，可以自己參考<code>man fonts-config</code>。而中文以及其他非拉丁字母字型的對應在<code>65-nonlatin.conf</code>裡頭。</p>
+
+<p>長的像這樣：
+```xml
+&lt;?xml version=&ldquo;1.0&rdquo;?>
+&lt;!DOCTYPE fontconfig SYSTEM &ldquo;fonts.dtd&rdquo;>
+<fontconfig>
+    <alias>
+        <family>serif</family>
+        <prefer>
+            <family>字型名稱</family>
+        </prefer>
+    </alias>
+    <alias>
+        <family>sans-serif</family>
+        <prefer>
+            <family>字型名稱</family>
+        </prefer>
+    </alias>
+    <alias>
+        <family>monospace</family>
+        <prefer>
+            <family>字型名稱</family>
+        </prefer>
+    </alias>
+</fontconfig></p>
+
+<p>```
+所以要讓系統能顯示正確的字型，就在指定font family（sans, sans-serif, monospace）底下的prefer裡加上自己喜歡的字型。因為套件庫裡找不到台灣寫法的等寬黑體，所以就將用了文泉驛等寬微米黑（WenQuanYi Micro Hei Mono）。重開應用程式（如Konsole）就能看到正確的字型摟。</p>
+]]></content>
+  </entry>
+  
+</feed>

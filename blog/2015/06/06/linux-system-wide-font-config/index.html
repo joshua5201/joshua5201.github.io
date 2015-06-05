@@ -5,25 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>[Linux] Convert and Resize Images From Command Line Using ImageMagick - 炸蝦碎碎念。</title>
+  <title>[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題 - 炸蝦碎碎念。</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="1
-2
-3
-4
-5
-6
-7
-8
-9
-# installing
-sudo pacman -S imagemagick
-# converting from png to jpg
-convert image.png image.jpg
-#resizing
-convert image.png - &hellip;">
+  <meta name="description" content="其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的Source Han Sans TWHK 好看、又有台灣的中文寫法。
+但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -32,7 +19,7 @@ convert image.png - &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
@@ -82,7 +69,7 @@ convert image.png - &hellip;">
   
   <header>
     
-      <h1 class="entry-title">[Linux] Convert and Resize Images From Command Line Using ImageMagick</h1>
+      <h1 class="entry-title">[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題</h1>
     
     
       <p class="meta">
@@ -91,14 +78,21 @@ convert image.png - &hellip;">
 
 
 
-<time class='entry-date' datetime='2013-10-02T16:59:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:59 pm</span></time>
+<time class='entry-date' datetime='2015-06-06T03:29:53+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:29 am</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class="entry-content"><p>其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的<a href="https://github.com/adobe-fonts/source-han-sans/">Source Han Sans TWHK</a> 好看、又有台灣的中文寫法。
+但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。
+在Linux下是透過<a href="https://www.archlinux.org/packages/extra/i686/fontconfig/">fontconfig</a>這個套件來管理跟控制字型，所以這個問題主要是因為預設的<a href="https://wiki.archlinux.org/index.php/Font_configuration">Font Config</a>中的很多中文字型可能已經過時，或者是沒裝，或者因為是中國的簡體字型所以不好看或者是會缺字。
+在<code>/etc/fonts/conf.d</code>下能看到主要的字型設定檔，用xml的方式設定。這裡不贅述設定的細節，可以自己參考<code>man fonts-config</code>。而中文以及其他非拉丁字母字型的對應在<code>65-nonlatin.conf</code>裡頭。</p>
+
+<p>長的像這樣：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -107,19 +101,45 @@ convert image.png - &hellip;">
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># installing</span>
-</span><span class='line'>sudo pacman -S imagemagick
-</span><span class='line'><span class="c"># converting from png to jpg</span>
-</span><span class='line'>convert image.png image.jpg
-</span><span class='line'><span class="c">#resizing</span>
-</span><span class='line'>convert image.png -resize 1024x768 resized.png
-</span><span class='line'>convert image.png -resize <span class="m">1024</span> resized.png
-</span><span class='line'>convert image.png -resize x768 resized.png
-</span><span class='line'>convert image.png -resize 1000x200! resized.png
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE fontconfig SYSTEM &quot;fonts.dtd&quot;&gt;</span>
+</span><span class='line'><span class="nt">&lt;fontconfig&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;alias&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;family&gt;</span>serif<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;prefer&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;family&gt;</span>字型名稱<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/prefer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/alias&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;alias&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;family&gt;</span>sans-serif<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;prefer&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;family&gt;</span>字型名稱<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/prefer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/alias&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;alias&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;family&gt;</span>monospace<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;prefer&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;family&gt;</span>字型名稱<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/prefer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/alias&gt;</span>
+</span><span class='line'><span class="nt">&lt;/fontconfig&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
+<p>所以要讓系統能顯示正確的字型，就在指定font family（sans, sans-serif, monospace）底下的prefer裡加上自己喜歡的字型。因為套件庫裡找不到台灣寫法的等寬黑體，所以就將用了文泉驛等寬微米黑（WenQuanYi Micro Hei Mono）。重開應用程式（如Konsole）就能看到正確的字型摟。</p>
 </div>
 
 
@@ -135,8 +155,14 @@ convert image.png - &hellip;">
 
 
 
-<time class='entry-date' datetime='2013-10-02T16:59:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:59 pm</span></time>
+<time class='entry-date' datetime='2015-06-06T03:29:53+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:29 am</span></time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
 
 
     </p>
@@ -152,10 +178,8 @@ convert image.png - &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/09/01/finishing-review-reconsideration-second-reconsideration/" title="Previous Post: [整理] 覆議 復議 附議 複議">&laquo; [整理] 覆議 復議 附議 複議</a>
+        <a class="basic-alignment left" href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/" title="Previous Post: [Linux] Amarok mp3 playback in Archlinux">&laquo; [Linux] Amarok mp3 playback in Archlinux</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/10/25/linux-archlinux-installation-kde411/" title="Next Post: [Linux] Archlinux安裝KDE4.11">[Linux] Archlinux安裝KDE4.11 &raquo;</a>
       
     </p>
   </footer>
@@ -250,8 +274,8 @@ convert image.png - &hellip;">
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config/';
         var disqus_script = 'embed.js';
       
     (function () {

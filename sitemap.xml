@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config/</loc>
+    <lastmod>2015-06-06T03:29:53+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://joshua5201.github.io/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/</loc>
     <lastmod>2015-06-06T02:41:52+08:00</lastmod>
   </url>
@@ -136,5 +140,8 @@
   </url>
   <url>
     <loc>http://joshua5201.github.io/blog/categories/si-kao/</loc>
+  </url>
+  <url>
+    <loc>http://joshua5201.github.io/blog/categories/linux/</loc>
   </url>
 </urlset>
