@@ -5,15 +5,25 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>The quick brown fox jumps over the lazy dog.</title>
+  <title>炸蝦碎碎念。</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="讀公民的煩人東西
-為什麼台灣的法律名詞都喜歡同音(還有 申請 聲請)
-- 覆議：行政院認為立法院提出的法案窒礙難行，可提出覆議。立法院可在十五天內否決(台：二分之一；美：三分之二；法：reopen debate 國會可不理)
-- 附議：提出法案時取得部份人的支持
-- 復議：立法院審理法案時， &hellip;">
+  <meta name="description" content="1
+2
+3
+4
+5
+6
+7
+8
+9
+# installing
+sudo pacman -S imagemagick
+# converting from png to jpg
+convert image.png image.jpg
+#resizing
+convert image.png - &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,7 +35,7 @@
   <link rel="canonical" href="http://joshua5201.github.io/posts/2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="The quick brown fox jumps over the lazy dog." type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -40,7 +50,7 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">The quick brown fox jumps over the lazy dog.</a></h1>
+  <h1><a href="/">炸蝦碎碎念。</a></h1>
   
     <h2>[Notes, GNU/Linux, Open Source, Ruby on Rails, Computer Science, Archlinux]</h2>
   
@@ -69,6 +79,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/">[Linux] Convert and Resize Images From Command Line Using ImageMagick</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-02T16:59:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># installing</span>
+</span><span class='line'>sudo pacman -S imagemagick
+</span><span class='line'><span class="c"># converting from png to jpg</span>
+</span><span class='line'>convert image.png image.jpg
+</span><span class='line'><span class="c">#resizing</span>
+</span><span class='line'>convert image.png -resize 1024x768 resized.png
+</span><span class='line'>convert image.png -resize <span class="m">1024</span> resized.png
+</span><span class='line'>convert image.png -resize x768 resized.png
+</span><span class='line'>convert image.png -resize 1000x200! resized.png
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -623,117 +683,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uprc-1149-toi2007pd/">[Code] UPRC-1149 太空船(TOI初選2007pD)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-07T08:21:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:21 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149">http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149</a></p>
-
-<p>這題最難的地方在於方向 (我是J睿捏我才會的)</p>
-
-<ol>
-<li><p>起點放入queue</p></li>
-<li><p>從queue拿出點 四周可以通行的點步數都+1</p></li>
-<li><p>固定方向把接下來的點都放入queue 直到不能放為止<br/>
-    重點是要記得紀錄步數和把點戳成黑洞</p></li>
-</ol>
-
-
-<p>感謝jghs1328幫我debug好久..<br/>
-<a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-
-typedef struct {  
- int x;  
- int y;  
-} point;  
-point que[1000000];  
-point s, t;  
-char space[1002][1002];  
-int cost[1002][1002];  
-int dx[4] = {1, 0, -1, 0};  
-int dy[4] = {0, 1, 0, -1};  
-int front, rear;  
-int main()  
-{  
- int n, i, j;  
- scanf("%d\n", &amp;n);  
- for (i = 1; i &lt;= n; i++) {  
- for (j = 1; j &lt;= n; j++) {  
- space[i][j] = getchar();  
- if (space[i][j] == '1') {  
- space[i][j] = 0;  
- } else if (space[i][j] == 'A') {  
- s.x = i;  
- s.y = j;  
- } else if (space[i][j] == 'B') {  
- t.x = i;  
- t.y = j;  
- }  
- }  
- getchar();  
- }  
- front = rear = 0;  
- que[rear++] = s;  
- space[s.x][s.y] = 0;  
- cost[s.x][s.y] = -1;  
- while (front &lt; rear) {  
- point p = que[front++];  
- point n;  
- space[p.x][p.y] = 0;  
- if (p.x == t.x &amp;&amp; p.y == t.y) {  
- break;  
- }  
- for (i = 0; i &lt; 4; i++) {  
- n.x = p.x + dx[i];  
- n.y = p.y + dy[i];  
- if (space[n.x][n.y] == 0) {  
- continue;  
- }  
- que[rear++] = n;  
- cost[n.x][n.y] = cost[p.x][p.y] + 1;  
- space[n.x][n.y] = 0;  
- int tmp = cost[n.x][n.y];  
- n.x += dx[i];  
- n.y += dy[i];  
- while (space[n.x][n.y] != 0) {  
- que[rear++] = n;  
- cost[n.x][n.y] = tmp;  
- space[n.x][n.y] = 0;  
- n.x += dx[i];  
- n.y += dy[i];  
- }  
- }  
- }  
- printf("%d\n", cost[t.x][t.y]);  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -751,6 +700,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/05/25/hello/">Hello, Octopress</a>
       </li>
     
@@ -764,10 +717,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2014/09/03/rails-could-not-read-gem-solutions/">[Rails] Could Not Read Gem 解決方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/01/experience-the-exam-said-he-would-write-are-dragged-on-for-a-months-experience/">[心得] 指考完說要寫卻拖了一個月的心得</a>
       </li>
     
   </ul>

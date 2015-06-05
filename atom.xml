@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[The quick brown fox jumps over the lazy dog.]]></title>
+  <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-05-25T22:59:36+08:00</updated>
+  <updated>2015-06-06T02:47:08+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,19 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[Linux] Amarok Mp3 Playback in Archlinux]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/"/>
+    <updated>2015-06-06T02:41:52+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux</id>
+    <content type="html"><![CDATA[<p>Amarok can&rsquo;t play mp3 in Archlinux with gstreamer-* packages installed.</p>
+
+<p>Solution:
+According to the <a href="https://wiki.archlinux.org/index.php/GStreamer">ArchWiki page about Gstreamer</a> gstreamer packages no longer called gstreamer-*,  but gst-* .
+so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and phonon-gstreamer)</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Hello, Octopress]]></title>
@@ -774,97 +787,6 @@ int main()
  G[i].clear();  
  }  
  }  
- return 0;  
-}  
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[Code] UPRC-1149 太空船(TOI初選2007pD)]]></title>
-    <link href="http://joshua5201.github.io/blog/2012/03/07/code-uprc-1149-toi2007pd/"/>
-    <updated>2012-03-07T08:21:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2012/03/07/code-uprc-1149-toi2007pd</id>
-    <content type="html"><![CDATA[<p><a href="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149">http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149</a></p>
-
-<p>這題最難的地方在於方向 (我是J睿捏我才會的)</p>
-
-<ol>
-<li><p>起點放入queue</p></li>
-<li><p>從queue拿出點 四周可以通行的點步數都+1</p></li>
-<li><p>固定方向把接下來的點都放入queue 直到不能放為止<br/>
-    重點是要記得紀錄步數和把點戳成黑洞</p></li>
-</ol>
-
-
-<p>感謝jghs1328幫我debug好久..<br/>
-<a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-
-typedef struct {  
- int x;  
- int y;  
-} point;  
-point que[1000000];  
-point s, t;  
-char space[1002][1002];  
-int cost[1002][1002];  
-int dx[4] = {1, 0, -1, 0};  
-int dy[4] = {0, 1, 0, -1};  
-int front, rear;  
-int main()  
-{  
- int n, i, j;  
- scanf("%d\n", &amp;n);  
- for (i = 1; i &lt;= n; i++) {  
- for (j = 1; j &lt;= n; j++) {  
- space[i][j] = getchar();  
- if (space[i][j] == '1') {  
- space[i][j] = 0;  
- } else if (space[i][j] == 'A') {  
- s.x = i;  
- s.y = j;  
- } else if (space[i][j] == 'B') {  
- t.x = i;  
- t.y = j;  
- }  
- }  
- getchar();  
- }  
- front = rear = 0;  
- que[rear++] = s;  
- space[s.x][s.y] = 0;  
- cost[s.x][s.y] = -1;  
- while (front &lt; rear) {  
- point p = que[front++];  
- point n;  
- space[p.x][p.y] = 0;  
- if (p.x == t.x &amp;&amp; p.y == t.y) {  
- break;  
- }  
- for (i = 0; i &lt; 4; i++) {  
- n.x = p.x + dx[i];  
- n.y = p.y + dy[i];  
- if (space[n.x][n.y] == 0) {  
- continue;  
- }  
- que[rear++] = n;  
- cost[n.x][n.y] = cost[p.x][p.y] + 1;  
- space[n.x][n.y] = 0;  
- int tmp = cost[n.x][n.y];  
- n.x += dx[i];  
- n.y += dy[i];  
- while (space[n.x][n.y] != 0) {  
- que[rear++] = n;  
- cost[n.x][n.y] = tmp;  
- space[n.x][n.y] = 0;  
- n.x += dx[i];  
- n.y += dy[i];  
- }  
- }  
- }  
- printf("%d\n", cost[t.x][t.y]);  
  return 0;  
 }  
 </code></pre>
