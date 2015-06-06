@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-06T13:09:32+08:00</updated>
+  <updated>2015-06-06T13:17:20+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -19,38 +19,20 @@
     <updated>2015-06-06T13:02:00+08:00</updated>
     <id>http://joshua5201.github.io/blog/2015/06/06/using-custom-domain-in-github-pages</id>
     <content type="html"><![CDATA[<ol>
-<li>在自己的dns server中加上以下record(以我的tehsiao.org為例)：</li>
-</ol>
+<li><p>在自己的dns server中加上以下record(以我的tehsiao.org為例)：</p>
 
+<pre><code class="`"> blog    IN  CNAME   joshua5201.github.io
+</code></pre></li>
+<li><p>在octopress的資料夾中：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>blog    IN  CNAME   joshua5201.github.io</span></code></pre></td></tr></table></div></figure>
+<pre><code class="`"> echo "blog.tehsiao.org" &gt; source/CNAME
+</code></pre></li>
+<li><p>把設定推上Github</p>
 
-
-<ol>
-<li>在octopress的資料夾中：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s2">&quot;blog.tehsiao.org&quot;</span> &gt; <span class="nb">source</span>/CNAME
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>把設定推上Github</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake preview <span class="c">#不知道為什麼寫新post跟更新設定檔都要先跑preview才會deploy上去</span>
-</span><span class='line'>rake deploy
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>可能要等幾小時到一兩天不等的時間，你的record才會被大家的dns server更新。想要先測試可以用google的dns(8.8.8.8)來試試看。</li>
+<pre><code class="`"> rake preview #不知道為什麼寫新post跟更新設定檔都要先跑preview才會deploy上去
+ rake deploy
+</code></pre></li>
+<li><p>可能要等幾小時到一兩天不等的時間，你的record才會被大家的dns server更新。想要先測試可以用google的dns(8.8.8.8)來試試看。</p></li>
 </ol>
 
 
