@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-06T03:34:51+08:00</updated>
+  <updated>2015-06-06T12:35:12+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,20 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Setting Up Reverse DNS (PTR) Record in Digitalocean]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/"/>
+    <updated>2015-06-06T12:25:58+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean</id>
+    <content type="html"><![CDATA[<p>I have a godaddy domain tehsiao.org and a Fedora host with dns server on <a href="https://cloud.digitalocean.com">Digitalocean</a>.</p>
+
+<p>You need only to rename your digitalocean droplet to your domain(tehsiao.org here), you simply finish setting up PTR record.</p>
+
+<p>Reference:
+<a href="https://www.digitalocean.com/community/questions/how-do-i-setup-a-ptr-record-with-my-exisiting-domain-name">digitalocean community - How do I setup a PTR record with my exisiting domain name?</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題]]></title>
@@ -72,7 +86,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>所以要讓系統能顯示正確的字型，就在指定font family（sans, sans-serif, monospace）底下的prefer裡加上自己喜歡的字型。因為套件庫裡找不到台灣寫法的等寬黑體，所以就將用了文泉驛等寬微米黑（WenQuanYi Micro Hei Mono）。重開應用程式（如Konsole）就能看到正確的字型摟。</p>
+<p>所以要讓系統能顯示正確的字型，就在指定font family（sans, sans-serif, monospace）底下的prefer裡加上自己喜歡的字型。因為套件庫裡找不到台灣寫法的等寬黑體，所以就將用了文泉驛等寬微米黑（WenQuanYi Micro Hei Mono, <a href="https://www.archlinux.org/packages/community/any/wqy-microhei/">wqy-microhei</a>）。重開應用程式（如Konsole）就能看到正確的字型摟。</p>
 ]]></content>
   </entry>
   
@@ -754,43 +768,6 @@ int main()
  printf("%lld\n", dfs(0));  
  }  
 }  
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[GNU/Linux] MATE Themes in ArchLinux]]></title>
-    <link href="http://joshua5201.github.io/blog/2012/03/16/gnulinux-mate-themes-in-archlinux/"/>
-    <updated>2012-03-16T08:27:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2012/03/16/gnulinux-mate-themes-in-archlinux</id>
-    <content type="html"><![CDATA[<p>用了一陣子的gnome3 實在綁手綁腳<br/>
-也開始想念gnome2了 <br/>
-TOI爆了以後有時間 就來試試gnome2的fork&mdash;<a href="http://mate-desktop.org/">MATE Desktop Environment</a></p>
-
-<p>安裝過程就看<a href="https://wiki.archlinux.org/index.php/MATE">Archwiki</a>就好 這裡不詳述<br/>
-裝display manager 結果gdm、mdm(MATE display manager)都有問題= =<br/>
-只有lxdm又快又穩定 不過長得太醜 懶得弄主題什麼的<br/>
-最後決定直接用startx 這樣登入的時候也比較酷(？</p>
-
-<p>用起來很順暢 遇到的問題也只有主題的部份 <br/>
-發現預設主題(ex: Clearlooks)的都不能用<br/>
-無意中發現了解決方案：</p>
-
-<p>這裡以經典主題——Clearlooks為例</p>
-
-<pre><code>$cd /usr/share/themes/Clearlooks  
-$ls  
-gtk-2.0 index.theme marco-1 #會出現這三樣東西  
-$mv marco-1 metacity-1 #猜測是MATE把metacity改名為marco   
- #但主題程式未同步更改導致讀取不到主題檔案的錯誤  
-$cd metacity-1  
-$ls  
-marco-theme-1.xml  
-$mv marco-theme-1.xml metacity-theme-1.xml  
-$sudo vim metacity-theme-1.xml  
-#把標籤改成  
-#記得文件最後一行的關閉標籤也要改  
-這樣就可以用我最愛的Clearlooks了XD
 </code></pre>
 ]]></content>
   </entry>
