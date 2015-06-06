@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-06T12:35:12+08:00</updated>
+  <updated>2015-06-06T12:36:57+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Setting Up Reverse DNS (PTR) Record in Digitalocean]]></title>
+    <title type="html"><![CDATA[[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean]]></title>
     <link href="http://joshua5201.github.io/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/"/>
     <updated>2015-06-06T12:25:58+08:00</updated>
     <id>http://joshua5201.github.io/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean</id>
@@ -104,7 +104,7 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Hello, Octopress]]></title>
+    <title type="html"><![CDATA[[Hello] Octopress]]></title>
     <link href="http://joshua5201.github.io/blog/2015/05/25/hello/"/>
     <updated>2015-05-25T22:52:28+08:00</updated>
     <id>http://joshua5201.github.io/blog/2015/05/25/hello</id>
