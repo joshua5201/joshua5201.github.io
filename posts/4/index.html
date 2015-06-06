@@ -9,10 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="最近裝了debian
-習慣在了terminal下用sudo root@debian~# visudo #在最後一行加上 joshua ALL=(ALL) NOPASSWD:ALL #按ctrl+o寫入再按ctrl+x離開 從今以後
-不僅有sudo可以用
-而且還不用密碼！ 參考資料 &hellip;">
+  <meta name="description" content="在自己的Acer Aspire One d250(aod250)上裝Debian sid 遇到了不少問題 以下是找到的解決方案 無線網卡(Broadcom BCM4312) Debian的套件庫裡已有它的驅動程式 sudo aptitude install firmware-b43-lpphy- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +65,100 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/01/22/aod250debianlxde/">aod250上裝Debian+LXDE遇到的問題與解決</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2011-01-22T11:04:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:04 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在自己的Acer Aspire One d250(aod250)上裝Debian sid</p>
+
+<p>遇到了不少問題</p>
+
+<p>以下是找到的解決方案</p>
+
+<p><a href=""></a></p>
+
+<ol>
+<li>無線網卡(Broadcom BCM4312)</li>
+</ol>
+
+
+<p>Debian的套件庫裡已有它的驅動程式</p>
+
+<pre><code>sudo aptitude install firmware-b43-lpphy-installer wpasupplicant  
+sudo modprobe b43  
+</code></pre>
+
+<p>在 /etc/network/interfaces 裡加上：</p>
+
+<pre><code>auto wlan0 inet dhcp  
+wpa-ssid home #(你ssid的名字)  
+wpa-psk ********** #(你的WPA密碼)  
+</code></pre>
+
+<p>然後</p>
+
+<pre><code>sudo chmod 0600 /etc/network/interfaces #(保護你的wifi密碼)  
+sudo ifconfig wlan0 up  
+</code></pre>
+
+<p>2.在LXDE中 觸控板不能像在ubuntu/windows 上一樣 輕輕在板子上點 就可以選擇</p>
+
+<p><code>sudo aptitude install gsynaptics</code></p>
+
+<p>在/etc/xdg/lxsession/LXDE/autostart 前面加上</p>
+
+<pre><code>synclient VertEdgeScroll=1  
+synclient HorizEdgeScroll=1  
+synclient TapButton1=1  
+</code></pre>
+
+<p>然後登出再登入 就可以了</p>
+
+<p>3.沒有聲音</p>
+
+<pre><code>sudo aptitude install gnome-alsamixer  
+gnome alsa-mixer   
+</code></pre>
+
+<p>把 PCM 和 Speaker 調到最大 就解決了</p>
+
+<p>工具列沒有音量調整按鈕？</p>
+
+<p>在工作列上按右鍵 點 ”設定工作列 (panel settings)”</p>
+
+<p>在工作列元件裡增加 『音量控制』</p>
+
+<p>參考資料</p>
+
+<p><a href="http://wiki.debian.org/bcm43xx">http://wiki.debian.org/bcm43xx</a></p>
+
+<p><a href="http://wiki.debian.org/WiFi/HowToUse">http://wiki.debian.org/WiFi/HowToUse</a></p>
+
+<p><a href="http://solutionsandtips.blogspot.com/2010/07/enable-touchpad-tapping-scrolling-in.html">http://solutionsandtips.blogspot.com/2010/07/enable-touchpad-tapping-scrolling-in.html</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -376,6 +467,10 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
@@ -389,10 +484,6 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
     
       <li class="post">
         <a href="/blog/2015/05/25/hello/">[Hello] Octopress</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a>
       </li>
     
   </ul>

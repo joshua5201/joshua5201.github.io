@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-06T12:55:48+08:00</updated>
+  <updated>2015-06-06T13:08:02+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,53 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[Note] 在Github Pages上用自己的網域]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/06/06/using-custom-domain-in-github-pages/"/>
+    <updated>2015-06-06T13:02:00+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/06/06/using-custom-domain-in-github-pages</id>
+    <content type="html"><![CDATA[<ol>
+<li>在自己的dns server中加上以下record(以我的tehsiao.org為例)：</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>blog    IN  CNAME   joshua5201.github.io</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>在octopress的資料夾中：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s2">&quot;blog.tehsiao.org&quot;</span> &gt; <span class="nb">source</span>/CNAME
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>把設定推上Github</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake preview <span class="c">#不知道為什麼寫新post跟更新設定檔都要先跑preview才會deploy上去</span>
+</span><span class='line'>rake deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>可能要等幾小時到一兩天不等的時間，你的record才會被大家的dns server更新。想要先測試可以用google的dns(8.8.8.8)來試試看。</li>
+</ol>
+
+
+<p>Reference:
+<a href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/">Github Help - Adding a CNAME file to your repository</a>
+<a href="http://learnaholic.me/2012/10/10/deploying-octopress-to-github-pages-and-setting-custom-subdomain-cname/">Learn-a-holic Geek Notes - Deploying Octopress to Github Pages and Setting Custom Subdomain CNAME</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean]]></title>
@@ -711,62 +758,6 @@ int main()
  printf("%d\n", max_d);  
  }  
  return 0;  
-}  
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[Code] TIOJ - 1463 打不倒的樹木人]]></title>
-    <link href="http://joshua5201.github.io/blog/2012/03/24/code-tioj-1463/"/>
-    <updated>2012-03-24T16:57:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2012/03/24/code-tioj-1463</id>
-    <content type="html"><![CDATA[<p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463</a></p>
-
-<p>code應該很好懂</p>
-
-<p>注意一下條件判斷就好了<br/>
-<a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-
-char s[10001];  
-long long dp[10001];  
-int l;  
-long long dfs(int n)  
-{  
- if (dp[n] &gt;= 0) {  
- return dp[n];  
- }  
- if (s[n] == '0') {  
- return dp[n] = 0;  
- }  
- if (n == l - 1) {  
- return dp[n] = 1;  
- }  
- if (n == l - 2) {  
- if (s[n] &gt; '2' || s[n] == '2' &amp;&amp; s[n + 1] &gt; '6') {  
- return dp[n] = dfs(n + 1);  
- } else {  
- return dp[n] = dfs(n + 1) + 1;  
- }  
- }  
- if (s[n] &gt; '2' || s[n] == '2' &amp;&amp; s[n + 1] &gt; '6') {  
- return dp[n] = dfs(n + 1);  
- }  
- return dp[n] = dfs(n + 1) + dfs(n + 2);  
-}  
-int main()  
-{  
- while (gets(s) != NULL) {  
- if (strcmp(s, "0") == 0) {  
- return 0;  
- }  
- l = strlen(s);  
- memset(dp, -1, sizeof(dp));  
- printf("%lld\n", dfs(0));  
- }  
 }  
 </code></pre>
 ]]></content>

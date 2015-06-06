@@ -9,7 +9,9 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="I have a godaddy domain tehsiao.org and a Fedora host with dns server on Digitalocean. You need only to rename your digitalocean droplet to your &hellip;">
+  <meta name="description" content="在自己的dns server中加上以下record(以我的tehsiao.org為例)： 1
+blog IN CNAME joshua5201.github.io 在octopress的資料夾中： 1
+echo &quot;blog.tehsiao.org&quot; &gt; source/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +67,73 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-06T13:02:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:02 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ol>
+<li>在自己的dns server中加上以下record(以我的tehsiao.org為例)：</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>blog    IN  CNAME   joshua5201.github.io</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>在octopress的資料夾中：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s2">&quot;blog.tehsiao.org&quot;</span> &gt; <span class="nb">source</span>/CNAME
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>把設定推上Github</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake preview <span class="c">#不知道為什麼寫新post跟更新設定檔都要先跑preview才會deploy上去</span>
+</span><span class='line'>rake deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>可能要等幾小時到一兩天不等的時間，你的record才會被大家的dns server更新。想要先測試可以用google的dns(8.8.8.8)來試試看。</li>
+</ol>
+
+
+<p>Reference:
+<a href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/">Github Help - Adding a CNAME file to your repository</a>
+<a href="http://learnaholic.me/2012/10/10/deploying-octopress-to-github-pages-and-setting-custom-subdomain-cname/">Learn-a-holic Geek Notes - Deploying Octopress to Github Pages and Setting Custom Subdomain CNAME</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -601,76 +670,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/04/rails-add-markdown-support-in-rails/">[Rails] Add Markdown Support in Rails</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-02-04T14:46:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:46 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>之前那個TIOJ本來說要用Node做的，最後搞得很麻煩還是回來用Rails做XDDD</p>
-
-<p>Reference:
-<a href="http://danielboggs.com/articles/authoring-with-markdown-in-rails/">Authoring with Markdown in Rails</a></p>
-
-<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;redcarpet&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>app/helpers/application_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ApplicationHelper</span>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">renderer</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Render</span><span class="o">::</span><span class="no">HTML</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">hard_wrap</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">filter_html</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>      <span class="ss">autolink</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="ss">no_intra_emphasis</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="ss">fenced_code_blocks</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="ss">lax_html_blocks</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="ss">strikethrough</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
-</span><span class='line'>      <span class="ss">superscript</span><span class="p">:</span> <span class="kp">true</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Markdown</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -686,6 +685,10 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
@@ -699,10 +702,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
     
       <li class="post">
         <a href="/blog/2015/05/25/hello/">[Hello] Octopress</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a>
       </li>
     
   </ul>

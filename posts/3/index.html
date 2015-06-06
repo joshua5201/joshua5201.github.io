@@ -9,9 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="用了一陣子的gnome3 實在綁手綁腳
-也開始想念gnome2了 TOI爆了以後有時間 就來試試gnome2的fork&mdash;MATE Desktop Environment 安裝過程就看Archwiki就好 這裡不詳述
-裝display manager 結果gdm、mdm(MATE &hellip;">
+  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463 code應該很好懂 注意一下條件判斷就好了 #include &lt;stdio.h&gt; #include &lt;string.h&gt; char &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +65,82 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/24/code-tioj-1463/">[Code] TIOJ - 1463 打不倒的樹木人</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-03-24T16:57:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>4:57 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463</a></p>
+
+<p>code應該很好懂</p>
+
+<p>注意一下條件判斷就好了<br/>
+<a href=""></a></p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+#include &lt;string.h&gt;  
+
+char s[10001];  
+long long dp[10001];  
+int l;  
+long long dfs(int n)  
+{  
+ if (dp[n] &gt;= 0) {  
+ return dp[n];  
+ }  
+ if (s[n] == '0') {  
+ return dp[n] = 0;  
+ }  
+ if (n == l - 1) {  
+ return dp[n] = 1;  
+ }  
+ if (n == l - 2) {  
+ if (s[n] &gt; '2' || s[n] == '2' &amp;&amp; s[n + 1] &gt; '6') {  
+ return dp[n] = dfs(n + 1);  
+ } else {  
+ return dp[n] = dfs(n + 1) + 1;  
+ }  
+ }  
+ if (s[n] &gt; '2' || s[n] == '2' &amp;&amp; s[n + 1] &gt; '6') {  
+ return dp[n] = dfs(n + 1);  
+ }  
+ return dp[n] = dfs(n + 1) + dfs(n + 2);  
+}  
+int main()  
+{  
+ while (gets(s) != NULL) {  
+ if (strcmp(s, "0") == 0) {  
+ return 0;  
+ }  
+ l = strlen(s);  
+ memset(dp, -1, sizeof(dp));  
+ printf("%lld\n", dfs(0));  
+ }  
+}  
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -814,100 +888,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/01/22/aod250debianlxde/">aod250上裝Debian+LXDE遇到的問題與解決</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2011-01-22T11:04:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2011</span></span> <span class='time'>11:04 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在自己的Acer Aspire One d250(aod250)上裝Debian sid</p>
-
-<p>遇到了不少問題</p>
-
-<p>以下是找到的解決方案</p>
-
-<p><a href=""></a></p>
-
-<ol>
-<li>無線網卡(Broadcom BCM4312)</li>
-</ol>
-
-
-<p>Debian的套件庫裡已有它的驅動程式</p>
-
-<pre><code>sudo aptitude install firmware-b43-lpphy-installer wpasupplicant  
-sudo modprobe b43  
-</code></pre>
-
-<p>在 /etc/network/interfaces 裡加上：</p>
-
-<pre><code>auto wlan0 inet dhcp  
-wpa-ssid home #(你ssid的名字)  
-wpa-psk ********** #(你的WPA密碼)  
-</code></pre>
-
-<p>然後</p>
-
-<pre><code>sudo chmod 0600 /etc/network/interfaces #(保護你的wifi密碼)  
-sudo ifconfig wlan0 up  
-</code></pre>
-
-<p>2.在LXDE中 觸控板不能像在ubuntu/windows 上一樣 輕輕在板子上點 就可以選擇</p>
-
-<p><code>sudo aptitude install gsynaptics</code></p>
-
-<p>在/etc/xdg/lxsession/LXDE/autostart 前面加上</p>
-
-<pre><code>synclient VertEdgeScroll=1  
-synclient HorizEdgeScroll=1  
-synclient TapButton1=1  
-</code></pre>
-
-<p>然後登出再登入 就可以了</p>
-
-<p>3.沒有聲音</p>
-
-<pre><code>sudo aptitude install gnome-alsamixer  
-gnome alsa-mixer   
-</code></pre>
-
-<p>把 PCM 和 Speaker 調到最大 就解決了</p>
-
-<p>工具列沒有音量調整按鈕？</p>
-
-<p>在工作列上按右鍵 點 ”設定工作列 (panel settings)”</p>
-
-<p>在工作列元件裡增加 『音量控制』</p>
-
-<p>參考資料</p>
-
-<p><a href="http://wiki.debian.org/bcm43xx">http://wiki.debian.org/bcm43xx</a></p>
-
-<p><a href="http://wiki.debian.org/WiFi/HowToUse">http://wiki.debian.org/WiFi/HowToUse</a></p>
-
-<p><a href="http://solutionsandtips.blogspot.com/2010/07/enable-touchpad-tapping-scrolling-in.html">http://solutionsandtips.blogspot.com/2010/07/enable-touchpad-tapping-scrolling-in.html</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -925,6 +905,10 @@ gnome alsa-mixer
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
@@ -938,10 +922,6 @@ gnome alsa-mixer
     
       <li class="post">
         <a href="/blog/2015/05/25/hello/">[Hello] Octopress</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a>
       </li>
     
   </ul>

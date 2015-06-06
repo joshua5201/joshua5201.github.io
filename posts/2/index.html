@@ -9,7 +9,9 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="剛剛手殘用觸控板在聲音圖示上滑來滑去(把音量調高又調低) 然後就突然沒聲音了！！！ 如果你也遇到這個問題 先看看alsamixer裏面有沒有被靜音吧= = 看了一大堆其他設定都不行 結果是這麼簡單的原因 差點沒被搞瘋&hellip;&hellip;.. Linux有些地方真的會讓人想抓狂阿阿阿阿 &hellip;">
+  <meta name="description" content="之前那個TIOJ本來說要用Node做的，最後搞得很麻煩還是回來用Rails做XDDD Reference:
+Authoring with Markdown in Rails Gemfile1
+gem &#39;redcarpet&#39; app/helpers/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +67,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/04/rails-add-markdown-support-in-rails/">[Rails] Add Markdown Support in Rails</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-02-04T14:46:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:46 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前那個TIOJ本來說要用Node做的，最後搞得很麻煩還是回來用Rails做XDDD</p>
+
+<p>Reference:
+<a href="http://danielboggs.com/articles/authoring-with-markdown-in-rails/">Authoring with Markdown in Rails</a></p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;redcarpet&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>app/helpers/application_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ApplicationHelper</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">renderer</span> <span class="o">=</span> <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Render</span><span class="o">::</span><span class="no">HTML</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">hard_wrap</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">filter_html</span><span class="p">:</span> <span class="kp">true</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>      <span class="ss">autolink</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">no_intra_emphasis</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">fenced_code_blocks</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">lax_html_blocks</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">strikethrough</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">superscript</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="no">Redcarpet</span><span class="o">::</span><span class="no">Markdown</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">html_safe</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -544,82 +616,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/24/code-tioj-1463/">[Code] TIOJ - 1463 打不倒的樹木人</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-24T16:57:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>4:57 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1463</a></p>
-
-<p>code應該很好懂</p>
-
-<p>注意一下條件判斷就好了<br/>
-<a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-
-char s[10001];  
-long long dp[10001];  
-int l;  
-long long dfs(int n)  
-{  
- if (dp[n] &gt;= 0) {  
- return dp[n];  
- }  
- if (s[n] == '0') {  
- return dp[n] = 0;  
- }  
- if (n == l - 1) {  
- return dp[n] = 1;  
- }  
- if (n == l - 2) {  
- if (s[n] &gt; '2' || s[n] == '2' &amp;&amp; s[n + 1] &gt; '6') {  
- return dp[n] = dfs(n + 1);  
- } else {  
- return dp[n] = dfs(n + 1) + 1;  
- }  
- }  
- if (s[n] &gt; '2' || s[n] == '2' &amp;&amp; s[n + 1] &gt; '6') {  
- return dp[n] = dfs(n + 1);  
- }  
- return dp[n] = dfs(n + 1) + dfs(n + 2);  
-}  
-int main()  
-{  
- while (gets(s) != NULL) {  
- if (strcmp(s, "0") == 0) {  
- return 0;  
- }  
- l = strlen(s);  
- memset(dp, -1, sizeof(dp));  
- printf("%lld\n", dfs(0));  
- }  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -637,6 +633,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
@@ -650,10 +650,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/05/25/hello/">[Hello] Octopress</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/">[Note] 在godaddy的domain用自己的nameserver</a>
       </li>
     
   </ul>

@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>[Rails] Could Not Read Gem 解決方法 - 炸蝦碎碎念。</title>
+  <title>[Note] 在Github Pages上用自己的網域 - 炸蝦碎碎念。</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="bundle install的時候 1
-2
-3
-Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0.0-p247/cache/coffee-script-2.3.0.gem. It may &hellip;">
+  <meta name="description" content="在自己的dns server中加上以下record(以我的tehsiao.org為例)： 1
+blog IN CNAME joshua5201.github.io 在octopress的資料夾中： 1
+echo &quot;blog.tehsiao.org&quot; &gt; source/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2014/09/03/rails-could-not-read-gem-solutions/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/06/06/using-custom-domain-in-github-pages/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
@@ -71,7 +70,7 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
   
   <header>
     
-      <h1 class="entry-title">[Rails] Could Not Read Gem 解決方法</h1>
+      <h1 class="entry-title">[Note] 在Github Pages上用自己的網域</h1>
     
     
       <p class="meta">
@@ -80,32 +79,52 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
 
 
 
-<time class='entry-date' datetime='2014-09-03T17:17:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>5:17 pm</span></time>
+<time class='entry-date' datetime='2015-06-06T13:02:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:02 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>bundle install的時候</p>
+<div class="entry-content"><ol>
+<li>在自己的dns server中加上以下record(以我的tehsiao.org為例)：</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>blog    IN  CNAME   joshua5201.github.io</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>在octopress的資料夾中：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">echo</span> <span class="s2">&quot;blog.tehsiao.org&quot;</span> &gt; <span class="nb">source</span>/CNAME
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>把設定推上Github</li>
+</ol>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Bundler::GemspecError: Could not <span class="nb">read </span>gem at /home/joshua5201/.rvm/gems/ruby-2.0.0-p247/cache/coffee-script-2.3.0.gem. It may be corrupted.
-</span><span class='line'>An error occurred <span class="k">while</span> installing coffee-script <span class="o">(</span>2.3.0<span class="o">)</span>, and Bundler cannot <span class="k">continue</span>.
-</span><span class='line'>Make sure that <span class="sb">`</span>gem install coffee-script -v <span class="s1">&#39;2.3.0&#39;</span><span class="sb">`</span> succeeds before bundling.
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>rake preview <span class="c">#不知道為什麼寫新post跟更新設定檔都要先跑preview才會deploy上去</span>
+</span><span class='line'>rake deploy
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>解決方法是把gem的cache刪掉</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>rm ~/.rvm/gems/ruby-2.0.0-p247/cache/<span class="o">[</span>出問題的gem名稱 或乾脆整個資料夾刪<span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
+<ol>
+<li>可能要等幾小時到一兩天不等的時間，你的record才會被大家的dns server更新。想要先測試可以用google的dns(8.8.8.8)來試試看。</li>
+</ol>
 
 
-<p><a href="http://taimoorchangaizpucitian.wordpress.com/2013/08/29/bundlergemspecerror-could-not-read-gem-at-homecoeus-rvmgemsruby-2-0-0-p0horoscopecache-it-may-be-corrupted/">參考連結</a></p>
+<p>Reference:
+<a href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/">Github Help - Adding a CNAME file to your repository</a>
+<a href="http://learnaholic.me/2012/10/10/deploying-octopress-to-github-pages-and-setting-custom-subdomain-cname/">Learn-a-holic Geek Notes - Deploying Octopress to Github Pages and Setting Custom Subdomain CNAME</a></p>
 </div>
 
 
@@ -121,7 +140,7 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
 
 
 
-<time class='entry-date' datetime='2014-09-03T17:17:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>5:17 pm</span></time>
+<time class='entry-date' datetime='2015-06-06T13:02:00+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:02 pm</span></time>
       
 
 
@@ -138,10 +157,8 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/08/01/experience-the-exam-said-he-would-write-are-dragged-on-for-a-months-experience/" title="Previous Post: [心得] 指考完說要寫卻拖了一個月的心得">&laquo; [心得] 指考完說要寫卻拖了一個月的心得</a>
+        <a class="basic-alignment left" href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/" title="Previous Post: [Note] Setting up Reverse DNS (PTR) record in Digitalocean">&laquo; [Note] Setting up Reverse DNS (PTR) record in Digitalocean</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/10/23/c-c-fgets-and-scanf/" title="Next Post: [C/C++] scanf造成之後的fgets不正常">[C/C++] scanf造成之後的fgets不正常 &raquo;</a>
       
     </p>
   </footer>
@@ -236,8 +253,8 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2014/09/03/rails-could-not-read-gem-solutions/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2014/09/03/rails-could-not-read-gem-solutions/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/06/06/using-custom-domain-in-github-pages/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2015/06/06/using-custom-domain-in-github-pages/';
         var disqus_script = 'embed.js';
       
     (function () {
