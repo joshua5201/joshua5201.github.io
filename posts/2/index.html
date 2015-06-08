@@ -9,9 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="之前那個TIOJ本來說要用Node做的，最後搞得很麻煩還是回來用Rails做XDDD Reference:
-Authoring with Markdown in Rails Gemfile1
-gem &#39;redcarpet&#39; app/helpers/ &hellip;">
+  <meta name="description" content="While working on the Rails project, I have problems using jQuery. The problem is from the Turbolink, when you click a link, it uses AJAX to get &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +65,47 @@ gem &#39;redcarpet&#39; app/helpers/ &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/04/rails-jquery-in-rails-4-uninstalling-turbolinks/">[Rails] jQuery in Rails 4 -- Uninstalling Turbolinks</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-02-04T15:09:00+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:09 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>While working on the Rails project, I have problems using jQuery. The problem is from the Turbolink, when you click a link, it uses AJAX to get content from Rails without reloading page. So the <code>$(document).ready()</code> in jQuery won&rsquo;t work. It can be fixed simply by uninstalling the Turbolinks gem.</p>
+
+<ol>
+<li>Remove <code>gem 'turbolinks'</code> in <code>Gemfile</code></li>
+<li>Run <code>bundle install</code></li>
+<li>Remove <code>//=require turbolinks</code> in <code>app/assets/javascripts/application.js</code></li>
+<li>Remove all code related to <code>turbolinks</code> in the include tags in your layout pages.</li>
+</ol>
+
+
+<p>There are other workarounds but this is the simplest.</p>
+
+<p>Reference: <a href="http://blog.flightswithfriends.com/post/53943440505/how-to-disable-turbolinks-in-rails-4">How to disable Turbolinks in Rails 4</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -521,101 +560,6 @@ $ sudo sync; sudo reboot #重新開機這樣就OK了！
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/24/code-tioj-1212/">[Code] TIOJ - 1212 最遠距點對</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-24T17:20:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>5:20 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213</a></p>
-
-<p>先隨便戳一個點(第一個)</p>
-
-<p>找出離他最遠的點</p>
-
-<p>再從那個點再做一次DFS</p>
-
-<p>P.S. 這題是多測資&hellip;害我WA了好幾次= =</p>
-
-<p><a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-#include &lt;vector&gt;  
-#include &lt;algorithm&gt;  
-using namespace std;  
-
-typedef struct {  
- int to, cost;  
-} edge;  
-vector&lt;edge&gt; G[100001];  
-int max_v, max_d;  
-bool used[100001] = {false};  
-void dfs(int v, int d)  
-{  
- used[v] = true;  
- if (d &gt; max_d) {  
- max_v = v;  
- max_d = d;  
- }  
- for (int i = 0; i &lt; G[v].size(); i++) {  
- edge e = G[v][i];  
- if (!used[e.to]) {  
- dfs(e.to, d + e.cost);  
- }  
- }  
- return ;  
-}  
-int main()  
-{  
- int n;  
- while (scanf("%d", &amp;n) != EOF &amp;&amp; n) {  
- for (int i = 0; i &lt;= n; i++) {  
- G[i].clear();  
- }  
- for (int i = 0; i &lt; n - 1; i++) {  
- int s, t;  
- edge e;  
- scanf("%d%d%d", &amp;s, &amp;t, &amp;(e.cost));  
- e.to = t;  
- G[s].push_back(e);  
- e.to = s;  
- G[t].push_back(e);  
- }  
- memset(used, false, sizeof(used));  
- max_d = 0;  
- max_v = 1;  
- dfs(1, 0);  
- memset(used, false, sizeof(used));  
- max_d = 0;  
- dfs(max_v, 0);  
- printf("%d\n", max_d);  
- }  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -633,6 +577,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/08/announcement-for-following-archlinux-na-posts/">[公告] 接下來會有Network Administration作業的整理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
       </li>
     
@@ -646,10 +594,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/05/25/hello/">[Hello] Octopress</a>
       </li>
     
   </ul>

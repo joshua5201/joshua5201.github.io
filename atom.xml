@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-06T13:17:20+08:00</updated>
+  <updated>2015-06-08T13:18:15+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[公告] 接下來會有Network Administration作業的整理]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/06/08/announcement-for-following-archlinux-na-posts/"/>
+    <updated>2015-06-08T13:16:04+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/06/08/announcement-for-following-archlinux-na-posts</id>
+    <content type="html"><![CDATA[<p>這學期在交大修NA，比較詳細的架了一些常見的服務，一直很想寫幾篇筆記。公告一下之後我才會想到要寫lol</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Note] 在Github Pages上用自己的網域]]></title>
@@ -668,81 +677,6 @@ $ make
 $ sudo make install  
 $ sudo make unload  
 $ sudo sync; sudo reboot #重新開機這樣就OK了！
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[Code] TIOJ - 1212 最遠距點對]]></title>
-    <link href="http://joshua5201.github.io/blog/2012/03/24/code-tioj-1212/"/>
-    <updated>2012-03-24T17:20:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2012/03/24/code-tioj-1212</id>
-    <content type="html"><![CDATA[<p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213</a></p>
-
-<p>先隨便戳一個點(第一個)</p>
-
-<p>找出離他最遠的點</p>
-
-<p>再從那個點再做一次DFS</p>
-
-<p>P.S. 這題是多測資&hellip;害我WA了好幾次= =</p>
-
-<p><a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-#include &lt;vector&gt;  
-#include &lt;algorithm&gt;  
-using namespace std;  
-
-typedef struct {  
- int to, cost;  
-} edge;  
-vector&lt;edge&gt; G[100001];  
-int max_v, max_d;  
-bool used[100001] = {false};  
-void dfs(int v, int d)  
-{  
- used[v] = true;  
- if (d &gt; max_d) {  
- max_v = v;  
- max_d = d;  
- }  
- for (int i = 0; i &lt; G[v].size(); i++) {  
- edge e = G[v][i];  
- if (!used[e.to]) {  
- dfs(e.to, d + e.cost);  
- }  
- }  
- return ;  
-}  
-int main()  
-{  
- int n;  
- while (scanf("%d", &amp;n) != EOF &amp;&amp; n) {  
- for (int i = 0; i &lt;= n; i++) {  
- G[i].clear();  
- }  
- for (int i = 0; i &lt; n - 1; i++) {  
- int s, t;  
- edge e;  
- scanf("%d%d%d", &amp;s, &amp;t, &amp;(e.cost));  
- e.to = t;  
- G[s].push_back(e);  
- e.to = s;  
- G[t].push_back(e);  
- }  
- memset(used, false, sizeof(used));  
- max_d = 0;  
- max_v = 1;  
- dfs(1, 0);  
- memset(used, false, sizeof(used));  
- max_d = 0;  
- dfs(max_v, 0);  
- printf("%d\n", max_d);  
- }  
- return 0;  
-}  
 </code></pre>
 ]]></content>
   </entry>
