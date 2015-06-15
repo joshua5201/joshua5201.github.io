@@ -9,10 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="在網址列輸入about:config
-找到keyword.url點兩下 輸入
-http://www.google.com/search?btnI=I%27m+Feeling+Lucky&amp;ie=UTF-8&amp;oe=UTF-8&amp;q= 參考資料
-http://forum.moztw &hellip;">
+  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1717 戳入度(in-degree)為零的點下去DFS再取最大值 #include &lt;stdio.h&gt; #include &lt;string.h& &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +65,91 @@ http://forum.moztw &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/06/code-tioj-1717/">[Code] TIOJ-1717 專案時程(TOI2010初選pB)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-03-06T18:01:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>6:01 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1717">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1717</a></p>
+
+<p>戳入度(in-degree)為零的點下去DFS再取最大值</p>
+
+<p><a href=""></a></p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+#include &lt;string.h&gt;  
+#include &lt;vector&gt;  
+#include &lt;algorithm&gt;  
+using namespace std;  
+
+int cost[1001];  
+long long dp[1001];  
+int in_deg[1001];  
+vector&lt;int&gt; G[1001];  
+long long dfs(int v)  
+{  
+ if (dp[v]) {  
+ return dp[v];  
+ }  
+ long long res = 0;  
+ for (int i = 0; i &lt; G[v].size(); i++) {  
+ res = max(dfs(G[v][i]), res);  
+ }  
+ return dp[v] = res + cost[v];  
+}  
+int main()  
+{  
+ int t, n, k, to;  
+ scanf("%d", &amp;t);  
+ while (t--) {  
+ scanf("%d", &amp;n);  
+ memset(dp, 0, sizeof(dp));  
+ memset(in_deg, 0, sizeof(in_deg));  
+ for (int i = 1; i &lt;= n; i++) {  
+ scanf("%d%d", &amp;cost[i], &amp;k);  
+ while (k--) {  
+ scanf("%d", &amp;to);  
+ in_deg[to]++;  
+ G[i].push_back(to);  
+ }  
+ }  
+ long long ac = 0;  
+ for (int i = 1; i &lt;= n; i++) {  
+ if (in_deg[i] == 0) {  
+ ac = max(dfs(i), ac);  
+ }  
+ }  
+ printf("%I64d\n", ac);  
+ for (int i = 1; i &lt;= n; i++) {  
+ G[i].clear();  
+ }  
+ }  
+ return 0;  
+}  
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -504,6 +586,10 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/15/using-vnc-as-remote-desktop/">[Linux] VNC遠端桌面</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/08/announcement-for-following-archlinux-na-posts/">[公告] 接下來會有Network Administration作業的整理</a>
       </li>
     
@@ -517,10 +603,6 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
     
       <li class="post">
         <a href="/blog/2015/06/06/linux-system-wide-font-config/">[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a>
       </li>
     
   </ul>

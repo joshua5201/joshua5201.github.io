@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-08T13:18:15+08:00</updated>
+  <updated>2015-06-15T22:11:48+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[Linux] VNC遠端桌面]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/06/15/using-vnc-as-remote-desktop/"/>
+    <updated>2015-06-15T21:45:01+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/06/15/using-vnc-as-remote-desktop</id>
+    <content type="html"><![CDATA[<p>所需套件：<a href="https://www.archlinux.org/packages/?name=tigervnc">tigervnc</a></p>
+
+<ol>
+<li><p>設定密碼</p>
+
+<pre><code class="`bash"> $ vncpasswd ~/.vnc/passwd
+</code></pre></li>
+<li><p>操作現有的桌面</p>
+
+<p> 一般的vncserver會開新的session，執行<code>~/.vnc/xstartup</code>裡的script(比如說startlxde)，若想要像一般的遠端桌面或teamviewer一樣，直接操作現有的桌面，可以像這樣執行。</p>
+
+<pre><code class="`bash"> $ x0vncserver -passwordfile ~/.vnc/passwd
+</code></pre>
+
+<p> 這裡的server會跑在port 5900。</p></li>
+<li><p>普通的vncserver</p>
+
+<p> 編輯<code>~/.vnc/xstartup</code></p>
+
+<pre><code class="`bash"> #!/bin/bash
+ exec startlxde
+</code></pre>
+
+<p> 啟動server。</p>
+
+<pre><code class="`bash"> $ vncserver :1 #這裡的數字代表第幾個display(x &gt; 0)，若指定:x，就會執行在port 590x
+</code></pre>
+
+<p> 若要讓同時能有多個人同時使用同一個display：</p>
+
+<pre><code class="`bash"> $ vncserver -alwaysshared :1
+</code></pre>
+
+<p> 若要指定client的大小：</p>
+
+<pre><code class="`bash"> $ vncserver -geometry 1920x1080 :1
+</code></pre>
+
+<p> 關掉server</p>
+
+<pre><code class="`bash"> $ vncserver -kill :1
+</code></pre></li>
+<li><p>設定iptables</p>
+
+<p> 若你有用iptables當作防火牆，一個vncserver session可能會用到三個port。580x、590x，各有不同的用途，見參考連結。我這裡的設定是直接開5900到5905、5800到5805、6000到6005。</p>
+
+<pre><code class="`bash"> sudo iptables -A INPUT -p tcp --dport 5900:5905 -j ACCEPT
+ sudo iptables -A INPUT -p tcp --dport 5800:5805 -j ACCEPT
+ sudo iptables -A INPUT -p tcp --dport 6000:6005 -j ACCEPT
+</code></pre></li>
+<li><p>參考連結</p>
+
+<p> <a href="https://wiki.archlinux.org/index.php/Vncserver">Vncserver - ArchWiki</a></p>
+
+<p> <a href="http://www.cyberciti.biz/faq/linux-iptables-open-vncserver-port-6000-5800-5900/">Iptables Open VNC Port To Allow Incoming VNC Connections - nixCraft</a></p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[公告] 接下來會有Network Administration作業的整理]]></title>
@@ -646,37 +711,6 @@ com C !g++ % -Wall -g #編譯C++
 com CC !gcc % -Wall -g -ansi #編譯C  
 com R :!./a.out #執行  
 [][1]參考資料：[http://linux.vbird.org/linux_basic/0310vi.php#vi_command][1]
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[GNU/Linux] Kernel 3.3 Ath9k Link Is Not Ready]]></title>
-    <link href="http://joshua5201.github.io/blog/2012/04/11/gnulinux-kernel-33-ath9k-link-is-not/"/>
-    <updated>2012-04-11T18:50:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2012/04/11/gnulinux-kernel-33-ath9k-link-is-not</id>
-    <content type="html"><![CDATA[<p>前幾天升級kernel 3.3</p>
-
-<p>發現無線網路不能連@@</p>
-
-<p>看了一下log之後發現</p>
-
-<p>ADDRCONF(NETDEV_UP): wlan0: link is not ready</p>
-
-<p>上網google了一下</p>
-
-<p>終於找到解法了！</p>
-
-<p><a href="https://bbs.archlinux.org/viewtopic.php?id=139365">https://bbs.archlinux.org/viewtopic.php?id=139365</a></p>
-
-<pre><code>$ sudo pacman -S linux-headers  
-$ wget http://wireless.kernel.org/download/compat-wireless-2.6/compat-wireless-2.6.tar.bz2  
-$ tar -xv -f compat-wireless-2.6.tar.bz2  
-$ cd compat-wireless-2012-04-09  
-$ make  
-$ sudo make install  
-$ sudo make unload  
-$ sudo sync; sudo reboot #重新開機這樣就OK了！
 </code></pre>
 ]]></content>
   </entry>

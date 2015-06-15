@@ -9,7 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213 先隨便戳一個點(第一個) 找出離他最遠的點 再從那個點再做一次DFS P.S. 這題是多測資&hellip;害我WA了好幾次= = #include & &hellip;">
+  <meta name="description" content="前幾天升級kernel 3.3 發現無線網路不能連@@ 看了一下log之後發現 ADDRCONF(NETDEV_UP): wlan0: link is not ready 上網google了一下 終於找到解法了！ https://bbs.archlinux.org/viewtopic.php?id &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/11/gnulinux-kernel-33-ath9k-link-is-not/">[GNU/Linux] Kernel 3.3 Ath9k Link Is Not Ready</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-04-11T18:50:00+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>6:50 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前幾天升級kernel 3.3</p>
+
+<p>發現無線網路不能連@@</p>
+
+<p>看了一下log之後發現</p>
+
+<p>ADDRCONF(NETDEV_UP): wlan0: link is not ready</p>
+
+<p>上網google了一下</p>
+
+<p>終於找到解法了！</p>
+
+<p><a href="https://bbs.archlinux.org/viewtopic.php?id=139365">https://bbs.archlinux.org/viewtopic.php?id=139365</a></p>
+
+<pre><code>$ sudo pacman -S linux-headers  
+$ wget http://wireless.kernel.org/download/compat-wireless-2.6/compat-wireless-2.6.tar.bz2  
+$ tar -xv -f compat-wireless-2.6.tar.bz2  
+$ cd compat-wireless-2012-04-09  
+$ make  
+$ sudo make install  
+$ sudo make unload  
+$ sudo sync; sudo reboot #重新開機這樣就OK了！
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -864,91 +915,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/06/code-tioj-1717/">[Code] TIOJ-1717 專案時程(TOI2010初選pB)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-06T18:01:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>6:01 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1717">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1717</a></p>
-
-<p>戳入度(in-degree)為零的點下去DFS再取最大值</p>
-
-<p><a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-#include &lt;vector&gt;  
-#include &lt;algorithm&gt;  
-using namespace std;  
-
-int cost[1001];  
-long long dp[1001];  
-int in_deg[1001];  
-vector&lt;int&gt; G[1001];  
-long long dfs(int v)  
-{  
- if (dp[v]) {  
- return dp[v];  
- }  
- long long res = 0;  
- for (int i = 0; i &lt; G[v].size(); i++) {  
- res = max(dfs(G[v][i]), res);  
- }  
- return dp[v] = res + cost[v];  
-}  
-int main()  
-{  
- int t, n, k, to;  
- scanf("%d", &amp;t);  
- while (t--) {  
- scanf("%d", &amp;n);  
- memset(dp, 0, sizeof(dp));  
- memset(in_deg, 0, sizeof(in_deg));  
- for (int i = 1; i &lt;= n; i++) {  
- scanf("%d%d", &amp;cost[i], &amp;k);  
- while (k--) {  
- scanf("%d", &amp;to);  
- in_deg[to]++;  
- G[i].push_back(to);  
- }  
- }  
- long long ac = 0;  
- for (int i = 1; i &lt;= n; i++) {  
- if (in_deg[i] == 0) {  
- ac = max(dfs(i), ac);  
- }  
- }  
- printf("%I64d\n", ac);  
- for (int i = 1; i &lt;= n; i++) {  
- G[i].clear();  
- }  
- }  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -966,6 +932,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/15/using-vnc-as-remote-desktop/">[Linux] VNC遠端桌面</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/08/announcement-for-following-archlinux-na-posts/">[公告] 接下來會有Network Administration作業的整理</a>
       </li>
     
@@ -979,10 +949,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/06/06/linux-system-wide-font-config/">[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a>
       </li>
     
   </ul>

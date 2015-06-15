@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>[Code] TIOJ - 1212 最遠距點對 - 炸蝦碎碎念。</title>
+  <title>[Linux] VNC遠端桌面 - 炸蝦碎碎念。</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213 先隨便戳一個點(第一個) 找出離他最遠的點 再從那個點再做一次DFS P.S. 這題是多測資&hellip;害我WA了好幾次= = #include & &hellip;">
+  <meta name="description" content="所需套件：tigervnc 設定密碼 $ vncpasswd ~/.vnc/passwd 操作現有的桌面 一般的vncserver會開新的session，執行~/.vnc/xstartup裡的script(比如說startlxde)，若想要像一般的遠端桌面或teamviewer一樣， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2012/03/24/code-tioj-1212/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/06/15/using-vnc-as-remote-desktop/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
@@ -68,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">[Code] TIOJ - 1212 最遠距點對</h1>
+      <h1 class="entry-title">[Linux] VNC遠端桌面</h1>
     
     
       <p class="meta">
@@ -77,80 +77,70 @@
 
 
 
-<time class='entry-date' datetime='2012-03-24T17:20:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>5:20 pm</span></time>
+<time class='entry-date' datetime='2015-06-15T21:45:01+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:45 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1213</a></p>
+<div class="entry-content"><p>所需套件：<a href="https://www.archlinux.org/packages/?name=tigervnc">tigervnc</a></p>
 
-<p>先隨便戳一個點(第一個)</p>
+<ol>
+<li><p>設定密碼</p>
 
-<p>找出離他最遠的點</p>
+<pre><code class="`bash"> $ vncpasswd ~/.vnc/passwd
+</code></pre></li>
+<li><p>操作現有的桌面</p>
 
-<p>再從那個點再做一次DFS</p>
+<p> 一般的vncserver會開新的session，執行<code>~/.vnc/xstartup</code>裡的script(比如說startlxde)，若想要像一般的遠端桌面或teamviewer一樣，直接操作現有的桌面，可以像這樣執行。</p>
 
-<p>P.S. 這題是多測資&hellip;害我WA了好幾次= =</p>
-
-<p><a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;string.h&gt;  
-#include &lt;vector&gt;  
-#include &lt;algorithm&gt;  
-using namespace std;  
-
-typedef struct {  
- int to, cost;  
-} edge;  
-vector&lt;edge&gt; G[100001];  
-int max_v, max_d;  
-bool used[100001] = {false};  
-void dfs(int v, int d)  
-{  
- used[v] = true;  
- if (d &gt; max_d) {  
- max_v = v;  
- max_d = d;  
- }  
- for (int i = 0; i &lt; G[v].size(); i++) {  
- edge e = G[v][i];  
- if (!used[e.to]) {  
- dfs(e.to, d + e.cost);  
- }  
- }  
- return ;  
-}  
-int main()  
-{  
- int n;  
- while (scanf("%d", &amp;n) != EOF &amp;&amp; n) {  
- for (int i = 0; i &lt;= n; i++) {  
- G[i].clear();  
- }  
- for (int i = 0; i &lt; n - 1; i++) {  
- int s, t;  
- edge e;  
- scanf("%d%d%d", &amp;s, &amp;t, &amp;(e.cost));  
- e.to = t;  
- G[s].push_back(e);  
- e.to = s;  
- G[t].push_back(e);  
- }  
- memset(used, false, sizeof(used));  
- max_d = 0;  
- max_v = 1;  
- dfs(1, 0);  
- memset(used, false, sizeof(used));  
- max_d = 0;  
- dfs(max_v, 0);  
- printf("%d\n", max_d);  
- }  
- return 0;  
-}  
+<pre><code class="`bash"> $ x0vncserver -passwordfile ~/.vnc/passwd
 </code></pre>
+
+<p> 這裡的server會跑在port 5900。</p></li>
+<li><p>普通的vncserver</p>
+
+<p> 編輯<code>~/.vnc/xstartup</code></p>
+
+<pre><code class="`bash"> #!/bin/bash
+ exec startlxde
+</code></pre>
+
+<p> 啟動server。</p>
+
+<pre><code class="`bash"> $ vncserver :1 #這裡的數字代表第幾個display(x &gt; 0)，若指定:x，就會執行在port 590x
+</code></pre>
+
+<p> 若要讓同時能有多個人同時使用同一個display：</p>
+
+<pre><code class="`bash"> $ vncserver -alwaysshared :1
+</code></pre>
+
+<p> 若要指定client的大小：</p>
+
+<pre><code class="`bash"> $ vncserver -geometry 1920x1080 :1
+</code></pre>
+
+<p> 關掉server</p>
+
+<pre><code class="`bash"> $ vncserver -kill :1
+</code></pre></li>
+<li><p>設定iptables</p>
+
+<p> 若你有用iptables當作防火牆，一個vncserver session可能會用到三個port。580x、590x，各有不同的用途，見參考連結。我這裡的設定是直接開5900到5905、5800到5805、6000到6005。</p>
+
+<pre><code class="`bash"> sudo iptables -A INPUT -p tcp --dport 5900:5905 -j ACCEPT
+ sudo iptables -A INPUT -p tcp --dport 5800:5805 -j ACCEPT
+ sudo iptables -A INPUT -p tcp --dport 6000:6005 -j ACCEPT
+</code></pre></li>
+<li><p>參考連結</p>
+
+<p> <a href="https://wiki.archlinux.org/index.php/Vncserver">Vncserver - ArchWiki</a></p>
+
+<p> <a href="http://www.cyberciti.biz/faq/linux-iptables-open-vncserver-port-6000-5800-5900/">Iptables Open VNC Port To Allow Incoming VNC Connections - nixCraft</a></p></li>
+</ol>
+
 </div>
 
 
@@ -166,7 +156,7 @@ int main()
 
 
 
-<time class='entry-date' datetime='2012-03-24T17:20:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>5:20 pm</span></time>
+<time class='entry-date' datetime='2015-06-15T21:45:01+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:45 pm</span></time>
       
 
 
@@ -183,10 +173,8 @@ int main()
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/03/24/code-tioj-1463/" title="Previous Post: [code] TIOJ - 1463 打不倒的樹木人">&laquo; [code] TIOJ - 1463 打不倒的樹木人</a>
+        <a class="basic-alignment left" href="/blog/2015/06/08/announcement-for-following-archlinux-na-posts/" title="Previous Post: [公告] 接下來會有Network Administration作業的整理">&laquo; [公告] 接下來會有Network Administration作業的整理</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/04/11/gnulinux-kernel-33-ath9k-link-is-not/" title="Next Post: [GNU/Linux] Kernel 3.3 Ath9k link is not ready">[GNU/Linux] Kernel 3.3 Ath9k link is not ready &raquo;</a>
       
     </p>
   </footer>
@@ -281,8 +269,8 @@ int main()
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2012/03/24/code-tioj-1212/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2012/03/24/code-tioj-1212/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/06/15/using-vnc-as-remote-desktop/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2015/06/15/using-vnc-as-remote-desktop/';
         var disqus_script = 'embed.js';
       
     (function () {
