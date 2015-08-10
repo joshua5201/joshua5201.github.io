@@ -9,7 +9,12 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="前幾天升級kernel 3.3 發現無線網路不能連@@ 看了一下log之後發現 ADDRCONF(NETDEV_UP): wlan0: link is not ready 上網google了一下 終於找到解法了！ https://bbs.archlinux.org/viewtopic.php?id &hellip;">
+  <meta name="description" content="最近社團裡有人想用vim 那我就介紹一下基本用法
+和怎樣拿來寫C程式最方便
+先介紹一下Vim的兩種最簡單的模式：插入模式和命令模式
+按i, a可以從命令模式進入插入模式
+在其他模式按esc就可以回到命令模式 介紹常用命令： 上下左右：kjhl 或者直接用方向鍵
+:q離開、:wq儲存並離開 :w &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +70,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/12/vim-vim-5/">[Vim] Vim 5 分鐘快速入門</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-04-12T14:06:00+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>2:06 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近社團裡有人想用vim</p>
+
+<p>那我就介紹一下基本用法<br/>
+和怎樣拿來寫C程式最方便<br/>
+先介紹一下Vim的兩種最簡單的模式：插入模式和命令模式<br/>
+按i, a可以從命令模式進入插入模式<br/>
+在其他模式按esc就可以回到命令模式</p>
+
+<p>介紹常用命令：</p>
+
+<p>上下左右：kjhl 或者直接用方向鍵<br/>
+:q離開、:wq儲存並離開 :w 儲存 :q!離開但不儲存<br/>
+x 刪除、u 復原<br/>
+/往後尋找、?往前尋找、n 下一個、N 前一個<br/>
+全文尋找並取代: :1,$s/word1/word2/g<br/>
+dd刪除整行(常用！)、ndd(n是行數)刪除n行<br/>
+yy複製整行、p 貼上在下一行<br/>
+:!{cmd} 執行指令 (ex: :! gcc test.c)</p>
+
+<p>常用設定<br/>
+可以直接用:set設定 (ex :set autoindent)<br/>
+或編輯設定檔~/.vimrc (Linux / Mac) $HOME_vimrc</p>
+
+<p>syntax on 語法高亮度表示<br/>
+autoindent 自動縮排<br/>
+cindent C/C++的自動縮排(好用！)<br/>
+nu/nonu 顯示行號/不顯示行號<br/>
+tabstop=4  <br/>
+shiftwidth=4  (tab字元寬度)<br/>
+com CMD(指令名稱 必須大寫) command (指令內容) 自訂指令 大概這樣<br/>
+分享一下我寫C用的.vimrc</p>
+
+<pre><code>set cindent  
+set nu  
+set shiftwidth=4  
+set tabstop=4  
+syntax on  
+com C !g++ % -Wall -g #編譯C++  
+com CC !gcc % -Wall -g -ansi #編譯C  
+com R :!./a.out #執行  
+[][1]參考資料：[http://linux.vbird.org/linux_basic/0310vi.php#vi_command][1]
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -823,98 +898,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uva-10583-ubiquitous-religions/">[Code] Uva-10583 Ubiquitous Religions</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-07T01:46:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>1:46 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://uva.onlinejudge.org/external/105/10583.html">http://uva.onlinejudge.org/external/105/10583.html</a> <br/>
-很簡單的Disjoint Set<br/>
-最後輸出Case n: ans<br/>
-C是大寫= = 害我WA了兩次 <br/>
-另外Uva真的是ANSI C..<br/>
-註解只能用 <br/>
-<code>/* This is a comment. */</code>不能 用 <br/>
-<code>// Not allowed in ANSI C</code>害我吃了一次CE&hellip;</p>
-
-<p><a href=""></a>   #include &lt;stdio.h></p>
-
-<pre><code>int group;  
-int set[50001];  
-int rank[50001];  
-void set_init(int n)  
-{  
- int i;  
- for (i = 1; i &lt;= n; i++) {  
- set[i] = i;  
- rank[i] = 1;  
- }  
- return ;  
-}  
-int find(int x)  
-{  
- if (set[x] == x) {  
- return x;  
- } else {  
- return set[x] = find(set[x]);  
- }  
-}  
-void unite(int a, int b)  
-{  
- a = find(a);  
- b = find(b);  
- if (a == b) {  
- return ;  
- }  
- group--;  
- if (rank[a] &lt; rank[b]) {  
- set[a] = b;  
- } else {  
- set[b] = a;  
- if (rank[a] == rank[b]) {  
- rank[a]++;  
- }  
- }  
-}  
-int main()  
-{  
- int n, m, i, j, count = 0;  
- while (scanf("%d%d", &amp;n, &amp;m) != EOF &amp;&amp; n &amp;&amp; m) {  
- count++;  
- group = n;  
- set_init(n);  
- while (m--) {  
- scanf("%d%d", &amp;i, &amp;j);  
- unite(i, j);  
- }  
- printf("Case %d: %d\n", count, group);  
- }  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -932,6 +915,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/06/15/using-vnc-as-remote-desktop/">[Linux] VNC遠端桌面</a>
       </li>
     
@@ -945,10 +932,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/linux-system-wide-font-config/">[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題</a>
       </li>
     
   </ul>

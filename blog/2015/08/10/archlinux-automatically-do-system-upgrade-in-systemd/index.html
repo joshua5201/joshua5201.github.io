@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>[Hello] Octopress - 炸蝦碎碎念。</title>
+  <title>[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd - 炸蝦碎碎念。</title>
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="New start and migrate Logdown to here.
-">
+  <meta name="description" content="In Archlinux, crontab is not installed by default because of systemd. Doing system upgrade every day can be achieved by writing timer unit and &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/05/25/hello/">
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">[Hello] Octopress</h1>
+      <h1 class="entry-title">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</h1>
     
     
       <p class="meta">
@@ -78,14 +77,48 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2015-08-10T12:59:01+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:59 pm</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
+<div class="entry-content"><p>In Archlinux, crontab is not installed by default because of systemd. Doing system upgrade every day can be achieved by writing timer unit and oneshot service of systemd.</p>
+
+<p>By default, user-defined systemd unit files (.service, .target, .timer&hellip;etc) is located in <code>/etc/systemd/system</code></p>
+
+<ol>
+<li><p>service file</p>
+
+<p> see <code>man systemd.service</code> for more info.</p>
+
+<pre><code class="`">     # /etc/systemd/system/system-upgrade.service
+     [Unit]
+     Description=Full System Upgrade
+
+     [Service]
+     Type=oneshot
+     ExecStart=/usr/bin/pacman -Syu --noconfirm
+
+     [Install]
+     WantedBy=multi-user.target
+</code></pre></li>
+<li><p>timer file</p>
+
+<p> see <code>man systemd.timer</code> and <code>systemd.time</code> for more info.</p>
+
+<pre><code class="`">     # /etc/systemd/system/system-upgrade.service
+     [Timer]
+     OnCalendar=daily
+     Unit=/etc/systemd/system/system-upgrade.service
+     [Install]
+     WantedBy=multi-user.target
+</code></pre>
+
+<p><a href="https://wiki.archlinux.org/index.php/Systemd/Timers">systemd/Timers - Archwiki</a></p></li>
+</ol>
+
 </div>
 
 
@@ -101,7 +134,7 @@
 
 
 
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
+<time class='entry-date' datetime='2015-08-10T12:59:01+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:59 pm</span></time>
       
 
 
@@ -118,10 +151,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/05/21/note-in-the-godaddy-domain-with-your-own-nameserver/" title="Previous Post: [Note] 在godaddy的domain用自己的nameserver">&laquo; [Note] 在godaddy的domain用自己的nameserver</a>
+        <a class="basic-alignment left" href="/blog/2015/06/15/using-vnc-as-remote-desktop/" title="Previous Post: [Linux] VNC遠端桌面">&laquo; [Linux] VNC遠端桌面</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/" title="Next Post: [Linux] Amarok mp3 playback in Archlinux">[Linux] Amarok mp3 playback in Archlinux &raquo;</a>
       
     </p>
   </footer>
@@ -216,8 +247,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
-        var disqus_url = 'http://joshua5201.github.io/blog/2015/05/25/hello/';
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/';
         var disqus_script = 'embed.js';
       
     (function () {

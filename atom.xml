@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-06-15T22:11:48+08:00</updated>
+  <updated>2015-08-10T13:10:54+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/"/>
+    <updated>2015-08-10T12:59:01+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd</id>
+    <content type="html"><![CDATA[<p>In Archlinux, crontab is not installed by default because of systemd. Doing system upgrade every day can be achieved by writing timer unit and oneshot service of systemd.</p>
+
+<p>By default, user-defined systemd unit files (.service, .target, .timer&hellip;etc) is located in <code>/etc/systemd/system</code></p>
+
+<ol>
+<li><p>service file</p>
+
+<p> see <code>man systemd.service</code> for more info.</p>
+
+<pre><code class="`">     # /etc/systemd/system/system-upgrade.service
+     [Unit]
+     Description=Full System Upgrade
+
+     [Service]
+     Type=oneshot
+     ExecStart=/usr/bin/pacman -Syu --noconfirm
+
+     [Install]
+     WantedBy=multi-user.target
+</code></pre></li>
+<li><p>timer file</p>
+
+<p> see <code>man systemd.timer</code> and <code>systemd.time</code> for more info.</p>
+
+<pre><code class="`">     # /etc/systemd/system/system-upgrade.service
+     [Timer]
+     OnCalendar=daily
+     Unit=/etc/systemd/system/system-upgrade.service
+     [Install]
+     WantedBy=multi-user.target
+</code></pre>
+
+<p><a href="https://wiki.archlinux.org/index.php/Systemd/Timers">systemd/Timers - Archwiki</a></p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Linux] VNC遠端桌面]]></title>
@@ -661,56 +704,6 @@ HDMI-1 disconnected (normal left inverted right x axis y axis)
 #查看輸出裝置 我的輸出是LVDS-1  
 $ xrandr --output LVDS-1 --rotate right #這裡可以是 right left inverted normal  
 $ xrandr --output LVDS-1 --rotate normal #這樣子改回來  
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[Vim] Vim 5 分鐘快速入門]]></title>
-    <link href="http://joshua5201.github.io/blog/2012/04/12/vim-vim-5/"/>
-    <updated>2012-04-12T14:06:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2012/04/12/vim-vim-5</id>
-    <content type="html"><![CDATA[<p>最近社團裡有人想用vim</p>
-
-<p>那我就介紹一下基本用法<br/>
-和怎樣拿來寫C程式最方便<br/>
-先介紹一下Vim的兩種最簡單的模式：插入模式和命令模式<br/>
-按i, a可以從命令模式進入插入模式<br/>
-在其他模式按esc就可以回到命令模式</p>
-
-<p>介紹常用命令：</p>
-
-<p>上下左右：kjhl 或者直接用方向鍵<br/>
-:q離開、:wq儲存並離開 :w 儲存 :q!離開但不儲存<br/>
-x 刪除、u 復原<br/>
-/往後尋找、?往前尋找、n 下一個、N 前一個<br/>
-全文尋找並取代: :1,$s/word1/word2/g<br/>
-dd刪除整行(常用！)、ndd(n是行數)刪除n行<br/>
-yy複製整行、p 貼上在下一行<br/>
-:!{cmd} 執行指令 (ex: :! gcc test.c)</p>
-
-<p>常用設定<br/>
-可以直接用:set設定 (ex :set autoindent)<br/>
-或編輯設定檔~/.vimrc (Linux / Mac) $HOME_vimrc</p>
-
-<p>syntax on 語法高亮度表示<br/>
-autoindent 自動縮排<br/>
-cindent C/C++的自動縮排(好用！)<br/>
-nu/nonu 顯示行號/不顯示行號<br/>
-tabstop=4  <br/>
-shiftwidth=4  (tab字元寬度)<br/>
-com CMD(指令名稱 必須大寫) command (指令內容) 自訂指令 大概這樣<br/>
-分享一下我寫C用的.vimrc</p>
-
-<pre><code>set cindent  
-set nu  
-set shiftwidth=4  
-set tabstop=4  
-syntax on  
-com C !g++ % -Wall -g #編譯C++  
-com CC !gcc % -Wall -g -ansi #編譯C  
-com R :!./a.out #執行  
-[][1]參考資料：[http://linux.vbird.org/linux_basic/0310vi.php#vi_command][1]
 </code></pre>
 ]]></content>
   </entry>
