@@ -117,9 +117,11 @@
      Unit=/etc/systemd/system/system-upgrade.service
      [Install]
      WantedBy=multi-user.target
-</code></pre>
+</code></pre></li>
+<li><p>enable the timer</p>
 
-<p><a href="https://wiki.archlinux.org/index.php/Systemd/Timers">systemd/Timers - Archwiki</a></p></li>
+<p> <code>sudo systemctl start system-upgrade.timer</code> &amp; <code>sudo systemctl enable system-upgrade.timer</code>.
+<a href="https://wiki.archlinux.org/index.php/Systemd/Timers">systemd/Timers - Archwiki</a></p></li>
 </ol>
 
 </div>
