@@ -142,7 +142,7 @@
 </span><span class='line'><span class="nv">$ </span>make -C build -j4
 </span><span class='line'><span class="nv">$ </span>make -C build -j4 retraceAPK
 </span><span class='line'><span class="nv">$ </span>make -C buid -j4 installRetraceAPK
-</span><span class='line'><span class="nv">$ </span>adb push /home/joshua5201/Repos/apitrace/libs/armeabi-v7a/egltrace.so /data/egltrace.so
+</span><span class='line'><span class="nv">$ </span>ln -s /data/data/apitrace.github.io.eglretrace/libgnustl.so /data/libgnustl.so
 </span><span class='line'><span class="nv">$ </span>setprop wrap.com.android.calculator2 <span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="s2">&quot;/data/libgnustl_shared.so:/data/egltrace.so&quot;</span>
 </span><span class='line'><span class="nv">$ </span>setprop debug.apitrace.procname com.android.calculator2
 </span><span class='line'><span class="nv">$ </span>am start -S com.android.calculator2/com.android.calculator2.Calculator
