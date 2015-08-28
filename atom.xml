@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-08-10T13:13:53+08:00</updated>
+  <updated>2015-08-28T23:28:07+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[Android] Building and Running Apitrace for Android]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/08/28/building-and-running-apitrace-for-android/"/>
+    <updated>2015-08-28T22:57:56+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/08/28/building-and-running-apitrace-for-android</id>
+    <content type="html"><![CDATA[<h2>前言</h2>
+
+<p>這個暑假參加了VMFive Lab，用到了apitrace這個神奇的工具。可以trace各種graphics API，比如說OpenGL、OpenGL ES、DirectX等等。會紀錄下來所有的texture、state還有call了哪些function、加了哪些parameter。也有replay的功能，也就是render一次trace的內容。雖然有支援在Android上trace，但是官方的文件沒有很齊全，甚至照著做是不會動，研究了好幾天終於跑起來，就紀錄一下。</p>
+
+<p><a href="https://github.com/apitrace/apitrace/">Apitrace on Github</a></p>
+
+<h2>準備工作</h2>
+
+<p>首先，要有一個root過的手機，我這裡是直接用android emulator啦，預設好像是用4.4(API 19)，我這裡是用x86的模擬器測試。</p>
+
+<h2>Build</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/apitrace/apitrace.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>apitrace
+</span><span class='line'><span class="nv">$ </span>mkdir build
+</span><span class='line'><span class="nv">$ </span>cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>cmake/toolchain/android.toolchain.cmake -DANDROID_NDK<span class="o">=</span>/home/joshua5201/Android/ndk/ -DANDROID_STL<span class="o">=</span>gnustl_shared -DANDROID_SDK<span class="o">=</span>/home/joshua5201/Android/sdk/ -DANDROID_ABI<span class="o">=</span>x86 -DENABLE_STATIC_SNAPPY<span class="o">=</span><span class="nb">true</span> <span class="c"># 自己改成你的sdk還有ndk的path</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>make -C build -j4
+</span><span class='line'><span class="nv">$ </span>make -C build -j4 retraceAPK
+</span><span class='line'><span class="nv">$ </span>make -C buid -j4 installRetraceAPK
+</span><span class='line'><span class="nv">$ </span>./adb push /home/joshua5201/Repos/apitrace/libs/x86/egltrace.so /data/egltrace.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Trace on Android 4.4</h2>
+
+<p><a href="https://github.com/apitrace/apitrace/blob/master/docs/Dalvik.markdown">官方的文件</a>是用<code>com.android.setting</code>測試，也就是設定的那個界面啦。其他的app執行的時候，好像都要包含activity的名稱，可以透過android sdk build-tools裡的<code>aapt dump badgin [apk name]</code>，至於apk可以在android系統中找到。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>adb root
+</span><span class='line'><span class="nv">$ </span>adb shell
+</span><span class='line'>sdk-linux/ -DANDROID_ABI<span class="o">=</span>x86 -DENABLE_STATIC_SNAPPY<span class="o">=</span><span class="nb">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>make -C build -j4
+</span><span class='line'><span class="nv">$ </span>make -C build -j4 retraceAPK
+</span><span class='line'><span class="nv">$ </span>make -C buid -j4 installRetraceAPK
+</span><span class='line'><span class="nv">$ </span>adb push /home/joshua5201/Repos/apitrace/libs/armeabi-v7a/egltrace.so /data/egltrace.so
+</span><span class='line'><span class="nv">$ </span>setprop wrap.com.android.calculator2 <span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="s2">&quot;/data/libgnustl_shared.so:/data/egltrace.so&quot;</span>
+</span><span class='line'><span class="nv">$ </span>setprop debug.apitrace.procname com.android.calculator2
+</span><span class='line'><span class="nv">$ </span>am start -S com.android.calculator2/com.android.calculator2.Calculator
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然後我就發現了神秘的事情，會說找不到/data/data/app/com.android.calculator，所以就把這個資料夾建起來，再trace看看，就會發現trace生成的檔案了。<code>am start</code>之後就會看到你跑的app打開來了，就隨便按一按，然後用返回鍵關掉他。</p>
+
+<h2>Replay</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>adb pull /data/data/com.android.calculator/com.android.calculator.trace
+</span><span class='line'><span class="nv">$ </span>apitrace replay com.android.calculator.trace --debug <span class="c"># 我不知道為什麼不加debug就會錯。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd]]></title>
@@ -684,30 +766,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 <h1>最後</h1>
 
 <p>要開學了，即將邁入高三生活，也許一段時間不會碰電腦，又也許會繼續寫程式。不過既然目標定下來了就要好好的貫徹，所以維持正常作息和認真唸書是我現在最需要做的事。self.sleep (4點了&hellip;)</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Linux翻轉螢幕輸出]]></title>
-    <link href="http://joshua5201.github.io/blog/2013/01/27/blog-post/"/>
-    <updated>2013-01-27T14:32:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2013/01/27/blog-post</id>
-    <content type="html"><![CDATA[<pre><code>$ xrandr  
-Screen 0: minimum 320 x 200, current 1366 x 768, maximum 8192 x 8192  
-LVDS-1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 309mm x 174mm  
- 1366x768 60.0*+  
- 1024x768 59.9   
- 800x600 59.9   
- 640x480 59.4   
- 720x400 59.6   
- 640x400 60.0   
- 640x350 59.8   
-VGA-1 disconnected (normal left inverted right x axis y axis)  
-HDMI-1 disconnected (normal left inverted right x axis y axis)  
-#查看輸出裝置 我的輸出是LVDS-1  
-$ xrandr --output LVDS-1 --rotate right #這裡可以是 right left inverted normal  
-$ xrandr --output LVDS-1 --rotate normal #這樣子改回來  
-</code></pre>
 ]]></content>
   </entry>
   

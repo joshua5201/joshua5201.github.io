@@ -9,12 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="最近社團裡有人想用vim 那我就介紹一下基本用法
-和怎樣拿來寫C程式最方便
-先介紹一下Vim的兩種最簡單的模式：插入模式和命令模式
-按i, a可以從命令模式進入插入模式
-在其他模式按esc就可以回到命令模式 介紹常用命令： 上下左右：kjhl 或者直接用方向鍵
-:q離開、:wq儲存並離開 :w &hellip;">
+  <meta name="description" content="$ xrandr Screen 0: minimum 320 x 200, current 1366 x 768, maximum 8192 x 8192 LVDS-1 connected 1366x768+0+0 (normal left inverted right x axis y axis &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +65,50 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/27/blog-post/">Linux翻轉螢幕輸出</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-01-27T14:32:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:32 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><pre><code>$ xrandr  
+Screen 0: minimum 320 x 200, current 1366 x 768, maximum 8192 x 8192  
+LVDS-1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 309mm x 174mm  
+ 1366x768 60.0*+  
+ 1024x768 59.9   
+ 800x600 59.9   
+ 640x480 59.4   
+ 720x400 59.6   
+ 640x400 60.0   
+ 640x350 59.8   
+VGA-1 disconnected (normal left inverted right x axis y axis)  
+HDMI-1 disconnected (normal left inverted right x axis y axis)  
+#查看輸出裝置 我的輸出是LVDS-1  
+$ xrandr --output LVDS-1 --rotate right #這裡可以是 right left inverted normal  
+$ xrandr --output LVDS-1 --rotate normal #這樣子改回來  
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -838,66 +877,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uva-11069-graph-problem/">[Code] Uva-11069 a Graph Problem</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-07T02:31:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>2:31 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://uva.onlinejudge.org/external/110/11069.html">http://uva.onlinejudge.org/external/110/11069.html</a><br/>
-我太急了 一下子沒想出來就看別人code<br/>
-這其實很好想啊&hellip;<br/>
-我好廢啊= =<br/>
-因為不能走到相鄰的點<br/>
-中間也不能有地方能插入合法的點 <br/>
-所以只有兩種狀況<br/>
-走到第n + 2個點<br/>
-或是第n + 3個點</p>
-
-<p><a href=""></a>   #include &lt;stdio.h></p>
-
-<pre><code>int dp[77];  
-int main()  
-{  
- int i, n;  
- dp[1] = 1;  
- dp[2] = 2;  
- dp[3] = 2;  
- while (scanf("%d", &amp;n) != EOF) {  
- if (dp[n]) {  
- printf("%d\n", dp[n]);  
- continue;  
- }  
- for (i = 4; i &lt;= n; i++) {  
- dp[i] = dp[i - 2] + dp[i - 3];  
- }  
- printf("%d\n", dp[n]);  
- }  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -915,6 +894,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
@@ -928,10 +911,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
   </ul>

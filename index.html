@@ -9,7 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="In Archlinux, crontab is not installed by default because of systemd. Doing system upgrade every day can be achieved by writing timer unit and &hellip;">
+  <meta name="description" content="前言 這個暑假參加了VMFive Lab，用到了apitrace這個神奇的工具。可以trace各種graphics API，比如說OpenGL、OpenGL ES、DirectX等等。會紀錄下來所有的texture、state還有call了哪些function、加了哪些parameter。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,108 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-08-28T22:57:56+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:57 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>前言</h2>
+
+<p>這個暑假參加了VMFive Lab，用到了apitrace這個神奇的工具。可以trace各種graphics API，比如說OpenGL、OpenGL ES、DirectX等等。會紀錄下來所有的texture、state還有call了哪些function、加了哪些parameter。也有replay的功能，也就是render一次trace的內容。雖然有支援在Android上trace，但是官方的文件沒有很齊全，甚至照著做是不會動，研究了好幾天終於跑起來，就紀錄一下。</p>
+
+<p><a href="https://github.com/apitrace/apitrace/">Apitrace on Github</a></p>
+
+<h2>準備工作</h2>
+
+<p>首先，要有一個root過的手機，我這裡是直接用android emulator啦，預設好像是用4.4(API 19)，我這裡是用x86的模擬器測試。</p>
+
+<h2>Build</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone https://github.com/apitrace/apitrace.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>apitrace
+</span><span class='line'><span class="nv">$ </span>mkdir build
+</span><span class='line'><span class="nv">$ </span>cmake -H. -Bbuild -DCMAKE_TOOLCHAIN_FILE<span class="o">=</span>cmake/toolchain/android.toolchain.cmake -DANDROID_NDK<span class="o">=</span>/home/joshua5201/Android/ndk/ -DANDROID_STL<span class="o">=</span>gnustl_shared -DANDROID_SDK<span class="o">=</span>/home/joshua5201/Android/sdk/ -DANDROID_ABI<span class="o">=</span>x86 -DENABLE_STATIC_SNAPPY<span class="o">=</span><span class="nb">true</span> <span class="c"># 自己改成你的sdk還有ndk的path</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>make -C build -j4
+</span><span class='line'><span class="nv">$ </span>make -C build -j4 retraceAPK
+</span><span class='line'><span class="nv">$ </span>make -C buid -j4 installRetraceAPK
+</span><span class='line'><span class="nv">$ </span>./adb push /home/joshua5201/Repos/apitrace/libs/x86/egltrace.so /data/egltrace.so
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Trace on Android 4.4</h2>
+
+<p><a href="https://github.com/apitrace/apitrace/blob/master/docs/Dalvik.markdown">官方的文件</a>是用<code>com.android.setting</code>測試，也就是設定的那個界面啦。其他的app執行的時候，好像都要包含activity的名稱，可以透過android sdk build-tools裡的<code>aapt dump badgin [apk name]</code>，至於apk可以在android系統中找到。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>adb root
+</span><span class='line'><span class="nv">$ </span>adb shell
+</span><span class='line'>sdk-linux/ -DANDROID_ABI<span class="o">=</span>x86 -DENABLE_STATIC_SNAPPY<span class="o">=</span><span class="nb">true</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$ </span>make -C build -j4
+</span><span class='line'><span class="nv">$ </span>make -C build -j4 retraceAPK
+</span><span class='line'><span class="nv">$ </span>make -C buid -j4 installRetraceAPK
+</span><span class='line'><span class="nv">$ </span>adb push /home/joshua5201/Repos/apitrace/libs/armeabi-v7a/egltrace.so /data/egltrace.so
+</span><span class='line'><span class="nv">$ </span>setprop wrap.com.android.calculator2 <span class="nv">LD_PRELOAD</span><span class="o">=</span><span class="s2">&quot;/data/libgnustl_shared.so:/data/egltrace.so&quot;</span>
+</span><span class='line'><span class="nv">$ </span>setprop debug.apitrace.procname com.android.calculator2
+</span><span class='line'><span class="nv">$ </span>am start -S com.android.calculator2/com.android.calculator2.Calculator
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>然後我就發現了神秘的事情，會說找不到/data/data/app/com.android.calculator，所以就把這個資料夾建起來，再trace看看，就會發現trace生成的檔案了。<code>am start</code>之後就會看到你跑的app打開來了，就隨便按一按，然後用返回鍵關掉他。</p>
+
+<h2>Replay</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>adb pull /data/data/com.android.calculator/com.android.calculator.trace
+</span><span class='line'><span class="nv">$ </span>apitrace replay com.android.calculator.trace --debug <span class="c"># 我不知道為什麼不加debug就會錯。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -510,103 +612,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/10/23/c-c-fgets-and-scanf/">[C/C++] Scanf造成之後的fgets不正常</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-10-23T06:02:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>6:02 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>常常在Online Judge出現的小問題 太久沒寫忘記害我debug好久zz</p>
-
-<p>比如說 這樣寫看起來很合理 不過總是會莫名多輸出一行</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">101</span><span class="p">];</span>
-</span><span class='line'>  <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EOF</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>          <span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
-</span><span class='line'>          <span class="n">puts</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>其實只要在<code>scanf</code>後面加上個<code>getchar()</code>像這樣</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">101</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EOF</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">while</span><span class="p">(</span><span class="n">getchar</span><span class="p">()</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="c1">//removeing the trailing &#39;\n&#39;</span>
-</span><span class='line'>              <span class="p">;</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
-</span><span class='line'>            <span class="n">puts</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>原因是<code>scanf</code>把input的n吃掉之後 在那行會留下一個'\n' 造成後面運作不正常</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -622,6 +627,10 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
@@ -635,10 +644,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
     
       <li class="post">
         <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
   </ul>

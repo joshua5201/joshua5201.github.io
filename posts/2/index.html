@@ -9,10 +9,21 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="bundle install的時候 1
+  <meta name="description" content="常常在Online Judge出現的小問題 太久沒寫忘記害我debug好久zz 比如說 這樣寫看起來很合理 不過總是會莫名多輸出一行 1
 2
 3
-Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0.0-p247/cache/coffee-script-2.3.0.gem. It may &hellip;">
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+#include &lt;stdio.h&gt; int main()
+{ char s[101]; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +79,103 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/23/c-c-fgets-and-scanf/">[C/C++] Scanf造成之後的fgets不正常</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-10-23T06:02:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>6:02 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>常常在Online Judge出現的小問題 太久沒寫忘記害我debug好久zz</p>
+
+<p>比如說 這樣寫看起來很合理 不過總是會莫名多輸出一行</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">101</span><span class="p">];</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EOF</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">puts</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其實只要在<code>scanf</code>後面加上個<code>getchar()</code>像這樣</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">101</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">n</span><span class="p">)</span> <span class="o">!=</span> <span class="n">EOF</span> <span class="o">&amp;&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">while</span><span class="p">(</span><span class="n">getchar</span><span class="p">()</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="c1">//removeing the trailing &#39;\n&#39;</span>
+</span><span class='line'>              <span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="o">--</span><span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">fgets</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">stdin</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">puts</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>原因是<code>scanf</code>把input的n吃掉之後 在那行會留下一個'\n' 造成後面運作不正常</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -582,50 +690,6 @@ Bundler::GemspecError: Could not read gem at /home/joshua5201/.rvm/gems/ruby-2.0
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/27/blog-post/">Linux翻轉螢幕輸出</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-01-27T14:32:00+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:32 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><pre><code>$ xrandr  
-Screen 0: minimum 320 x 200, current 1366 x 768, maximum 8192 x 8192  
-LVDS-1 connected 1366x768+0+0 (normal left inverted right x axis y axis) 309mm x 174mm  
- 1366x768 60.0*+  
- 1024x768 59.9   
- 800x600 59.9   
- 640x480 59.4   
- 720x400 59.6   
- 640x400 60.0   
- 640x350 59.8   
-VGA-1 disconnected (normal left inverted right x axis y axis)  
-HDMI-1 disconnected (normal left inverted right x axis y axis)  
-#查看輸出裝置 我的輸出是LVDS-1  
-$ xrandr --output LVDS-1 --rotate right #這裡可以是 right left inverted normal  
-$ xrandr --output LVDS-1 --rotate normal #這樣子改回來  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -643,6 +707,10 @@ $ xrandr --output LVDS-1 --rotate normal #這樣子改回來
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
@@ -656,10 +724,6 @@ $ xrandr --output LVDS-1 --rotate normal #這樣子改回來
     
       <li class="post">
         <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
   </ul>

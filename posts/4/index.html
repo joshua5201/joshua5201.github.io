@@ -9,10 +9,14 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="http://uva.onlinejudge.org/external/105/10583.html 很簡單的Disjoint Set
-最後輸出Case n: ans
-C是大寫= = 害我WA了兩次 另外Uva真的是ANSI C..
-註解只能用 /* This is a comment. */不能 &hellip;">
+  <meta name="description" content="http://uva.onlinejudge.org/external/110/11069.html
+我太急了 一下子沒想出來就看別人code
+這其實很好想啊&hellip;
+我好廢啊= =
+因為不能走到相鄰的點
+中間也不能有地方能插入合法的點 所以只有兩種狀況
+走到第n + 2個點
+或是第n &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +72,66 @@ C是大寫= = 害我WA了兩次 另外Uva真的是ANSI C..
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uva-11069-graph-problem/">[Code] Uva-11069 a Graph Problem</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-03-07T02:31:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>2:31 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://uva.onlinejudge.org/external/110/11069.html">http://uva.onlinejudge.org/external/110/11069.html</a><br/>
+我太急了 一下子沒想出來就看別人code<br/>
+這其實很好想啊&hellip;<br/>
+我好廢啊= =<br/>
+因為不能走到相鄰的點<br/>
+中間也不能有地方能插入合法的點 <br/>
+所以只有兩種狀況<br/>
+走到第n + 2個點<br/>
+或是第n + 3個點</p>
+
+<p><a href=""></a>   #include &lt;stdio.h></p>
+
+<pre><code>int dp[77];  
+int main()  
+{  
+ int i, n;  
+ dp[1] = 1;  
+ dp[2] = 2;  
+ dp[3] = 2;  
+ while (scanf("%d", &amp;n) != EOF) {  
+ if (dp[n]) {  
+ printf("%d\n", dp[n]);  
+ continue;  
+ }  
+ for (i = 4; i &lt;= n; i++) {  
+ dp[i] = dp[i - 2] + dp[i - 3];  
+ }  
+ printf("%d\n", dp[n]);  
+ }  
+ return 0;  
+}  
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -681,6 +745,10 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
@@ -694,10 +762,6 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
     
       <li class="post">
         <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a>
       </li>
     
   </ul>
