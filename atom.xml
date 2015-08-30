@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-08-29T03:18:54+08:00</updated>
+  <updated>2015-08-30T16:34:25+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Carriage Return (R) in Linux]]></title>
+    <link href="http://joshua5201.github.io/blog/2015/08/30/carriage-return-r-in-linux/"/>
+    <updated>2015-08-30T16:26:02+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2015/08/30/carriage-return-r-in-linux</id>
+    <content type="html"><![CDATA[<h2>介紹Carriage Return</h2>
+
+<p>因為在<a href="https://www.github.com/explore">Github Explore</a>上發現這個小Project，<a href="https://github.com/doches/progressbar">progressbar</a>，就研究了一下。好奇這種progress bar是怎麼做到一直更新同一行的。在code裡發現他用的是<code>printf("test string\r")</code>，那個<code>\r</code>就是Carriage return，會把游標移到那行的最左邊，就可以更新最後一行啦。這好像釋股代打字跡上面會有的按鍵喔～～</p>
+
+<h2>Demo Code</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;unistd.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">hey</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;hey&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">putchar</span><span class="p">(</span><span class="sc">&#39;y&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">putchar</span><span class="p">(</span><span class="sc">&#39;\r&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">fflush</span><span class="p">(</span><span class="n">stdout</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">hey</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">putchar</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Android] Building and Running Apitrace for Android]]></title>
@@ -53,7 +111,7 @@
 
 <h2>Trace on Android 4.4</h2>
 
-<p><a href="https://github.com/apitrace/apitrace/blob/master/docs/Dalvik.markdown">官方的文件</a>是用<code>com.android.setting</code>測試，也就是設定的那個界面啦。其他的app執行的時候，好像都要包含activity的名稱，可以透過android sdk build-tools裡的<code>aapt dump badgin [apk name]</code>，至於apk可以在android系統中找到。</p>
+<p><a href="https://github.com/apitrace/apitrace/blob/master/docs/Dalvik.markdown">官方的文件</a>是用<code>com.android.setting</code>測試，也就是設定的那個界面啦。其他的app執行的時候，好像都要包含activity的名稱，可以透過android sdk build-tools裡的<code>aapt dump badging [apk name]</code>，至於apk可以在android系統中找到。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -741,31 +799,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 - 附議：提出法案時取得部份人的支持
 - 復議：立法院審理法案時，如果已經一讀二讀三讀，發現法案錯誤或違憲可以重新審理。
 - 複議：中國名詞，等同台灣的申訴</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[思考] 一些關於未來和目標的想法]]></title>
-    <link href="http://joshua5201.github.io/blog/2013/08/28/some-thoughts-about-the-future-and-goals/"/>
-    <updated>2013-08-28T20:17:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2013/08/28/some-thoughts-about-the-future-and-goals</id>
-    <content type="html"><![CDATA[<h1>前言</h1>
-
-<p>在高三開學前的這幾個禮拜，我寫了很多程式，一切都要感謝@afg984開始了<a href="https://github.com/moeblanc">moeblanc</a>這個輸入法Project，和一些遠大的目標。雖然我只commit了一點點code就跑去寫我自己的<a href="https://github.com/joshua5201/notedown">notedown</a>。不過在寫這兩個Project的中間我大概確定我要的是什麼。這短短的幾天，我終於對Ruby能算上手，發現了Markdown的好，還有對Ruby on Rails和整個生態圈包括github等等愈來愈感興趣，甚至有種歸屬感。會在這麼晚的時間寫這篇是因為逛一逛逛到了<a href="http://blog.xdite.net/">XDite大的Blog</a>和裡面一些關於他的公司和很多關於Rails/WebDevelopment的東西，也看到他的<a href="http://blog.xdite.net/posts/2013/01/30/2013-reading-list">2013 Rails Reading List</a>。該說是嚮往呢還是想要當作目標，感覺心理有種「這就對了！」的OS。於是我整理一下自己的思考，趁著這個激動還在的時候快把我的目標和想法紀錄下來。</p>
-
-<h1>目標</h1>
-
-<p>首先我現在的身份是高三生，離一個專業的Developer還有很長很長的一段路要走，還有很多很多的基礎知識要獲得。所以我的第一個目標是考上台清交的資工系，之所以是這三間的原因是我覺得以我的能力是能挑戰且這三間也是台灣能取的最多相關資源的學校。</p>
-
-<p>在大學甚至是研究所時期，我想做的是為自己的未來鋪路。除了學校的課業、生活以外，最重要的是要累積自己在軟體開發的經驗，如果我的想法沒變的話大概就是Ruby on Rails、Web相關和Linux相關的開發。也要更新自己的資訊，畢竟資訊這行實在瞬息萬變，如果只靠在學校裡的學習，再好的大學出來也沒用。第二個在大學階段的目標是打工存點錢，累積社會經驗，畢竟家裡不是很富裕，無法負擔學費，除了學貸以外，如果能自己負擔生活費是最好的。最後非常希望能出國唸書或是進修，最想去的是日本，沒有什麼偉大的原因，因為我就是宅嘛。</p>
-
-<h1>關於未來的想法</h1>
-
-<p>第一我絕對不想做我自己沒有興趣的工作，就算薪水很高。第二我希望去的公司希望是能運用最新的Open Source工具，隨時Follow Bleeding Edge的東西，想法創新不守舊。薪水的部份雖然我很想當有錢人，不過剛出社會的前幾年我希望的工作是能累積經驗和從經驗者學習事物，如果能在自己的領域達到專業甚至是頂尖，我想pay這種事情應該不是問題。</p>
-
-<h1>最後</h1>
-
-<p>要開學了，即將邁入高三生活，也許一段時間不會碰電腦，又也許會繼續寫程式。不過既然目標定下來了就要好好的貫徹，所以維持正常作息和認真唸書是我現在最需要做的事。self.sleep (4點了&hellip;)</p>
 ]]></content>
   </entry>
   

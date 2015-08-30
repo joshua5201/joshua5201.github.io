@@ -9,14 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="http://uva.onlinejudge.org/external/110/11069.html
-我太急了 一下子沒想出來就看別人code
-這其實很好想啊&hellip;
-我好廢啊= =
-因為不能走到相鄰的點
-中間也不能有地方能插入合法的點 所以只有兩種狀況
-走到第n + 2個點
-或是第n &hellip;">
+  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1509 如果TIOJ又掛了的話= = http://zerosea.tfcis.org:8080/JudgeOnline/showproblem? &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +65,162 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/07/code-tioj-1509-toi2008pd/">[Code] TIOJ-1509 地道問題 (TOI初選2008pD)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-03-07T04:38:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>4:38 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1509">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1509</a></p>
+
+<p>如果TIOJ又掛了的話= = <br/>
+<a href="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1128">http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1128</a></p>
+
+<p>做第一次dijkstra -> 把邊反過來 -> 再做一次</p>
+
+<p>P.S. 冏我都被J睿捏好玩的 不捏我都想不到&hellip;</p>
+
+<p><a href=""></a></p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+#include &lt;vector&gt;  
+#include &lt;queue&gt;  
+#include &lt;algorithm&gt;  
+#include &lt;string.h&gt;  
+#define INF 1000000001  
+using namespace std;  
+
+typedef struct {  
+ int to;  
+ int cost;  
+} edge;  
+typedef pair&lt;int, int&gt; P;  
+vector&lt;edge&gt; G[1000001];  
+vector&lt;edge&gt; R[1000001];  
+long long d[1000001];  
+bool visited[1000001];  
+priority_queue&lt;P, vector&lt;P&gt;, greater&lt;P&gt; &gt; que;  
+int main()  
+{  
+ int s, t, c, V, E;  
+ long long sum;  
+ while (~scanf("%d%d", &amp;V, &amp;E)) {  
+ sum = 0;  
+ fill(d, d + V + 1, INF);  
+ memset(visited, false, sizeof(visited));  
+ edge e;  
+ for (int i = 1; i &lt;= V; i++) {  
+ G[i].clear();  
+ R[i].clear();  
+ }  
+ for (int i = 0; i &lt; E; i++) {  
+ scanf("%d%d%d", &amp;s, &amp;t, &amp;c);  
+ e.to = t;  
+ e.cost = c;  
+ G[s].push_back(e);  
+ e.to = s;  
+ R[t].push_back(e);  
+ }  
+ d[1] = 0;  
+ que.push(P(0, 1));  
+ while (que.size()) {  
+ P p;  
+ while (que.size()) {  
+ p = que.top();  
+ que.pop();  
+ if (!visited[p.second]) {  
+ break;  
+ }  
+ }  
+ visited[p.second] = true;  
+ int v = p.second;  
+ if (d[v] &lt; p.first) {  
+ continue;  
+ }  
+ for (int i = 0; i &lt; G[v].size(); i++) {  
+ edge e = G[v][i];  
+ if (d[v] + e.cost &lt; d[e.to]) {  
+ d[e.to] = d[v] + e.cost;  
+ que.push(P(d[e.to], e.to));  
+ }  
+ }  
+ }  
+ bool jump = false;  
+ for (int i = 1; i &lt;= V; i++) {  
+ if (d[i] == INF) {  
+ jump = true;  
+ break;  
+ }  
+ sum += d[i];  
+ }  
+ if (jump) {  
+ puts("0");  
+ continue;  
+ }  
+ que.push(P(0, 1));  
+ fill(d, d + V + 1, INF);  
+ memset(visited, false, sizeof(visited));  
+ d[1] = 0;  
+ while (que.size()) {  
+ P p;  
+ while (que.size()) {  
+ p = que.top();  
+ que.pop();  
+ if (!visited[p.second]) {  
+ break;  
+ }  
+ }  
+ visited[p.second] = true;  
+ int v = p.second;  
+ if (d[v] &lt; p.first) {  
+ continue;  
+ }  
+ for (int i = 0; i &lt; R[v].size(); i++) {  
+ edge e = R[v][i];  
+ if (d[v] + e.cost &lt; d[e.to]) {  
+ d[e.to] = d[v] + e.cost;  
+ que.push(P(d[e.to], e.to));  
+ }  
+ }  
+ }  
+ for (int i = 1; i &lt;= V; i++) {  
+ if (d[i] == INF) {  
+ jump = true;  
+ break;  
+ }  
+ sum += d[i];  
+ }  
+ if (jump) {  
+ puts("0");  
+ continue;  
+ }  
+ printf("%I64d\n", sum);  
+ }  
+ return 0;  
+}  
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -745,6 +894,10 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (R) in Linux</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
       </li>
     
@@ -758,10 +911,6 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
     
       <li class="post">
         <a href="/blog/2015/06/08/announcement-for-following-archlinux-na-posts/">[公告] 接下來會有Network Administration作業的整理</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/06/using-custom-domain-in-github-pages/">[Note] 在Github Pages上用自己的網域</a>
       </li>
     
   </ul>
