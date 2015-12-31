@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-01-01T01:44:48+08:00</updated>
+  <updated>2016-01-01T01:48:17+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -400,15 +400,6 @@
 <p> <a href="http://www.cyberciti.biz/faq/linux-iptables-open-vncserver-port-6000-5800-5900/">Iptables Open VNC Port To Allow Incoming VNC Connections - nixCraft</a></p></li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[公告] 接下來會有Network Administration作業的整理]]></title>
-    <link href="http://joshua5201.github.io/blog/2015/06/08/announcement-for-following-archlinux-na-posts/"/>
-    <updated>2015-06-08T13:16:04+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2015/06/08/announcement-for-following-archlinux-na-posts</id>
-    <content type="html"><![CDATA[<p>這學期在交大修NA，比較詳細的架了一些常見的服務，一直很想寫幾篇筆記。公告一下之後我才會想到要寫lol</p>
 ]]></content>
   </entry>
   
@@ -924,6 +915,20 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
 
 <p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[整理] 覆議 復議 附議 複議]]></title>
+    <link href="http://joshua5201.github.io/blog/2013/09/01/finishing-review-reconsideration-second-reconsideration/"/>
+    <updated>2013-09-01T15:39:00+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2013/09/01/finishing-review-reconsideration-second-reconsideration</id>
+    <content type="html"><![CDATA[<p>讀公民的煩人東西
+為什麼台灣的法律名詞都喜歡同音(還有 申請 聲請)
+- 覆議：行政院認為立法院提出的法案窒礙難行，可提出覆議。立法院可在十五天內否決(台：二分之一；美：三分之二；法：reopen debate 國會可不理)
+- 附議：提出法案時取得部份人的支持
+- 復議：立法院審理法案時，如果已經一讀二讀三讀，發現法案錯誤或違憲可以重新審理。
+- 複議：中國名詞，等同台灣的申訴</p>
 ]]></content>
   </entry>
   
