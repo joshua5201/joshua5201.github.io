@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-01-01T01:42:02+08:00</updated>
+  <updated>2016-01-01T01:44:48+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -69,7 +69,7 @@
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo systemctl start syslog-ng <span class="c">#記得啟動並設定開機啟動</span>
-</span><span class='line'><span class="nv">$ </span>sudo systemctl <span class="nb">enable </span>syslog-lg
+</span><span class='line'><span class="nv">$ </span>sudo systemctl <span class="nb">enable </span>syslog-ng
 </span></code></pre></td></tr></table></div></figure>
 
 

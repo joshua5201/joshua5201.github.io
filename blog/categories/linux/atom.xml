@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | 炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-01-01T01:42:02+08:00</updated>
+  <updated>2016-01-01T01:44:48+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -54,7 +54,7 @@ joshua5201:joshua841025@gmail.com:smtp.gmail.com:587
 <p>因為我們的archlinux是用systemd，所以用journalctl取代了syslog的功能。安裝syslog-ng之後可以有傳統的log，比如說<code>/var/log/messages</code>等等。logwatch是利用正則表達式及perl script等等來分析log。</p>
 
 <pre><code class="bash">$ sudo systemctl start syslog-ng #記得啟動並設定開機啟動
-$ sudo systemctl enable syslog-lg
+$ sudo systemctl enable syslog-ng
 </code></pre>
 
 <p>另外，可以到<code>/etc/syslog-ng/syslog-ng.conf</code>設定檔，把不用的log註解掉，比如說我沒有用印表機就把lpr註解掉了。</p>
