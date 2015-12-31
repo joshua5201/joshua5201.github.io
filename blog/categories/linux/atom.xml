@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | 炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-08-30T20:40:27+08:00</updated>
+  <updated>2016-01-01T01:42:02+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[整理] Linux上常用的server Log監視工具：logwatch]]></title>
+    <link href="http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch/"/>
+    <updated>2016-01-01T00:30:50+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch</id>
+    <content type="html"><![CDATA[<p>這學期到了CC之後開始使用的log監視工具：logwatch。（每天一過十二點就會被root mail轟炸）。除了看看每天電腦發生什麼事之外，還可以知道每天到底有多少人在try我的sshd&hellip;.幸好我有裝fail2ban。</p>
+
+<p>logwatch要安裝這幾個套件：ssmtp、syslog-ng、cronie、logwatch (我以archlinux為準)</p>
+
+<h2>安裝ssmtp</h2>
+
+<p>首先，我們要收到信，就要有辦法寄信。我們要裝的ssmtp是比起postfix、sendmail等複雜的MTA，超簡易型的（只有用別人的smtp server寄信的功能，不知道算不算MTA）。安裝之後在<code>/etc/ssmtp</code>底下有兩個設定檔：<code>revaliases</code>跟<code>ssmtp.conf</code>。</p>
+
+<p>以gmail為例ssmtp.conf:</p>
+
+<pre><code class="bash">root=ilove5566@gmail.com                                                                               
+mailhub=smtp.gmail.com:587
+rewriteDomain=gmail.com
+hostname=yourhost
+UseSTARTTLS=Yes
+UseTLS=Yes
+AuthUser=ilove5566
+AuthPass=密碼
+FromLineOverride=yes
+</code></pre>
+
+<p>其中密碼的部份，不想把自己的密碼放在這可以用<a href="https://support.google.com/accounts/answer/185833?hl=en">google app password</a>。</p>
+
+<p>revaliases是指定系統裡各個user寄信的地址，設定root的address之後，如果有設定crontab都會自動寄report喔！很方便。</p>
+
+<pre><code class="bash">root:joshua841025@gmail.com:smtp.gmail.com:587
+joshua5201:joshua841025@gmail.com:smtp.gmail.com:587
+</code></pre>
+
+<p>最後記得<code>chmod 600</code>這兩個檔案免得帳密被別人看光光喔～</p>
+
+<h2>安裝syslog-ng</h2>
+
+<p>因為我們的archlinux是用systemd，所以用journalctl取代了syslog的功能。安裝syslog-ng之後可以有傳統的log，比如說<code>/var/log/messages</code>等等。logwatch是利用正則表達式及perl script等等來分析log。</p>
+
+<pre><code class="bash">$ sudo systemctl start syslog-ng #記得啟動並設定開機啟動
+$ sudo systemctl enable syslog-lg
+</code></pre>
+
+<p>另外，可以到<code>/etc/syslog-ng/syslog-ng.conf</code>設定檔，把不用的log註解掉，比如說我沒有用印表機就把lpr註解掉了。</p>
+
+<h2>安裝cronie</h2>
+
+<p>同樣的，因為archlinux用了systemd，crontab也被取代了。我們要裝cronie來獲得傳統的crontab（logwatch安裝會自動設定cron，所以這個其實讓他自動裝就好）。</p>
+
+<h2>安裝logwatch</h2>
+
+<p>主角出場啦，安裝完成後會發現，<code>/etc/logwatch/conf/logwatch.conf</code>什麼東西都沒。原因是預設的範本會在<code>/usr/share/logwatch/default.conf/logwatch.conf</code>。</p>
+
+<pre><code class="bash">$ sudo cp /usr/share/logwatch/default.conf/logwatch.conf /etc/logwatch/conf/logwatch.conf
+</code></pre>
+
+<p>再來編輯預設的設定：</p>
+
+<pre><code class="bash"># 在3x行把output改成mail
+ 32 #Output/Format Options
+ 33 #By default Logwatch will print to stdout in text with no encoding.
+ 34 #To make email Default set Output = mail to save to file set Output = file
+ 35 Output = mail 
+
+# 設定分析範圍跟細節等級，我是設成每天凌晨寄昨天的log。
+ 68 # The default time range for the report...
+ 69 # The current choices are All, Today, Yesterday
+ 70 Range = yesterday
+ 71 
+ 72 # The default detail level for the report.
+ 73 # This can either be Low, Med, High or a number.
+ 74 # Low = 0
+ 75 # Med = 5
+ 76 # High = 10
+ 77 Detail = Low
+
+# 這兩個log我不需要（因為沒有mail server）
+ 92 Service = "-postfix"
+ 93 Service = "-amavis"
+</code></pre>
+
+<p>這時候可以測試看看：</p>
+
+<pre><code class="bash">$ logwatch --output stdout --range today #輸出到stdout
+$ logwatch #或者是用logwatch.conf 的設定
+</code></pre>
+
+<h2>參考資料</h2>
+
+<p><a href="https://wiki.archlinux.org/index.php/Logwatch">Logwatch - ArchWiki</a></p>
+
+<p><a href="https://wiki.archlinux.org/index.php/Syslog-ng">syslog-ng - ArchWiki</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題]]></title>

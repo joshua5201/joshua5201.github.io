@@ -9,7 +9,11 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="前言 在高三開學前的這幾個禮拜，我寫了很多程式，一切都要感謝@afg984開始了moeblanc這個輸入法Project，和一些遠大的目標。雖然我只commit了一點點code就跑去寫我自己的notedown。不過在寫這兩個Project的中間我大概確定我要的是什麼。這短短的幾天， &hellip;">
+  <meta name="description" content="讀公民的煩人東西
+為什麼台灣的法律名詞都喜歡同音(還有 申請 聲請)
+- 覆議：行政院認為立法院提出的法案窒礙難行，可提出覆議。立法院可在十五天內否決(台：二分之一；美：三分之二；法：reopen debate 國會可不理)
+- 附議：提出法案時取得部份人的支持
+- 復議：立法院審理法案時， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +69,40 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/01/finishing-review-reconsideration-second-reconsideration/">[整理] 覆議 復議 附議 複議</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-09-01T15:39:00+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2013</span></span> <span class='time'>3:39 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>讀公民的煩人東西
+為什麼台灣的法律名詞都喜歡同音(還有 申請 聲請)
+- 覆議：行政院認為立法院提出的法案窒礙難行，可提出覆議。立法院可在十五天內否決(台：二分之一；美：三分之二；法：reopen debate 國會可不理)
+- 附議：提出法案時取得部份人的支持
+- 復議：立法院審理法案時，如果已經一讀二讀三讀，發現法案錯誤或違憲可以重新審理。
+- 複議：中國名詞，等同台灣的申訴</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -696,76 +734,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/07/code-tioj-1240-lis-but-not-lis/">[Code] TIOJ-1240 LIS but Not LIS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-07T05:31:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>5:31 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1240">http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1240</a></p>
-
-<p>先sort但記錄原順序</p>
-
-<p>對於每個s[i]拿最近且比他大的點</p>
-
-<p><a href=""></a><br/>
-    #include &lt;stdio.h><br/>
-    #include <algorithm><br/>
-    using namespace std;</p>
-
-<pre><code>pair&lt;int, int&gt; s[101];  
-int main()  
-{  
- int n, i;  
- scanf("%d", &amp;n);  
- for (i = 0; i &lt; n; i++) {  
- scanf("%d", &amp;(s[i].first));  
- s[i].second = i;  
- }  
- sort(s, s + n);  
- int count = 0;  
- bool update;  
- pair&lt;int, int&gt; last;  
- do {  
- update = false;  
- for (i = 0; i &lt; n; i++) {  
- if (s[i].first &gt;= 0 &amp;&amp; (!update ||  
- s[i].second &gt; last.second &amp;&amp; s[i].first &gt; last.first)) {  
- last = s[i];  
- s[i].first = -1;  
- update = true;  
- }  
- }  
- if (update) {  
- count++;  
- }  
- } while (update);  
- printf("%d\n", count);  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -783,6 +751,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r) in Linux</a>
       </li>
     
@@ -796,10 +768,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/06/15/using-vnc-as-remote-desktop/">[Linux] VNC遠端桌面</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/08/announcement-for-following-archlinux-na-posts/">[公告] 接下來會有Network Administration作業的整理</a>
       </li>
     
   </ul>
@@ -844,7 +812,7 @@ int main()
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Tsung-en Hsiao -
+  Copyright &copy; 2016 - Tsung-en Hsiao -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

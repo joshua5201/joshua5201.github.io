@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2015-08-30T20:40:27+08:00</updated>
+  <updated>2016-01-01T01:42:02+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,145 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[整理] Linux上常用的server Log監視工具：logwatch]]></title>
+    <link href="http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch/"/>
+    <updated>2016-01-01T00:30:50+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch</id>
+    <content type="html"><![CDATA[<p>這學期到了CC之後開始使用的log監視工具：logwatch。（每天一過十二點就會被root mail轟炸）。除了看看每天電腦發生什麼事之外，還可以知道每天到底有多少人在try我的sshd&hellip;.幸好我有裝fail2ban。</p>
+
+<p>logwatch要安裝這幾個套件：ssmtp、syslog-ng、cronie、logwatch (我以archlinux為準)</p>
+
+<h2>安裝ssmtp</h2>
+
+<p>首先，我們要收到信，就要有辦法寄信。我們要裝的ssmtp是比起postfix、sendmail等複雜的MTA，超簡易型的（只有用別人的smtp server寄信的功能，不知道算不算MTA）。安裝之後在<code>/etc/ssmtp</code>底下有兩個設定檔：<code>revaliases</code>跟<code>ssmtp.conf</code>。</p>
+
+<p>以gmail為例ssmtp.conf:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">root</span><span class="o">=</span>ilove5566@gmail.com
+</span><span class='line'><span class="nv">mailhub</span><span class="o">=</span>smtp.gmail.com:587
+</span><span class='line'><span class="nv">rewriteDomain</span><span class="o">=</span>gmail.com
+</span><span class='line'><span class="nv">hostname</span><span class="o">=</span>yourhost
+</span><span class='line'><span class="nv">UseSTARTTLS</span><span class="o">=</span>Yes
+</span><span class='line'><span class="nv">UseTLS</span><span class="o">=</span>Yes
+</span><span class='line'><span class="nv">AuthUser</span><span class="o">=</span>ilove5566
+</span><span class='line'><span class="nv">AuthPass</span><span class="o">=</span>密碼
+</span><span class='line'><span class="nv">FromLineOverride</span><span class="o">=</span>yes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中密碼的部份，不想把自己的密碼放在這可以用<a href="https://support.google.com/accounts/answer/185833?hl=en">google app password</a>。</p>
+
+<p>revaliases是指定系統裡各個user寄信的地址，設定root的address之後，如果有設定crontab都會自動寄report喔！很方便。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>root:joshua841025@gmail.com:smtp.gmail.com:587
+</span><span class='line'>joshua5201:joshua841025@gmail.com:smtp.gmail.com:587
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最後記得<code>chmod 600</code>這兩個檔案免得帳密被別人看光光喔～</p>
+
+<h2>安裝syslog-ng</h2>
+
+<p>因為我們的archlinux是用systemd，所以用journalctl取代了syslog的功能。安裝syslog-ng之後可以有傳統的log，比如說<code>/var/log/messages</code>等等。logwatch是利用正則表達式及perl script等等來分析log。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo systemctl start syslog-ng <span class="c">#記得啟動並設定開機啟動</span>
+</span><span class='line'><span class="nv">$ </span>sudo systemctl <span class="nb">enable </span>syslog-lg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另外，可以到<code>/etc/syslog-ng/syslog-ng.conf</code>設定檔，把不用的log註解掉，比如說我沒有用印表機就把lpr註解掉了。</p>
+
+<h2>安裝cronie</h2>
+
+<p>同樣的，因為archlinux用了systemd，crontab也被取代了。我們要裝cronie來獲得傳統的crontab（logwatch安裝會自動設定cron，所以這個其實讓他自動裝就好）。</p>
+
+<h2>安裝logwatch</h2>
+
+<p>主角出場啦，安裝完成後會發現，<code>/etc/logwatch/conf/logwatch.conf</code>什麼東西都沒。原因是預設的範本會在<code>/usr/share/logwatch/default.conf/logwatch.conf</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo cp /usr/share/logwatch/default.conf/logwatch.conf /etc/logwatch/conf/logwatch.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再來編輯預設的設定：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 在3x行把output改成mail</span>
+</span><span class='line'> <span class="m">32</span> <span class="c">#Output/Format Options</span>
+</span><span class='line'> <span class="m">33</span> <span class="c">#By default Logwatch will print to stdout in text with no encoding.</span>
+</span><span class='line'> <span class="m">34</span> <span class="c">#To make email Default set Output = mail to save to file set Output = file</span>
+</span><span class='line'> <span class="m">35</span> <span class="nv">Output</span> <span class="o">=</span> mail
+</span><span class='line'>
+</span><span class='line'><span class="c"># 設定分析範圍跟細節等級，我是設成每天凌晨寄昨天的log。</span>
+</span><span class='line'> <span class="m">68</span> <span class="c"># The default time range for the report...</span>
+</span><span class='line'> <span class="m">69</span> <span class="c"># The current choices are All, Today, Yesterday</span>
+</span><span class='line'> <span class="m">70</span> <span class="nv">Range</span> <span class="o">=</span> yesterday
+</span><span class='line'> <span class="m">71</span>
+</span><span class='line'> <span class="m">72</span> <span class="c"># The default detail level for the report.</span>
+</span><span class='line'> <span class="m">73</span> <span class="c"># This can either be Low, Med, High or a number.</span>
+</span><span class='line'> <span class="m">74</span> <span class="c"># Low = 0</span>
+</span><span class='line'> <span class="m">75</span> <span class="c"># Med = 5</span>
+</span><span class='line'> <span class="m">76</span> <span class="c"># High = 10</span>
+</span><span class='line'> <span class="m">77</span> <span class="nv">Detail</span> <span class="o">=</span> Low
+</span><span class='line'>
+</span><span class='line'><span class="c"># 這兩個log我不需要（因為沒有mail server）</span>
+</span><span class='line'> <span class="m">92</span> <span class="nv">Service</span> <span class="o">=</span> <span class="s2">&quot;-postfix&quot;</span>
+</span><span class='line'> <span class="m">93</span> <span class="nv">Service</span> <span class="o">=</span> <span class="s2">&quot;-amavis&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這時候可以測試看看：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>logwatch --output stdout --range today <span class="c">#輸出到stdout</span>
+</span><span class='line'><span class="nv">$ </span>logwatch <span class="c">#或者是用logwatch.conf 的設定</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>參考資料</h2>
+
+<p><a href="https://wiki.archlinux.org/index.php/Logwatch">Logwatch - ArchWiki</a></p>
+
+<p><a href="https://wiki.archlinux.org/index.php/Syslog-ng">syslog-ng - ArchWiki</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Carriage Return (\r) in Linux]]></title>
@@ -785,20 +924,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
 
 <p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[整理] 覆議 復議 附議 複議]]></title>
-    <link href="http://joshua5201.github.io/blog/2013/09/01/finishing-review-reconsideration-second-reconsideration/"/>
-    <updated>2013-09-01T15:39:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2013/09/01/finishing-review-reconsideration-second-reconsideration</id>
-    <content type="html"><![CDATA[<p>讀公民的煩人東西
-為什麼台灣的法律名詞都喜歡同音(還有 申請 聲請)
-- 覆議：行政院認為立法院提出的法案窒礙難行，可提出覆議。立法院可在十五天內否決(台：二分之一；美：三分之二；法：reopen debate 國會可不理)
-- 附議：提出法案時取得部份人的支持
-- 復議：立法院審理法案時，如果已經一讀二讀三讀，發現法案錯誤或違憲可以重新審理。
-- 複議：中國名詞，等同台灣的申訴</p>
 ]]></content>
   </entry>
   

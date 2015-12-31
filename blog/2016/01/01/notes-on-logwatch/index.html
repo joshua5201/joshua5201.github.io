@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>[整理] Linux上常用的server Log監視工具：logwatch - 炸蝦碎碎念。</title>
+  <meta name="author" content="Tsung-en Hsiao">
+
+  
+  <meta name="description" content="這學期到了CC之後開始使用的log監視工具：logwatch。（每天一過十二點就會被root mail轟炸）。除了看看每天電腦發生什麼事之外，還可以知道每天到底有多少人在try我的sshd&hellip;.幸好我有裝fail2ban。 logwatch要安裝這幾個套件：ssmtp、syslog- &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">炸蝦碎碎念。</a></h1>
+  
+    <h2>[Notes, GNU/Linux, Open Source, Ruby on Rails, Computer Science, Archlinux]</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="joshua5201.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">[整理] Linux上常用的server Log監視工具：logwatch</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-01T00:30:50+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>12:30 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>這學期到了CC之後開始使用的log監視工具：logwatch。（每天一過十二點就會被root mail轟炸）。除了看看每天電腦發生什麼事之外，還可以知道每天到底有多少人在try我的sshd&hellip;.幸好我有裝fail2ban。</p>
+
+<p>logwatch要安裝這幾個套件：ssmtp、syslog-ng、cronie、logwatch (我以archlinux為準)</p>
+
+<h2>安裝ssmtp</h2>
+
+<p>首先，我們要收到信，就要有辦法寄信。我們要裝的ssmtp是比起postfix、sendmail等複雜的MTA，超簡易型的（只有用別人的smtp server寄信的功能，不知道算不算MTA）。安裝之後在<code>/etc/ssmtp</code>底下有兩個設定檔：<code>revaliases</code>跟<code>ssmtp.conf</code>。</p>
+
+<p>以gmail為例ssmtp.conf:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">root</span><span class="o">=</span>ilove5566@gmail.com
+</span><span class='line'><span class="nv">mailhub</span><span class="o">=</span>smtp.gmail.com:587
+</span><span class='line'><span class="nv">rewriteDomain</span><span class="o">=</span>gmail.com
+</span><span class='line'><span class="nv">hostname</span><span class="o">=</span>yourhost
+</span><span class='line'><span class="nv">UseSTARTTLS</span><span class="o">=</span>Yes
+</span><span class='line'><span class="nv">UseTLS</span><span class="o">=</span>Yes
+</span><span class='line'><span class="nv">AuthUser</span><span class="o">=</span>ilove5566
+</span><span class='line'><span class="nv">AuthPass</span><span class="o">=</span>密碼
+</span><span class='line'><span class="nv">FromLineOverride</span><span class="o">=</span>yes
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中密碼的部份，不想把自己的密碼放在這可以用<a href="https://support.google.com/accounts/answer/185833?hl=en">google app password</a>。</p>
+
+<p>revaliases是指定系統裡各個user寄信的地址，設定root的address之後，如果有設定crontab都會自動寄report喔！很方便。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>root:joshua841025@gmail.com:smtp.gmail.com:587
+</span><span class='line'>joshua5201:joshua841025@gmail.com:smtp.gmail.com:587
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最後記得<code>chmod 600</code>這兩個檔案免得帳密被別人看光光喔～</p>
+
+<h2>安裝syslog-ng</h2>
+
+<p>因為我們的archlinux是用systemd，所以用journalctl取代了syslog的功能。安裝syslog-ng之後可以有傳統的log，比如說<code>/var/log/messages</code>等等。logwatch是利用正則表達式及perl script等等來分析log。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo systemctl start syslog-ng <span class="c">#記得啟動並設定開機啟動</span>
+</span><span class='line'><span class="nv">$ </span>sudo systemctl <span class="nb">enable </span>syslog-lg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>另外，可以到<code>/etc/syslog-ng/syslog-ng.conf</code>設定檔，把不用的log註解掉，比如說我沒有用印表機就把lpr註解掉了。</p>
+
+<h2>安裝cronie</h2>
+
+<p>同樣的，因為archlinux用了systemd，crontab也被取代了。我們要裝cronie來獲得傳統的crontab（logwatch安裝會自動設定cron，所以這個其實讓他自動裝就好）。</p>
+
+<h2>安裝logwatch</h2>
+
+<p>主角出場啦，安裝完成後會發現，<code>/etc/logwatch/conf/logwatch.conf</code>什麼東西都沒。原因是預設的範本會在<code>/usr/share/logwatch/default.conf/logwatch.conf</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo cp /usr/share/logwatch/default.conf/logwatch.conf /etc/logwatch/conf/logwatch.conf
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再來編輯預設的設定：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 在3x行把output改成mail</span>
+</span><span class='line'> <span class="m">32</span> <span class="c">#Output/Format Options</span>
+</span><span class='line'> <span class="m">33</span> <span class="c">#By default Logwatch will print to stdout in text with no encoding.</span>
+</span><span class='line'> <span class="m">34</span> <span class="c">#To make email Default set Output = mail to save to file set Output = file</span>
+</span><span class='line'> <span class="m">35</span> <span class="nv">Output</span> <span class="o">=</span> mail
+</span><span class='line'>
+</span><span class='line'><span class="c"># 設定分析範圍跟細節等級，我是設成每天凌晨寄昨天的log。</span>
+</span><span class='line'> <span class="m">68</span> <span class="c"># The default time range for the report...</span>
+</span><span class='line'> <span class="m">69</span> <span class="c"># The current choices are All, Today, Yesterday</span>
+</span><span class='line'> <span class="m">70</span> <span class="nv">Range</span> <span class="o">=</span> yesterday
+</span><span class='line'> <span class="m">71</span>
+</span><span class='line'> <span class="m">72</span> <span class="c"># The default detail level for the report.</span>
+</span><span class='line'> <span class="m">73</span> <span class="c"># This can either be Low, Med, High or a number.</span>
+</span><span class='line'> <span class="m">74</span> <span class="c"># Low = 0</span>
+</span><span class='line'> <span class="m">75</span> <span class="c"># Med = 5</span>
+</span><span class='line'> <span class="m">76</span> <span class="c"># High = 10</span>
+</span><span class='line'> <span class="m">77</span> <span class="nv">Detail</span> <span class="o">=</span> Low
+</span><span class='line'>
+</span><span class='line'><span class="c"># 這兩個log我不需要（因為沒有mail server）</span>
+</span><span class='line'> <span class="m">92</span> <span class="nv">Service</span> <span class="o">=</span> <span class="s2">&quot;-postfix&quot;</span>
+</span><span class='line'> <span class="m">93</span> <span class="nv">Service</span> <span class="o">=</span> <span class="s2">&quot;-amavis&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這時候可以測試看看：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>logwatch --output stdout --range today <span class="c">#輸出到stdout</span>
+</span><span class='line'><span class="nv">$ </span>logwatch <span class="c">#或者是用logwatch.conf 的設定</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>參考資料</h2>
+
+<p><a href="https://wiki.archlinux.org/index.php/Logwatch">Logwatch - ArchWiki</a></p>
+
+<p><a href="https://wiki.archlinux.org/index.php/Syslog-ng">syslog-ng - ArchWiki</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tsung-en Hsiao</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-01-01T00:30:50+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>12:30 am</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/08/30/carriage-return-r-in-linux/" title="Previous Post: Carriage return (\r) in Linux">&laquo; Carriage return (\r) in Linux</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r) in Linux</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/15/using-vnc-as-remote-desktop/">[Linux] VNC遠端桌面</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/joshua5201">@joshua5201</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'joshua5201',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Tsung-en Hsiao -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'joshua5201';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
