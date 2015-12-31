@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-01-01T01:48:17+08:00</updated>
+  <updated>2016-01-01T01:49:58+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -153,13 +153,14 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Carriage Return (\r) in Linux]]></title>
+    <title type="html"><![CDATA[Carriage Return (\r)]]></title>
     <link href="http://joshua5201.github.io/blog/2015/08/30/carriage-return-r-in-linux/"/>
     <updated>2015-08-30T16:26:02+08:00</updated>
     <id>http://joshua5201.github.io/blog/2015/08/30/carriage-return-r-in-linux</id>
     <content type="html"><![CDATA[<h2>介紹Carriage Return</h2>
 
-<p>因為在<a href="https://www.github.com/explore">Github Explore</a>上發現這個小Project，<a href="https://github.com/doches/progressbar">progressbar</a>，就研究了一下。好奇這種progress bar是怎麼做到一直更新同一行的。在code裡發現他用的是<code>printf("test string\r")</code>，那個<code>\r</code>就是Carriage return，會把游標移到那行的最左邊，就可以更新最後一行啦。這好像是古代打字機上面會有的按鍵喔～～</p>
+<p>因為在<a href="https://www.github.com/explore">Github Explore</a>上發現這個小Project，<a href="https://github.com/doches/progressbar">progressbar</a>，就研究了一下。好奇這種progress bar是怎麼做到一直更新同一行的。在code裡發現他用的是<code>printf("test string\r")</code>，那個<code>\r</code>就是Carriage return，會把游標移到那行的最左邊，就可以更新最後一行啦。這好像是古代打字機上面會有的按鍵喔～～
+EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精。</p>
 
 <h2>Demo Code</h2>
 
