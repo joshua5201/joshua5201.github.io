@@ -287,9 +287,83 @@
 
 <p>html全名是hypertext markup language，是網站不可或缺的一部分。所有頁面的組成都是html，一般來說現在的觀念是，html負責內文、段落編排、分區等等，不要做樣式在上面。html以tag來當作基本元件，想要學習的話可以上codecademy或者是mozilla developer&rsquo;s network學學看。</p>
 
+<p>一個html文件的架構如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'><span class="nt">&lt;head</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="c">&lt;!-- this is a comment --&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;title&gt;</span>Page title goes here<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/scripts/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;script&gt;</span>
+</span><span class='line'>        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;hey&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="nt">&lt;/script&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;bootstrap.min.css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;h1&gt;</span>hello<span class="nt">&lt;/h1&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;foo&quot;</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://www.google.com&quot;</span><span class="nt">&gt;</span>google<span class="nt">&lt;/a&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;/test.png&quot;</span> <span class="na">style=</span><span class="s">&quot;width: 100%; height:auto;&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;bar&quot;</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>有些tag需要打開跟關起來（通常是區塊的tag），有些不用。所有屬性都用雙引號包住，等號兩邊不留留空。style盡量寫在附加的檔案，盡量不要寫在html元素中。這裡就不贅述html本身，網路上資料很多。</p>
+
+<p>每個元素可以有id跟class作為識別，id是唯一的，而class可以拿來分類元件。</p>
+
 <h3>css</h3>
 
 <p>html不負責樣式，樣式就給CSS（Cascading Style Sheet）來搞定。CSS利用html個元件的class跟id屬性來定義頁面的樣式。比如說顏色、尺寸、位置、字型、效果等等豐富的功能。</p>
+
+<p>CSS以selector的方式指定元件的style。可以用元件名稱、id、class來指定。每個屬性結尾用分號結束，用冒號指定內容。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nc">.container</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">background-color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nf">#foo</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">width</span><span class="o">:</span> <span class="m">1000px</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>javascript</h3>
 
@@ -297,7 +371,18 @@
 
 <p>也因為這些豐富功能讓瀏覽器的效能變成問題，於是瀏覽器業者間的效能競爭，主要是圍繞javascript引擎的速度，javasript的效能可說是各個直譯式語言的冠軍，甚至可以接近native的c語言。於是就有人把javascript延伸到一般的機器上，走出瀏覽器，加上一般語言會有的IO、process等功能，就便成了最近流行的node.js。除了拿來當後端開發之外，還可以開發一般的系統程式。</p>
 
-<p>另外，javascript跟java在本質上並沒有關係，只是javascript在一些語法上是C-like，也就是長的有點像java，又當初java正潮的時候，發明javascript的netscape為了吸引目光就取了這個名字。</p>
+<p>另外，javascript跟java在本質上並沒有關係，只是javascript在一些語法上是C-like，也就是長的有點像java，又當初java正潮的時候，發明javascript的netscape公司為了吸引目光就取了這個名字。</p>
+
+<p>Javascript的語句結尾一樣要加上分號。一般來說javascript習慣使用camelCase的命名慣例，也就是變數名稱的單字，以大寫來分隔，而不是底線。第一個字母習慣是小寫。</p>
+
+<p>javascript是個非常靈活的語言，這裡只隨便做一個簡單的範例，畢竟我也還剛開始認真學javascript。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kd">var</span> <span class="nx">foo</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">foo</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s2">&quot;&lt;p&gt;hello javascript&lt;/p&gt;&quot;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h2>Backend</h2>
 
