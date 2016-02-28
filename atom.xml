@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-02-28T19:04:23+08:00</updated>
+  <updated>2016-02-28T19:11:19+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -240,14 +240,18 @@
 
 <p>這是現在比較流行的方式，利用做好的框架來寫程式。這樣做出來的程式比較樣式統一、好維護，而且不用重複製造輪子，可以從現有的東西擴充。</p>
 
-<p>流行的框架，列出一些我常聽到的：
-1. Ruby的Ruby on Rails、Sinatra..
-2. php的Code ignitor、zend..
-3. node.js的express.js、meteor&hellip;
-4. python的django
-5. 微軟的ASP.net
-6. 一些JVM-based的，通常是java、scale等等語言的框架
-7. GO語言也有一些</p>
+<p>流行的框架，列出一些我常聽到的：</p>
+
+<ol>
+<li>Ruby的Ruby on Rails、Sinatra..</li>
+<li>php的Code ignitor、zend..</li>
+<li>node.js的express.js、meteor&hellip;</li>
+<li>python的django</li>
+<li>微軟的ASP.net</li>
+<li>一些JVM-based的，通常是java、scale等等語言的框架</li>
+<li>GO語言也有一些</li>
+</ol>
+
 
 <p>後端框架可以讓開發網站更容易快速。其中有些提供的功能比較完整，比如說Rails，他的哲學就是Convention over configuration、DRY(Don&rsquo;t Repeat Yourself)。可以快速的建立網站，也有很多附加擴充。</p>
 
