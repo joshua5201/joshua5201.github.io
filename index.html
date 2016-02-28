@@ -9,7 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="這學期到了CC之後開始使用的log監視工具：logwatch。（每天一過十二點就會被root mail轟炸）。除了看看每天電腦發生什麼事之外，還可以知道每天到底有多少人在try我的sshd&hellip;.幸好我有裝fail2ban。 logwatch要安裝這幾個套件：ssmtp、syslog- &hellip;">
+  <meta name="description" content="緣起 常常被問，想學做網站，要從什麼開始學？不會XXX可以學OOO嗎？通常我遇到的都是原本有電資背景（會寫點C語言之類的），但是對Web Development沒有什麼概念的人。這篇趁這個Sinatra讀書會的機會，來介紹一下整個Web的概念，還有前端、後端到底在說什麼？以Sinatra來當範例， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,294 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/02/28/getting-started-with-web-using-sinatra/">Web入門：使用Sinatra</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-02-28T15:21:19+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>3:21 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>緣起</h1>
+
+<p>常常被問，想學做網站，要從什麼開始學？不會XXX可以學OOO嗎？通常我遇到的都是原本有電資背景（會寫點C語言之類的），但是對Web Development沒有什麼概念的人。這篇趁這個Sinatra讀書會的機會，來介紹一下整個Web的概念，還有前端、後端到底在說什麼？以Sinatra來當範例，這樣介紹起來更具體。</p>
+
+<h1>Internet與World Wide Web</h1>
+
+<p>現在的人說「上網」，通常是用網頁瀏覽器看網站。不過Internet（網際網路）的概念，跟World Wide Web（常見於網紙的www）是兩個不同的概念。Internet指的是網路架構本身，全世界不同的區域網路（交大宿網、Hinet、TANET等等）連在一起，這樣我們就可以跟許多國家的伺服器交換資訊。www是建基於Internet的其中一種服務。其他還有telnet、smtp、imap、ftp等等其他協議。www是一種透過網際網路，存取放在遠端伺服器上的檔案的一種服務，正式的協議名稱叫做HTTP（HyperText Transfer Protocol 超文本交換協議）。所謂的超文本，就是html這個Markup Language，來呈現豐富的內容，而不是純文字。還透過超連結讓大家可以上網連來連去。這裡只是簡單介紹，維基百科跟其他各個地方都有詳細介紹。</p>
+
+<h1>URL</h1>
+
+<p>URL（Uniform Resource Locator），就是在網址列上的那行字串，大概包含以下：（以交大資工網站<a href="https://www.cs.nctu.edu.tw/cswebsite/">https://www.cs.nctu.edu.tw/cswebsite/</a>為例）
+1. 協議，通常是<a href="http://%E6%88%96https://%EF%BC%8C%E5%BE%8C%E8%80%85%E6%98%AF%E7%B6%93%E9%81%8ESSL%E5%8A%A0%E5%AF%86%E7%9A%84HTTP%E5%8D%94%E8%AD%B0%E3%80%82">http://%E6%88%96https://%EF%BC%8C%E5%BE%8C%E8%80%85%E6%98%AF%E7%B6%93%E9%81%8ESSL%E5%8A%A0%E5%AF%86%E7%9A%84HTTP%E5%8D%94%E8%AD%B0%E3%80%82</a>
+2. 域名，網址的/之前的那串（www.cs.nctu.edu.tw），也就是主機名稱，代表要到哪個伺服器獲得資源。
+3. port號，預設的port 80(http)跟port 443(https)不會在URL中顯示，如果要用預設之外的port，比如說localhost:3000，就在域名之後加上去就好。
+4. 路徑，資源的路徑，這裡是cswebsite，就是跟伺服器說我要cswebsite的這個東西。有點像檔案跟資料夾的概念，如果沒有加上檔案名稱，通常就是index.html、index、main.index等等，這裡就是到cswebsite底下找到index.php）
+5. URL parameter，後面還會有一些參數，比如說錨（#開頭的tag）還有一些給伺服器的參數，通常以問號開頭，如?blablabla</p>
+
+<h1>介紹HTTP</h1>
+
+<p>所以，我們上網的過程是這樣的：我們打開瀏覽器，輸入URL，這時候發生的事情如下：
+1. 瀏覽器向DNS Server解析URL中的域名，轉換成IP位址。
+2. 瀏覽器向得到的IP位址，傳送HTTP Request到80 port（http服務的標準port），告訴遠端伺服器，透過URL我要什麼資源
+3. 伺服器傳HTTP Response回瀏覽器，就是你看到的網站。可以用Firebug或Firefox、Chrome內建的除錯工具，觀察Requests跟Responses。</p>
+
+<p><img src="https://i.imgur.com/amRSRGD.png" alt="Firebox Screenshot" /></p>
+
+<p>HTTP Request有GET、POST、PUT、PATCH、DELETE等等幾個常見的Verb。最常見到的是GET跟POST。</p>
+
+<h2>GET</h2>
+
+<p>GET顧名思義就是從伺服器獲取指定資源，此資源就以URL指定，因此相關的參數都會寫在網址上。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;sinatra&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get</span> <span class="s1">&#39;/hello&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="s2">&quot;Hello, world!&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在這範例中，當使用者GET了server上/hello這個資源，就會回傳hello, world!。</p>
+
+<p><img src="https://i.imgur.com/ieBT3it.png" alt="Hello Screenshot" />o</p>
+
+<p>這裡再來示範一下URL parameter。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">get</span> <span class="s1">&#39;/hello&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;hello, </span><span class="si">#{</span><span class="n">params</span><span class="o">[</span><span class="ss">:name</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;hello&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="https://i.imgur.com/0LfpCnd.png" alt="GET Param Screenshot" /></p>
+
+<h2>POST</h2>
+
+<p>POST則用於上傳資訊到伺服器上，通常配合html表單使用。例如登入、填寫個人資訊、購物等等。以下是個簡單的範例，當然，真正的使用者驗證沒有那麼簡易。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;sinatra&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">get</span> <span class="s1">&#39;/login&#39;</span> <span class="k">do</span>
+</span><span class='line'><span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="s1">&lt;html lang=&quot;en&quot;&gt;</span>
+</span><span class='line'><span class="s1">  &lt;head&gt;</span>
+</span><span class='line'><span class="s1">    &lt;title&gt;Form Test&lt;/title&gt;</span>
+</span><span class='line'><span class="s1">    &lt;meta charset=&quot;utf-8&quot;&gt;</span>
+</span><span class='line'><span class="s1">  &lt;/head&gt;</span>
+</span><span class='line'><span class="s1">  &lt;body&gt;</span>
+</span><span class='line'><span class="s1">    &lt;form action=&quot;/login&quot; method=&quot;post&quot;&gt;</span>
+</span><span class='line'><span class="s1">      &lt;label for=&quot;username&quot;&gt;Username&lt;/label&gt;</span>
+</span><span class='line'><span class="s1">      &lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;/input&gt;</span>
+</span><span class='line'><span class="s1">      &lt;br&gt;</span>
+</span><span class='line'><span class="s1">      &lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;</span>
+</span><span class='line'><span class="s1">      &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;/input&gt;</span>
+</span><span class='line'><span class="s1">      &lt;br&gt;</span>
+</span><span class='line'><span class="s1">      &lt;button type=&quot;submit&quot;&gt;Submit&lt;/button&gt;</span>
+</span><span class='line'><span class="s1">    &lt;/form&gt;</span>
+</span><span class='line'><span class="s1">  &lt;/body&gt;</span>
+</span><span class='line'><span class="s1">&lt;/html&gt;</span>
+</span><span class='line'><span class="s1">&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">post</span> <span class="s2">&quot;/login&quot;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:username</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;foo&quot;</span> <span class="ow">and</span> <span class="n">params</span><span class="o">[</span><span class="ss">:password</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;bar&quot;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s2">&quot;You are successfully logged in.&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;incorrect username or password.&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>其他HTTP Verbs</h2>
+
+<p>其他的HTTP verbs可以參考這幾篇文章</p>
+
+<p><a href="https://ihower.tw/blog/archives/6483">HTTP Verbs: 談 POST, PUT 和 PATCH 的應用</a></p>
+
+<p><a href="http://www.ithome.com.tw/node/80062">重新認識HTTP請求方法</a></p>
+
+<h1>Web的前端、後端</h1>
+
+<p>常常聽到寫Web的人說，我是前端工程師（Frontend）、我是後端（Backend）工程師，甚至也有全端（Full Stack）工程師的說法。所謂Web的前端後端是什麼意思呢？</p>
+
+<p>（雖然現在常常用frontend developer、backend developer來略稱Web [front,back]end developer，但是我覺得除了在Web相關討論之外，還是不要略稱。jserv表示：我都寫compiler的frontend跟backend，可不可以去應徵全端工程師 XD）</p>
+
+<h2>Frontend</h2>
+
+<p>所謂Frontend，就是網站中，在瀏覽器上跑的部份，也就是在Client端執行。所以只有包含前端資料，而沒有跟伺服器後端動態互動的網站，就叫做Static Website，只要簡單的檔案存取就可以提供服務了。基本元件包含了Html、Javascript、CSS等。網站的樣式、特效、動畫、設計，都可以算在前端的部份。這幾年Javascript的蓬勃發展，讓前端可以做的事情越來越多。</p>
+
+<p>除了html、Javascript、CSS本身之外，前端也包含很多幫助寫前端的語言，可以compile成html、javascript、CSS。常見的有</p>
+
+<ol>
+<li>html的haml、slim等等。</li>
+<li>CSS的sass、scss、less等等。</li>
+<li>Javascript的coffee script、Livescript等等。</li>
+</ol>
+
+
+<p>前端也有很多framework或工具幫助開發：
+1. javascript framework: jQuery、prototype.js
+2. UI Framework: jQuery UI、jQuery mobile、react.js
+3. CSS Framework: boostrap、Semantic UI
+4. Frontend Framework: angular.js、Ember.js</p>
+
+<p>還有很多各種javascript的library，需要什麼功能可以先google一下看有沒有現成的工具幫助開發，通常都是開放原始碼的。如果有能力，也可以把程式貢獻給社群。</p>
+
+<p>逐一介紹這些元件：</p>
+
+<h3>html</h3>
+
+<p>html全名是hypertext markup language，是網站不可或缺的一部分。所有頁面的組成都是html，一般來說現在的觀念是，html負責內文、段落編排、分區等等，不要做樣式在上面。html以tag來當作基本元件，想要學習的話可以上codecademy或者是mozilla developer&rsquo;s network學學看。</p>
+
+<h3>css</h3>
+
+<p>html不負責樣式，樣式就給CSS（Cascading Style Sheet）來搞定。CSS利用html個元件的class跟id屬性來定義頁面的樣式。比如說顏色、尺寸、位置、字型、效果等等豐富的功能。</p>
+
+<h3>javascript</h3>
+
+<p>html跟css只提供靜態的外觀跟內文，在Client端要作到的邏輯部份，就由javascript負責。從按點某個按鈕會跳出某選單的簡易功能，到圖片編輯器、聊天室、非同步的與伺服器溝通（免重整）、檢查資料正確性、字串自動完成、程式碼高亮度、動畫、3D遊戲（可以利用WebGL）甚至數學運算跟顯示公式等等複雜的功能，都可以透過javascript完成。</p>
+
+<p>也因為這些豐富功能讓瀏覽器的效能變成問題，於是瀏覽器業者間的效能競爭，主要是圍繞javascript引擎的速度，javasript的效能可說是各個直譯式語言的冠軍，甚至可以接近native的c語言。於是就有人把javascript延伸到一般的機器上，走出瀏覽器，加上一般語言會有的IO、process等功能，就便成了最近流行的node.js。除了拿來當後端開發之外，還可以開發一般的系統程式。</p>
+
+<p>另外，javascript跟java在本質上並沒有關係，只是javascript在一些語法上是C-like，也就是長的有點像java，又當初java正潮的時候，發明javascript的netscape為了吸引目光就取了這個名字。</p>
+
+<h2>Backend</h2>
+
+<p>相對於前端，後端就是在Server端執行的程式，處理http request，對資料庫存取資料等等。因為是在Server上直接執行，所以沒有限定語言，所以幾乎常見的程式語言都有辦法做後端開發。後端的歷史悠久，先來介紹一下。</p>
+
+<p>後端程式開發通常包含了backend framework或程式語言，以及一個配合的資料庫程式（mysql、sqlite、postgresql、mssql、mongodb、oracle db等等）。後端程式把資料存在資料庫裡，當然也可以存在檔案文件裡，不過在現在已經比較少見了。</p>
+
+<h3>CGI</h3>
+
+<p>CGI指的是Common Gateway Interface，是最早的動態網頁技術。不是一個程式語言，而是提供了一個共通的API讓各個程式語言可以開發動態網頁。那時最流行的是用perl或bash來寫CGI。不過網路上應該也找的到很多用C寫的範例。</p>
+
+<h3>動態網頁語言</h3>
+
+<p>這些語言的的代表是開源的php、微軟的asp與sun的jsp。這些語言允許開發者可以簡單的撰寫專門給web使用的程式，而不用處理繁雜的底層問題。這些語言到現在都還在應用中，不過現在除了小網站程式之外，通常會配合一個framework來做事，而不是一個page一個page的寫這些程式。</p>
+
+<h3>後端框架</h3>
+
+<p>這是現在比較流行的方式，利用做好的框架來寫程式。這樣做出來的程式比較樣式統一、好維護，而且不用重複製造輪子，可以從現有的東西擴充。</p>
+
+<p>流行的框架，列出一些我常聽到的：
+1. Ruby的Ruby on Rails、Sinatra..
+2. php的Code ignitor、zend..
+3. node.js的express.js、meteor&hellip;
+4. python的django
+5. 微軟的ASP.net
+6. 一些JVM-based的，通常是java、scale等等語言的框架
+7. GO語言也有一些</p>
+
+<p>後端框架可以讓開發網站更容易快速。其中有些提供的功能比較完整，比如說Rails，他的哲學就是Convention over configuration、DRY(Don&rsquo;t Repeat Yourself)。可以快速的建立網站，也有很多附加擴充。</p>
+
+<p>也有比較簡易的Framework，像我這裡用的Sinatra。提供功能少不代表不好，而是每個app需要的功能不一樣，需要的規模也不一樣。我這裡是覺得Rails雖然很方便，但對於初學者來說學習曲線過陡。我認為如果以ruby來說，先學習sinatra來建立web概念，等到差不多熟悉的時候再上手rails，學習他的框架還有美學。學完Rails之後，我認為到其他許多framework都可以寫出好的程式，因為已經習慣rails裡好的convention了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/01/06/2015-1st-vmfive-lab-program/">[心得] 2015 1st VMFive Lab Program</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-01-06T02:39:48+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>2:39 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h1>前言</h1>
+
+<h2>資訊書報專題與CTHPC</h2>
+
+<p>一切都從2015年下學期（一年級下學期），交大電資學士班的資訊書報專題開始。我們班跟別班不同的地方，除了嚇死人的loading、三四年級修課自由、大四出國交換
+之外，就是大一上有電機書報專題、大一下有資訊書報專題。基本上就是一門小小的專題課，以像我修的一樣硬，也可以像通識一樣，簡單的做做報告就好。</p>
+
+<p>因為從中二時期碰了程式、Linux、Open source之後，更看了Linus Torvalds的傳記，其實心裡都有一個小小的願望想要開發像Linux、Apache等等一樣的底層軟體，默默的（？）讓全世界的人用。加上碰Linux也好久了（可以翻2010我國二寫的文章XD，那時還在用blogspot的樣子），所以其實對系統比較有認識，不過也是知識性的而已。於是找老師的時候我就去找交大系統軟體實驗室的游逸平老師，他們主要是研究compiler、GPGPU等等。老師非常用心，我這種小小的大一專題生，他都親自跟我meeting，據我所知他是個別跟大學部專題生meeting，親自盯進度，另外，我自己問老師可不可以參加實驗室定期的meeting，所以我每個禮拜都會聽碩士班的學長報論文XD。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -725,68 +1013,6 @@ EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-06-06T02:41:52+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:41 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Amarok can&rsquo;t play mp3 in Archlinux with gstreamer-* packages installed.</p>
-
-<p>Solution:
-According to the <a href="https://wiki.archlinux.org/index.php/GStreamer">ArchWiki page about Gstreamer</a>, gstreamer packages no longer called gstreamer-*,  but gst-* .
-so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and phonon-gstreamer)</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/05/25/hello/">[Hello] Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-25T22:52:28+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:52 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>New start and migrate <a href="http://joshua5201.logdown.com">Logdown</a> to here.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -802,6 +1028,14 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/02/28/getting-started-with-web-using-sinatra/">Web入門：使用Sinatra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/06/2015-1st-vmfive-lab-program/">[心得] 2015 1st VMFive Lab Program</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
       </li>
     
@@ -811,14 +1045,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
     
       <li class="post">
         <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/06/15/using-vnc-as-remote-desktop/">[Linux] VNC遠端桌面</a>
       </li>
     
   </ul>
