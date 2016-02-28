@@ -9,9 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149 這題最難的地方在於方向 (我是J睿捏我才會的) 起點放入queue
-從queue拿出點 四周可以通行的點步數都+1
-固定方向把接下來的點都放入queue &hellip;">
+  <meta name="description" content="http://tioj.redirectme.net:8080/JudgeOnline/showproblem?problem_id=1240 先sort但記錄原順序 對於每個s[i]拿最近且比他大的點 #include &lt;stdio.h> #include using namespace &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,117 +65,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uprc-1149-toi2007pd/">[Code] UPRC-1149 太空船(TOI初選2007pD)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-07T08:21:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:21 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149">http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149</a></p>
-
-<p>這題最難的地方在於方向 (我是J睿捏我才會的)</p>
-
-<ol>
-<li><p>起點放入queue</p></li>
-<li><p>從queue拿出點 四周可以通行的點步數都+1</p></li>
-<li><p>固定方向把接下來的點都放入queue 直到不能放為止<br/>
-    重點是要記得紀錄步數和把點戳成黑洞</p></li>
-</ol>
-
-
-<p>感謝jghs1328幫我debug好久..<br/>
-<a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-
-typedef struct {  
- int x;  
- int y;  
-} point;  
-point que[1000000];  
-point s, t;  
-char space[1002][1002];  
-int cost[1002][1002];  
-int dx[4] = {1, 0, -1, 0};  
-int dy[4] = {0, 1, 0, -1};  
-int front, rear;  
-int main()  
-{  
- int n, i, j;  
- scanf("%d\n", &amp;n);  
- for (i = 1; i &lt;= n; i++) {  
- for (j = 1; j &lt;= n; j++) {  
- space[i][j] = getchar();  
- if (space[i][j] == '1') {  
- space[i][j] = 0;  
- } else if (space[i][j] == 'A') {  
- s.x = i;  
- s.y = j;  
- } else if (space[i][j] == 'B') {  
- t.x = i;  
- t.y = j;  
- }  
- }  
- getchar();  
- }  
- front = rear = 0;  
- que[rear++] = s;  
- space[s.x][s.y] = 0;  
- cost[s.x][s.y] = -1;  
- while (front &lt; rear) {  
- point p = que[front++];  
- point n;  
- space[p.x][p.y] = 0;  
- if (p.x == t.x &amp;&amp; p.y == t.y) {  
- break;  
- }  
- for (i = 0; i &lt; 4; i++) {  
- n.x = p.x + dx[i];  
- n.y = p.y + dy[i];  
- if (space[n.x][n.y] == 0) {  
- continue;  
- }  
- que[rear++] = n;  
- cost[n.x][n.y] = cost[p.x][p.y] + 1;  
- space[n.x][n.y] = 0;  
- int tmp = cost[n.x][n.y];  
- n.x += dx[i];  
- n.y += dy[i];  
- while (space[n.x][n.y] != 0) {  
- que[rear++] = n;  
- cost[n.x][n.y] = tmp;  
- space[n.x][n.y] = 0;  
- n.x += dx[i];  
- n.y += dy[i];  
- }  
- }  
- }  
- printf("%d\n", cost[t.x][t.y]);  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -861,6 +748,61 @@ joshua ALL=(ALL) NOPASSWD:ALL
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/10/17/ubuntuubuntuipod-shuffle/">[Ubuntu]在ubuntu下用ipod Shuffle</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-10-17T10:08:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>17</span><span class='date-suffix'>th</span>, <span class='date-year'>2010</span></span> <span class='time'>10:08 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href=""></a><br/>
+安裝工具程式<br/>
+<code>$ sudo aptitude install gnupod-tools</code><br/>
+初始化ipod<br/>
+<code>$ gnupod_INIT -m /media/IPOD</code><br/>
+gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuild_db<br/>
+可以直接把音樂檔案放在ipod裡<br/>
+不用再透過itunes, gtkpod等等軟體<br/>
+<a href="http://sourceforge.net/projects/shuffle-db/files/">下載rebuild_db</a><br/>
+下載回來的檔案解壓縮後放在ipod的根目錄(通常是/media/IPOD)<br/>
+<code>$ cd /media/ipod</code><br/>
+然後把你的音樂放在ipod資料夾</p>
+
+<p>注意 rebuild_db不支援中文檔名 因此請務必在歌曲或資料夾名稱前依自己喜好的順序加上數字<br/>
+如 1 - 曲目名稱<br/>
+然後<br/>
+<code>$ python ./rebuild_db.py -r</code><br/>
+注意 以後每次在ipod中有變動時 都要執行一次<br/>
+現在 <br/>
+<code>$ umount /media/IPOD</code><br/>
+移除ipod插頭 就可以了</p>
+
+<p>參考資料<br/>
+<a href="http://www.gnu.org/software/gnupod/gnupod.html">GNUpod Manual</a><br/>
+<a href="http://shuffle-db.sourceforge.net/">rebuild_db</a><br/>
+<a href="http://abev66.blogspot.com/2009/02/ipod-shuffle-ubuntu-rebuilddb.html">http://abev66.blogspot.com/2009/02/ipod-shuffle-ubuntu-rebuilddb.html</a><br/>
+<a href="http://nullfield.org/LinuxPod.html">http://nullfield.org/LinuxPod.html</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -882,10 +824,6 @@ joshua ALL=(ALL) NOPASSWD:ALL
       </li>
     
       <li class="post">
-        <a href="/blog/2016/01/06/2015-1st-vmfive-lab-program/">[心得] 2015 1st VMFive Lab Program</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
       </li>
     
@@ -895,6 +833,10 @@ joshua ALL=(ALL) NOPASSWD:ALL
     
       <li class="post">
         <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
   </ul>

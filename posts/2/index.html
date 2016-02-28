@@ -9,8 +9,8 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="Amarok can&rsquo;t play mp3 in Archlinux with gstreamer-* packages installed. Solution:
-According to the ArchWiki page about Gstreamer, gstreamer &hellip;">
+  <meta name="description" content="New start and migrate Logdown to here.
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,39 +66,6 @@ According to the ArchWiki page about Gstreamer, gstreamer &hellip;">
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-06-06T02:41:52+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:41 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Amarok can&rsquo;t play mp3 in Archlinux with gstreamer-* packages installed.</p>
-
-<p>Solution:
-According to the <a href="https://wiki.archlinux.org/index.php/GStreamer">ArchWiki page about Gstreamer</a>, gstreamer packages no longer called gstreamer-*,  but gst-* .
-so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and phonon-gstreamer)</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -644,6 +611,56 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/">[Linux] Convert and Resize Images From Command Line Using ImageMagick</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-02T16:59:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>4:59 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># installing</span>
+</span><span class='line'>sudo pacman -S imagemagick
+</span><span class='line'><span class="c"># converting from png to jpg</span>
+</span><span class='line'>convert image.png image.jpg
+</span><span class='line'><span class="c">#resizing</span>
+</span><span class='line'>convert image.png -resize 1024x768 resized.png
+</span><span class='line'>convert image.png -resize <span class="m">1024</span> resized.png
+</span><span class='line'>convert image.png -resize x768 resized.png
+</span><span class='line'>convert image.png -resize 1000x200! resized.png
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -665,10 +682,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
       </li>
     
       <li class="post">
-        <a href="/blog/2016/01/06/2015-1st-vmfive-lab-program/">[心得] 2015 1st VMFive Lab Program</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
       </li>
     
@@ -678,6 +691,10 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
     
       <li class="post">
         <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
   </ul>

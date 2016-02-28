@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-02-28T19:12:08+08:00</updated>
+  <updated>2016-02-28T19:18:46+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -270,22 +270,6 @@
 <p><a href="https://jquery.com/">jQuery</a></p>
 
 <p><a href="http://getbootstrap.com/">Bootstrap</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[心得] 2015 1st VMFive Lab Program]]></title>
-    <link href="http://joshua5201.github.io/blog/2016/01/06/2015-1st-vmfive-lab-program/"/>
-    <updated>2016-01-06T02:39:48+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2016/01/06/2015-1st-vmfive-lab-program</id>
-    <content type="html"><![CDATA[<h1>前言</h1>
-
-<h2>資訊書報專題與CTHPC</h2>
-
-<p>一切都從2015年下學期（一年級下學期），交大電資學士班的資訊書報專題開始。我們班跟別班不同的地方，除了嚇死人的loading、三四年級修課自由、大四出國交換
-之外，就是大一上有電機書報專題、大一下有資訊書報專題。基本上就是一門小小的專題課，以像我修的一樣硬，也可以像通識一樣，簡單的做做報告就好。</p>
-
-<p>因為從中二時期碰了程式、Linux、Open source之後，更看了Linus Torvalds的傳記，其實心裡都有一個小小的願望想要開發像Linux、Apache等等一樣的底層軟體，默默的（？）讓全世界的人用。加上碰Linux也好久了（可以翻2010我國二寫的文章XD，那時還在用blogspot的樣子），所以其實對系統比較有認識，不過也是知識性的而已。於是找老師的時候我就去找交大系統軟體實驗室的游逸平老師，他們主要是研究compiler、GPGPU等等。老師非常用心，我這種小小的大一專題生，他都親自跟我meeting，據我所知他是個別跟大學部專題生meeting，親自盯進度，另外，我自己問老師可不可以參加實驗室定期的meeting，所以我每個禮拜都會聽碩士班的學長報論文XD。</p>
 ]]></content>
   </entry>
   
@@ -1162,6 +1146,36 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
 
 <p>有些一時忘掉了 以後有機會再補</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[Linux] Convert and Resize Images From Command Line Using ImageMagick]]></title>
+    <link href="http://joshua5201.github.io/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick/"/>
+    <updated>2013-10-02T16:59:00+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2013/10/02/linux-convert-and-resize-images-from-command-line-using-imagemagick</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># installing</span>
+</span><span class='line'>sudo pacman -S imagemagick
+</span><span class='line'><span class="c"># converting from png to jpg</span>
+</span><span class='line'>convert image.png image.jpg
+</span><span class='line'><span class="c">#resizing</span>
+</span><span class='line'>convert image.png -resize 1024x768 resized.png
+</span><span class='line'>convert image.png -resize <span class="m">1024</span> resized.png
+</span><span class='line'>convert image.png -resize x768 resized.png
+</span><span class='line'>convert image.png -resize 1000x200! resized.png
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><a href="http://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/">Source</a></p>
 ]]></content>
   </entry>
   
