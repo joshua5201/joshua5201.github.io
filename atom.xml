@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-02-28T22:17:29+08:00</updated>
+  <updated>2016-02-28T22:19:08+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -73,7 +73,7 @@
 
 <p>在這範例中，當使用者GET了server上/hello這個資源，就會回傳hello, world!。</p>
 
-<p><img src="https://i.imgur.com/ieBT3it.png" alt="Hello Screenshot" /></p>
+<p><img src="https://i.imgur.com/UVb6lGI.png" alt="Hello Screenshot" /></p>
 
 <p>這裡再來示範一下URL parameter。</p>
 
