@@ -110,10 +110,14 @@
 
 <h1>介紹HTTP</h1>
 
-<p>所以，我們上網的過程是這樣的：我們打開瀏覽器，輸入URL，這時候發生的事情如下：
-1. 瀏覽器向DNS Server解析URL中的域名，轉換成IP位址。
-2. 瀏覽器向得到的IP位址，傳送HTTP Request到80 port（http服務的標準port），告訴遠端伺服器，透過URL我要什麼資源
-3. 伺服器傳HTTP Response回瀏覽器，就是你看到的網站。可以用Firebug或Firefox、Chrome內建的除錯工具，觀察Requests跟Responses。</p>
+<p>所以，我們上網的過程是這樣的：我們打開瀏覽器，輸入URL，這時候發生的事情如下：</p>
+
+<ol>
+<li>瀏覽器向DNS Server解析URL中的域名，轉換成IP位址。</li>
+<li>瀏覽器向得到的IP位址，傳送HTTP Request到80 port（http服務的標準port），告訴遠端伺服器，透過URL我要什麼資源</li>
+<li>伺服器傳HTTP Response回瀏覽器，就是你看到的網站。可以用Firebug或Firefox、Chrome內建的除錯工具，觀察Requests跟Responses。</li>
+</ol>
+
 
 <p><img src="https://i.imgur.com/amRSRGD.png" alt="Firebox Screenshot" /></p>
 
