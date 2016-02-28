@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-02-28T18:50:02+08:00</updated>
+  <updated>2016-02-28T18:56:06+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -28,7 +28,7 @@
 
 <h1>URL</h1>
 
-<p>URL（Uniform Resource Locator），就是在網址列上的那行字串，大概包含以下：（以交大資工網站<a href="https://www.cs.nctu.edu.tw/cswebsite/">https://www.cs.nctu.edu.tw/cswebsite/</a>為例）
+<p>URL（Uniform Resource Locator），就是在網址列上的那行字串，大概包含以下：（以交大資工網站 <a href="https://www.cs.nctu.edu.tw/cswebsite/">https://www.cs.nctu.edu.tw/cswebsite/</a> 為例）
 1. 協議，通常是<a href="http://%E6%88%96https://%EF%BC%8C%E5%BE%8C%E8%80%85%E6%98%AF%E7%B6%93%E9%81%8ESSL%E5%8A%A0%E5%AF%86%E7%9A%84HTTP%E5%8D%94%E8%AD%B0%E3%80%82">http://%E6%88%96https://%EF%BC%8C%E5%BE%8C%E8%80%85%E6%98%AF%E7%B6%93%E9%81%8ESSL%E5%8A%A0%E5%AF%86%E7%9A%84HTTP%E5%8D%94%E8%AD%B0%E3%80%82</a>
 2. 域名，網址的/之前的那串（www.cs.nctu.edu.tw），也就是主機名稱，代表要到哪個伺服器獲得資源。
 3. port號，預設的port 80(http)跟port 443(https)不會在URL中顯示，如果要用預設之外的port，比如說localhost:3000，就在域名之後加上去就好。
@@ -158,6 +158,12 @@
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p><img src="http://i.imgur.com/EqY46mm.png" alt="post screenshot 1" /></p>
+
+<p><img src="http://i.imgur.com/5vXst38.png" alt="post screenshot 2" /></p>
+
+<p><img src="http://i.imgur.com/bf1Xsre.png" alt="post screenshot 3" /></p>
 
 <h2>其他HTTP Verbs</h2>
 
