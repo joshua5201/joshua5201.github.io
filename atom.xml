@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-02-28T22:49:14+08:00</updated>
+  <updated>2016-02-28T23:03:27+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -300,7 +300,7 @@
 
 <p>html跟css只提供靜態的外觀跟內文，在Client端要作到的邏輯部份，就由javascript負責。從按點某個按鈕會跳出某選單的簡易功能，到圖片編輯器、聊天室、非同步的與伺服器溝通（免重整）、檢查資料正確性、字串自動完成、程式碼高亮度、動畫、3D遊戲（可以利用WebGL）甚至數學運算跟顯示公式等等複雜的功能，都可以透過javascript完成。</p>
 
-<p>也因為這些豐富功能讓瀏覽器的效能變成問題，於是瀏覽器業者間的效能競爭，主要是圍繞javascript引擎的速度，javasript的效能可說是各個直譯式語言的冠軍，甚至可以接近native的c語言。於是就有人把javascript延伸到一般的機器上，走出瀏覽器，加上一般語言會有的IO、process等功能，就便成了最近流行的node.js。除了拿來當後端開發之外，還可以開發一般的系統程式。</p>
+<p>也因為這些豐富功能讓瀏覽器的效能變成問題，於是瀏覽器業者間的效能競爭，主要是圍繞javascript引擎的速度，javasript的效能可說是各個直譯式語言的佼佼者。於是就有人把javascript延伸到一般的機器上，走出瀏覽器，加上一般語言會有的IO、process等功能，就便成了最近流行的node.js。除了拿來當後端開發之外，還可以開發一般的系統程式。</p>
 
 <p>另外，javascript跟java在本質上並沒有關係，只是javascript在一些語法上是C-like，也就是長的有點像java，又當初java正潮的時候，發明javascript的netscape公司為了吸引目光就取了這個名字。</p>
 
