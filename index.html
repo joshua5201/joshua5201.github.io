@@ -9,7 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="緣起 常常被問，想學做網站，要從什麼開始學？不會XXX可以學OOO嗎？通常我遇到的都是原本有電資背景（會寫點C語言之類的），但是對Web Development沒有什麼概念的人。這篇趁這個Sinatra讀書會的機會，來介紹一下整個Web的概念，還有前端、後端到底在說什麼？以Sinatra來當範例， &hellip;">
+  <meta name="description" content="紀錄一下今天參加的活動。本來想要邊聽邊打的後來懶惰就沒打了。把記得的東西補紀錄一下。 主題：Rails 安全的過去與現在 地點：五倍紅寶石 講者：Shaolin 先講結論（Shaolin 大大真的先講結論 XD） Rails 因為設計良好，很難寫出常見的漏洞。通常出事都是工程師太雷（權限之類） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,102 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/07/12/rails-security-at-taipei-rb/">[Rails] Taipei.rb 心得 Rails 安全的過去與現在</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-07-12T23:29:26+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>11:29 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>紀錄一下今天參加的活動。本來想要邊聽邊打的後來懶惰就沒打了。把記得的東西補紀錄一下。</p>
+
+<p>主題：<a href="http://rubytaiwan.kktix.cc/events/taipeidotrb-201604">Rails 安全的過去與現在</a></p>
+
+<p>地點：<a href="https://5xruby.tw/">五倍紅寶石</a></p>
+
+<p>講者：Shaolin</p>
+
+<h2>先講結論（Shaolin 大大真的先講結論 XD）</h2>
+
+<p>Rails 因為設計良好，很難寫出常見的漏洞。通常出事都是工程師太雷（權限之類）或者是不是 Rails 的錯（shaolin 大大表示：Rails 網站好難打），今天講了幾個案例。</p>
+
+<h2>歷史案例 - Mass Assignment</h2>
+
+<p>Rails 出過最大的包大概就是 Mass assignment 的漏洞，在 GitHub 的 rails/rails 塞了一個 commit 。</p>
+
+<p>四年前發生的，因為這個 Rails 界應該很多人都知道，講者也沒講很多。我就提供當初 xdite 的兩篇文章給大家參考一下，大家就加減看。</p>
+
+<p><a href="http://blog.xdite.net/posts/2012/03/05/github-hacked-rails-security/">從 Github 被 hack，談 Rails 的安全性（ mass-assignment ）</a></p>
+
+<p><a href="http://blog.xdite.net/posts/2012/08/12/strong-parameter-mass-assignment-solution">Strong Parameter: Mass Assignment 機制的防彈衣</a></p>
+
+<p>基本上這個現在早就被修掉了。如果很多人一開始學就是 Rails 4 ，可能根本沒遇過這個。</p>
+
+<h2>在 GitHub 上面的 Session Secret</h2>
+
+<p>Rails 的 Session 預設是存在 Cookie 裡的。實做方式是把 Session 的 Hash 用 base64 encode 之後，再用 secret key 跟 base64 string 做 Sinature 防只有心人士惡意竄改。</p>
+
+<p>所以 <code>config/secrets.yml</code> 如果一不小心被 <code>git add</code> 了，然後被 push 到 GitHub 上公開的 Repo 的話，就可以被拿去偽造。就算你事後刪掉，git 的紀錄都還是留的下來。</p>
+
+<p>我的作法是一開始就把他 <code>git ignore</code> 掉，然後複製預設的到 <code>secrets.yml.example</code> 。自己用的那套再用 <code>rake secret</code> 重新生。</p>
+
+<p>可以參考這篇：<a href="http://robertheaton.com/2013/07/22/how-to-hack-a-rails-app-using-its-secret-token/">How to hack a Rails app using its secret_token</a></p>
+
+<h2>Dynamic Render Path</h2>
+
+<p>在 Rails Controller 裡面，如果你這樣做：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>  <span class="n">page</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:page</span><span class="o">]</span> <span class="o">||</span> <span class="s1">&#39;index&#39;</span>
+</span><span class='line'>  <span class="n">render</span> <span class="n">page</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣你下 <code>/some_controller/index?page=foo</code> 他就會去找 <code>foo.html.erb</code> 。那如果你下 <code>/some_controller/index?page=/etc/passwd</code> 就很有可能輕鬆 GET <code>/etc/passwd</code>。</p>
+
+<p>shaolin 提供了一個很有趣的 hack ，因為 rails 預設的 template engine 是 erb ，所以如果你在 content type 裡加上奇怪的東西，比如說<code>&lt;%= \</code>params[:cmd]` %><code>，再用前面的方法去 load</code>log/production.log` ，從此之後，你就可以輕鬆執行任何指令了。這個 bug 也已經修掉了，現在預設的 template engine 是純文字。但是這種寫法還是很不好，因為其他檔案都被看光光。我看了一下我的網站，幸好有類似作法的都是用 if 去判斷某幾種參數，不然就跳到 fallback。</p>
+
+<p>參考講者公司的 Blog 文章：<a href="http://devco.re/blog/2015/07/24/the-vulnerability-of-dynamic-render-paths-in-rails/"> Rails 動態樣板路徑的風險 </a></p>
+
+<h2>Imagetragick</h2>
+
+<p>網頁常常會用到 ImageMagick ，因為常常會用到上傳圖片等等功能。在很多常用的 Gem 裡都有包含。比如說carrierwave、paperclip、RMagick、mini magick。</p>
+
+<p>因為這些會去執行到 shell 指令，概念就是 <code>convert a.png out.jpg | ls -la</code> 之類的。這是很新的 bug （CVE-2016-3714），所以要趕快更新 ImageMagick。</p>
+
+<p>還有網站專門講這個的 <a href="https://imagetragick.com/">Image Magick</a> // Make ImageMagick Great Again XDDDDDD</p>
+
+<h2>SQL Injection</h2>
+
+<p>接下來就是一些 Rails 的 SQL Injection 。其實 Rails 的 SQL Injection 防的不錯，剩下的其實都蠻難湊出來的。</p>
+
+<p>有個網站有整理：<a href="http://rails-sqli.org/">Rails SQL Injection</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1102,39 +1198,6 @@ EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/06/linux-amarok-mp3-playback-in-archlinux/">[Linux] Amarok Mp3 Playback in Archlinux</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-06-06T02:41:52+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:41 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Amarok can&rsquo;t play mp3 in Archlinux with gstreamer-* packages installed.</p>
-
-<p>Solution:
-According to the <a href="https://wiki.archlinux.org/index.php/GStreamer">ArchWiki page about Gstreamer</a>, gstreamer packages no longer called gstreamer-*,  but gst-* .
-so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and phonon-gstreamer)</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1150,6 +1213,10 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/07/12/rails-security-at-taipei-rb/">[Rails] Taipei.rb 心得 Rails 安全的過去與現在</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/02/28/getting-started-with-web-using-sinatra/">Web入門：使用Sinatra</a>
       </li>
     
@@ -1163,10 +1230,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
     
       <li class="post">
         <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/10/archlinux-automatically-do-system-upgrade-in-systemd/">[Archlinux] Writing Timer Units to Do Daily System Upgrade in Systemd</a>
       </li>
     
   </ul>
