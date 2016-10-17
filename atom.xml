@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-07-13T02:00:05+08:00</updated>
+  <updated>2016-10-18T01:55:00+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,6 +12,756 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[[Note] 網站佈署環境小筆記]]></title>
+    <link href="http://joshua5201.github.io/blog/2016/10/18/my-deploy-environment/"/>
+    <updated>2016-10-18T00:03:21+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2016/10/18/my-deploy-environment</id>
+    <content type="html"><![CDATA[<p>因為常常在要佈署網站時，有一些相似的流程，想說紀錄一下。這是個簡單的筆記，也許有遺漏的地方，請多多指出。</p>
+
+<h1>Linux Distribution</h1>
+
+<p>對於 Production Server ，我比較喜歡用穩定一點的 CentOS ，但是很多別人的伺服器都是 Ubuntu LTS ，所以基本上這個 Guide 算是通用。一般我的網站都是放在 Linode 新加坡的機器上。</p>
+
+<h1>使用的 Capistrano 相關套件</h1>
+
+<p>其實除了這段比較針對 Rails 之外，其他的部份不只是用 Ruby on Rails ，我也是用這個環境跟 Capistrano 佈署手上的 django Project 。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capistrano&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capistrano-rails&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capistrano-bundler&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capistrano-rvm&#39;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capistrano3-puma&#39;</span><span class="p">,</span> <span class="ss">github</span><span class="p">:</span> <span class="s2">&quot;seuros/capistrano-puma&quot;</span>
+</span><span class='line'>  <span class="n">gem</span> <span class="s1">&#39;capistrano-rake&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我用的 Solution 是:</p>
+
+<ol>
+<li>Web Server: nginx</li>
+<li>Rack Server: puma</li>
+<li>Ruby Version: RVM</li>
+<li>Database: PosrgreSQL</li>
+</ol>
+
+
+<p>這篇的舉例是用 Ruby on Rails 為主，之前有碰到一點點 Python ，會另外介紹。不過大部份應該是共通的。</p>
+
+<h1>設定 Deploy User 跟 SSH Keys</h1>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo useradd -m -s /bin/bash deploy
+</span><span class='line'><span class="nv">$ </span>sudo su -l deploy <span class="c"># 切換到 deploy 使用者</span>
+</span><span class='line'><span class="nv">$ </span>mkdir .ssh
+</span><span class='line'><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;[填入你要用來登入這個帳號的 public key(s)]&quot;</span> &gt; .ssh/authorized_keys
+</span><span class='line'><span class="nv">$ </span>ssh-keygen <span class="c"># 生成用來 pull git repository 的 deploy key ，一直按 enter 就好。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>記得照<a href="https://developer.github.com/guides/managing-deploy-keys/#deploy-keys">這篇</a>的說明把剛剛生成的 deploy key 的 <code>.ssh/id_rsa.pub</code> 的內容放上去。</p>
+
+<p>這個 User 並沒有設定密碼，預設的 <code>/etc/ssh/sshd_config</code> 的 <code>PermitEmptyPasswords</code> 應該是 <code>no</code> 保險起見可以檢查一下。這樣就只能透過 public key 驗證。通常我會有另外一個常用的可以 sudo 的 user 在機器上。</p>
+
+<p>我喜歡把 App 都放在 <code>/home/deploy</code> 裡面，每個網站就直接拿網址當作資料夾名稱，若同網址有不同的 stage 用底線在後面加註。如： some-good-app.example.org, some-good-app.example.org_staging 。</p>
+
+<h1>關閉 SELinux</h1>
+
+<p>SELinux 是一個進階的安全模組，但是因為設定複雜、限制不少，一般的 Linux distribution 都是預設關閉的。但是 RedHat 系的 CentOS 及 Fedora 預設是把 SELinux 開啟的，可以參考這個把他關掉。<a href="https://www.centos.org/docs/5/html/5.2/Deployment_Guide/sec-sel-enable-disable.html">45.2.7. Enable or Disable SELinux</a>。慶幸的是 linode 的一開始就是關掉的。</p>
+
+<h1>Nginx 設定</h1>
+
+<h2>網站設定檔路徑</h2>
+
+<p>設定的部份，一般來說會把機器上的各個 App 的設定檔放在 <code>/etc/nginx/sites-available</code> ，然後要 enable 的 App 呢，就利用指到到 <code>sites-available</code> 裡面的設定檔的 Symbol link ，然後放在 <code>/etc/nginx/sites-enabled</code> 。我們要做的是在 <code>/etc/nginx/nginx.conf</code> 裡 include <code>sites-enabled</code> 這個資料夾。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>http <span class="o">{</span>
+</span><span class='line'>    .....
+</span><span class='line'>    .....
+</span><span class='line'>    include /etc/nginx/conf.d/*.conf<span class="p">;</span>
+</span><span class='line'>    <span class="c"># 加入這行：</span>
+</span><span class='line'>    include /etc/nginx/sites-enabled/*<span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>設定 nginx 執行的 user</h2>
+
+<p>一般來說 nginx 是用 www-data 這個 user 來執行，我們要把他改成 deploy 。</p>
+
+<p>就在 nginx.conf 的最前面，把 user 改成 deploy 。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>user deploy<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Nginx 網站設定檔</h1>
+
+<p>再來就是針對我們要 deploy 的 App 的設定檔。這裡給一個有 https 的設定，跟 http 的設定範例。這個設定檔包含一些常見的設定。我還想弄把 static 跟 動態網域分開的，但是我目前還沒玩過，用過之後再來補上設定。</p>
+
+<h2>https 的範例：</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># 設定 upstream 路徑</span>
+</span><span class='line'>upstream some-good-app <span class="o">{</span>
+</span><span class='line'>        server unix:///home/deploy/some-good-app/shared/tmp/sockets/puma.sock<span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># 強迫使用 https （如用 http 會自動重新導向至 https）</span>
+</span><span class='line'>server <span class="o">{</span>
+</span><span class='line'>        listen 80<span class="p">;</span>
+</span><span class='line'>        server_name some-good-app.example.org
+</span><span class='line'>        <span class="k">return</span> <span class="m">301</span> https://<span class="nv">$server_name$request_uri</span><span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>server <span class="o">{</span>
+</span><span class='line'>        listen <span class="m">443</span> ssl<span class="p">;</span>
+</span><span class='line'>        server_name some-good-app.example.org
+</span><span class='line'>        root /home/deploy/some-good-app/current/public/<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 連到你 ssl certificate 的路徑，通常提供商都會教你怎麼弄這兩個檔案（可以下 keyword 像 comodo postive ssl nginx config）</span>
+</span><span class='line'>        ssl_certificate /etc/ssl/nginx/some-good-app.example.org.crt<span class="p">;</span>
+</span><span class='line'>        ssl_certificate_key /etc/ssl/nginx/some-good-app.example.org.key<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 強迫使用較新版本的加密方式</span>
+</span><span class='line'>        ssl_protocols TLSv1 TLSv1.1 TLSv1.2<span class="p">;</span>
+</span><span class='line'>        ssl_ciphers <span class="s2">&quot;ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4&quot;</span><span class="p">;</span>
+</span><span class='line'>        ssl_prefer_server_ciphers on<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        location / <span class="o">{</span>
+</span><span class='line'>                proxy_pass http://some-good-app<span class="p">;</span>
+</span><span class='line'>                proxy_set_header Host <span class="nv">$host</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header X-Real-IP <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header client_ip <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header remote_ip <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>                sendfile on<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 檔案壓縮傳輸 </span>
+</span><span class='line'>        gzip on<span class="p">;</span>
+</span><span class='line'>        gzip_disable <span class="s2">&quot;msie6&quot;</span><span class="p">;</span>
+</span><span class='line'>        gzip_http_version 1.1<span class="p">;</span>
+</span><span class='line'>        gzip_proxied no-cache no-store private expired auth<span class="p">;</span>
+</span><span class='line'>        gzip_min_length 500<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># Log 位置</span>
+</span><span class='line'>        access_log /var/log/nginx/some-good-app-access.log<span class="p">;</span>
+</span><span class='line'>        error_log /var/log/nginx/some-good-app-error.log<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 讓 nginx 負責 static assets </span>
+</span><span class='line'>        location ^~ /assets/ <span class="o">{</span>
+</span><span class='line'>                tcp_nodelay on<span class="p">;</span>
+</span><span class='line'>                tcp_nopush on<span class="p">;</span>
+</span><span class='line'>                sendfile on<span class="p">;</span>
+</span><span class='line'>                sendfile_max_chunk 200m<span class="p">;</span>
+</span><span class='line'>                expires 1w<span class="p">;</span>
+</span><span class='line'>                gzip_static on<span class="p">;</span>
+</span><span class='line'>                add_header Cache-Control public<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>http 的範例：</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>upstream some-good-app <span class="o">{</span>
+</span><span class='line'>        server unix:///home/deploy/some-good-app/shared/tmp/sockets/puma.sock<span class="p">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>server <span class="o">{</span>
+</span><span class='line'>        listen 80<span class="p">;</span>
+</span><span class='line'>        server_name some-good-app.example.org
+</span><span class='line'>        root /home/deploy/some-good-app/current/public/<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        location / <span class="o">{</span>
+</span><span class='line'>                proxy_pass http://some-good-app<span class="p">;</span>
+</span><span class='line'>                proxy_set_header Host <span class="nv">$host</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header X-Forwarded-For <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header X-Real-IP <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header client_ip <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>                proxy_set_header remote_ip <span class="nv">$remote_addr</span><span class="p">;</span>
+</span><span class='line'>                sendfile on<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>        gzip on<span class="p">;</span>
+</span><span class='line'>        gzip_disable <span class="s2">&quot;msie6&quot;</span><span class="p">;</span>
+</span><span class='line'>        gzip_http_version 1.1<span class="p">;</span>
+</span><span class='line'>        gzip_proxied no-cache no-store private expired auth<span class="p">;</span>
+</span><span class='line'>        gzip_min_length 500<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        access_log /var/log/nginx/some-good-app-access.log<span class="p">;</span>
+</span><span class='line'>        error_log /var/log/nginx/some-good-app-error.log<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        location ^~ /assets/ <span class="o">{</span>
+</span><span class='line'>                tcp_nodelay on<span class="p">;</span>
+</span><span class='line'>                tcp_nopush on<span class="p">;</span>
+</span><span class='line'>                sendfile on<span class="p">;</span>
+</span><span class='line'>                sendfile_max_chunk 200m<span class="p">;</span>
+</span><span class='line'>                expires 1w<span class="p">;</span>
+</span><span class='line'>                gzip_static on<span class="p">;</span>
+</span><span class='line'>                add_header Cache-Control public<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>管理 Nginx 服務</h1>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>systemctl start/stop/status/restart/reload nginx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果設定檔有錯誤，在 status 裡會提到。</p>
+
+<h1>PostgreSQL 與 database.yml</h1>
+
+<p>安裝完後，可以直接啟動 PostgreSQL 的服務。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>systemctl start postgresql
+</span><span class='line'><span class="nv">$ </span>systemctl <span class="nb">enable </span>postgresql
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Postgres 方便的是可以直接用 shell 來管理，要 <code>su</code> 到 <code>postgres</code> 使用者。這裡先建立我們要用到的 user 。而且本機使用也可以不設定 db 密碼。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>sudo su -l postgres
+</span><span class='line'>postgres@example <span class="nv">$ </span>createuser --createdb -s deploy
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣一來， database.yml 就能方便的這樣設定，因為如果沒有設定 user 就會找跟 deploy user 一樣的 user ，在這裡就是 <code>deploy</code> 這個 user 。
+在你的開發機上也許有其他相應的 user 。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>default: <span class="p">&amp;</span>default
+</span><span class='line'>  adapter: postgresql
+</span><span class='line'>  encoding: unicode
+</span><span class='line'>  pool: 5
+</span><span class='line'>
+</span><span class='line'>development:
+</span><span class='line'>  &lt;&lt;: *default
+</span><span class='line'>  database: good-app_development
+</span><span class='line'>
+</span><span class='line'><span class="c"># Warning: The database defined as &quot;test&quot; will be erased and</span>
+</span><span class='line'><span class="c"># re-generated from your development database when you run &quot;rake&quot;.</span>
+</span><span class='line'><span class="c"># Do not set this db to the same as development or production.</span>
+</span><span class='line'><span class="nb">test</span>:
+</span><span class='line'>  &lt;&lt;: *default
+</span><span class='line'>  database: good-app_test
+</span><span class='line'>
+</span><span class='line'>staging:
+</span><span class='line'>  &lt;&lt;: *default
+</span><span class='line'>  database: good-app_staging
+</span><span class='line'>
+</span><span class='line'>production:
+</span><span class='line'>  &lt;&lt;: *default
+</span><span class='line'>  database: good-app_production
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Capistrano</h1>
+
+<h2>安裝</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>bundle <span class="nb">exec </span>cap install
+</span><span class='line'><span class="c"># 最後會有一個問你要不要用他服務的 選不要就好 XDD</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>他會幫你生成下列檔案（取自<a href="https://github.com/capistrano/capistrano/blob/master/README.md">官方 Github 的 README</a>）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>├── Capfile
+</span><span class='line'>├── config
+</span><span class='line'>│   ├── deploy
+</span><span class='line'>│   │   ├── production.rb
+</span><span class='line'>│   │   └── staging.rb
+</span><span class='line'>│   └── deploy.rb
+</span><span class='line'>└── lib
+</span><span class='line'>    └── capistrano
+</span><span class='line'>            └── tasks
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>設定</h2>
+
+<h3>Capfile</h3>
+
+<p>Capfile 是設定要用哪些 capistrano 相關的 package 。記得，這些 package 都要在 Gemfile 被 include 到。</p>
+
+<p>他已經預設有一些範例了，這是我通常用的。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># Load DSL and set up stages</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;capistrano/setup&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Include default deployment tasks</span>
+</span><span class='line'><span class="nb">require</span> <span class="s2">&quot;capistrano/deploy&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Include tasks from other gems included in your Gemfile</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># For documentation on these, see for example:</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1">#   https://github.com/capistrano/rvm</span>
+</span><span class='line'><span class="c1">#   https://github.com/capistrano/rbenv</span>
+</span><span class='line'><span class="c1">#   https://github.com/capistrano/chruby</span>
+</span><span class='line'><span class="c1">#   https://github.com/capistrano/bundler</span>
+</span><span class='line'><span class="c1">#   https://github.com/capistrano/rails</span>
+</span><span class='line'><span class="c1">#   https://github.com/capistrano/passenger</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/rvm&#39;</span>
+</span><span class='line'><span class="c1"># require &#39;capistrano/rbenv&#39;</span>
+</span><span class='line'><span class="c1"># require &#39;capistrano/chruby&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/bundler&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/rails/assets&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/rails/migrations&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/rake&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/puma&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;capistrano/puma/workers&#39;</span> <span class="c1"># if you want to control the workers (in cluster mode)</span>
+</span><span class='line'><span class="c1"># require &#39;capistrano/passenger&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Load custom tasks from `lib/capistrano/tasks` if you have any defined</span>
+</span><span class='line'><span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;lib/capistrano/tasks/*.rake&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">import</span> <span class="n">r</span> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Deploy.rb</h3>
+
+<p><code>config/deploy.rb</code> 是主要的設定檔。其實蠻容易理解的，把該設定的東西填進去就好。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># config valid only for current version of Capistrano</span>
+</span><span class='line'><span class="n">lock</span> <span class="s1">&#39;3.6.0&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;some-good-app&#39;</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;git@github.com:joshua5201/some-good-app.git&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default branch is :master</span>
+</span><span class='line'><span class="c1"># ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default deploy_to directory is /var/www/my_app_name</span>
+</span><span class='line'><span class="c1"># set :deploy_to, &#39;/var/www/my_app_name&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for :scm is :git</span>
+</span><span class='line'><span class="c1"># set :scm, :git</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for :format is :airbrussh.</span>
+</span><span class='line'><span class="c1"># set :format, :airbrussh</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># You can configure the Airbrussh format using :format_options.</span>
+</span><span class='line'><span class="c1"># These are the defaults.</span>
+</span><span class='line'><span class="c1"># set :format_options, command_output: true, log_file: &#39;log/capistrano.log&#39;, color: :auto, truncate: :auto</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for :pty is false</span>
+</span><span class='line'><span class="c1"># set :pty, true</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for :linked_files is []</span>
+</span><span class='line'><span class="c1"># append :linked_files, &#39;config/database.yml&#39;, &#39;config/secrets.yml&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for linked_dirs is []</span>
+</span><span class='line'><span class="c1"># append :linked_dirs, &#39;log&#39;, &#39;tmp/pids&#39;, &#39;tmp/cache&#39;, &#39;tmp/sockets&#39;, &#39;public/system&#39;</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:linked_dirs</span><span class="p">,</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:linked_dirs</span><span class="p">,</span> <span class="o">[]</span><span class="p">)</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="s1">&#39;tmp/pids&#39;</span><span class="p">,</span> <span class="s1">&#39;tmp/cache&#39;</span><span class="p">,</span> <span class="s1">&#39;tmp/sockets&#39;</span><span class="p">,</span> <span class="s1">&#39;public/system&#39;</span><span class="p">,</span> <span class="s1">&#39;public/uploads&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:puma_user</span><span class="p">,</span> <span class="s1">&#39;deploy&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for default\_env is {}</span>
+</span><span class='line'><span class="c1"># set :default\_env, { path: &quot;/opt/ruby/bin:$PATH&quot; }</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Default value for keep\_releases is 5</span>
+</span><span class='line'><span class="c1"># set :keep\_releases, 5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Stages</h3>
+
+<p>預設的 Rails 是有 development, test, production 等三個 stage ，但是一般我們都會再加一個 staging 的 stage 來在上 production 前測試， Capistrano 預設的也是這樣。所以我們要在 Rails 裡也加上這個 stage 。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cp config/environments/production.rb config/environments/staging.rb
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>剛剛我們設定的 <code>database.yml</code> 已經包含 staging 這個 stage 了。</p>
+
+<p>每個 stage 在 <code>config/deploy/</code> 裡都有對應的 <code>.rb</code> 的設定檔。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># server-based syntax</span>
+</span><span class='line'><span class="c1"># ======================</span>
+</span><span class='line'><span class="c1"># Defines a single server with a list of roles and multiple properties.</span>
+</span><span class='line'><span class="c1"># You can define all roles on a single server, or split them:</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">server</span> <span class="s1">&#39;some-good-app.example.org&#39;</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;deploy&#39;</span><span class="p">,</span> <span class="ss">roles</span><span class="p">:</span> <span class="sx">%w{app db web}</span>
+</span><span class='line'><span class="c1"># server &#39;example.com&#39;, user: &#39;deploy&#39;, roles: %w{app db web}, my_property: :my_value</span>
+</span><span class='line'><span class="c1"># server &#39;example.com&#39;, user: &#39;deploy&#39;, roles: %w{app web}, other_property: :other_value</span>
+</span><span class='line'><span class="c1"># server &#39;db.example.com&#39;, user: &#39;deploy&#39;, roles: %w{db}</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;/home/deploy/some-good-app.example.org_production&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># role-based syntax</span>
+</span><span class='line'><span class="c1"># ==================</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Defines a role with one or multiple servers. The primary server in each</span>
+</span><span class='line'><span class="c1"># group is considered to be the first unless any  hosts have the primary</span>
+</span><span class='line'><span class="c1"># property set. Specify the username and a domain or IP for the server.</span>
+</span><span class='line'><span class="c1"># Don&#39;t use `:all`, it&#39;s a meta role.</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># role :app, %w{deploy@example.com}, my_property: :my_value</span>
+</span><span class='line'><span class="c1"># role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value</span>
+</span><span class='line'><span class="c1"># role :db,  %w{deploy@example.com}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Configuration</span>
+</span><span class='line'><span class="c1"># =============</span>
+</span><span class='line'><span class="c1"># You can set any configuration variable like in config/deploy.rb</span>
+</span><span class='line'><span class="c1"># These variables are then only loaded and set in this stage.</span>
+</span><span class='line'><span class="c1"># For available Capistrano configuration variables see the documentation page.</span>
+</span><span class='line'><span class="c1"># http://capistranorb.com/documentation/getting-started/configuration/</span>
+</span><span class='line'><span class="c1"># Feel free to add new variables to customise your setup.</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Custom SSH Options</span>
+</span><span class='line'><span class="c1"># ==================</span>
+</span><span class='line'><span class="c1"># You may pass any option but keep in mind that net/ssh understands a</span>
+</span><span class='line'><span class="c1"># limited set of options, consult the Net::SSH documentation.</span>
+</span><span class='line'><span class="c1"># http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># Global options</span>
+</span><span class='line'><span class="c1"># --------------</span>
+</span><span class='line'><span class="c1">#  set :ssh_options, {</span>
+</span><span class='line'><span class="c1">#    keys: %w(/home/rlisowski/.ssh/id_rsa),</span>
+</span><span class='line'><span class="c1">#    forward_agent: false,</span>
+</span><span class='line'><span class="c1">#    auth_methods: %w(password)</span>
+</span><span class='line'><span class="c1">#  }</span>
+</span><span class='line'><span class="c1">#</span>
+</span><span class='line'><span class="c1"># The server-based syntax can be used to override options:</span>
+</span><span class='line'><span class="c1"># ------------------------------------</span>
+</span><span class='line'><span class="c1"># server &#39;example.com&#39;,</span>
+</span><span class='line'><span class="c1">#   user: &#39;user_name&#39;,</span>
+</span><span class='line'><span class="c1">#   roles: %w{web app},</span>
+</span><span class='line'><span class="c1">#   ssh_options: {</span>
+</span><span class='line'><span class="c1">#     user: &#39;user_name&#39;, # overrides user setting above</span>
+</span><span class='line'><span class="c1">#     keys: %w(/home/user_name/.ssh/id_rsa),</span>
+</span><span class='line'><span class="c1">#     forward_agent: false,</span>
+</span><span class='line'><span class="c1">#     auth_methods: %w(publickey password)</span>
+</span><span class='line'><span class="c1">#     # password: &#39;please use keys&#39;</span>
+</span><span class='line'><span class="c1">#   }</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Deploy!</h3>
+
+<p>做好所有準備之後，我們就可以來 deploy 了。他就會很神奇的把東西從你的 git 拉下來，然後建好檔案，安裝完相關 gem ，跑完 migration ，編完 assets ，還會啟動/重啟 puma server 。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cap staging/production deploy <span class="c"># 視你要 deploy 的 stage 而定，一般都會先在 staging 上測試。</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣可以看有什麼 task 可以做：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>cap staging/production -T
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Custom Task</h3>
+
+<p>你可以在 <code>lib/capistrano/tasks</code> 裡自己寫 rake task 。下一次介紹 python 的 capistrano deployment 會介紹到。</p>
+
+<h1>伺服器狀態監控: ssmtp, logwatch</h1>
+
+<p>詳見 <a href="http://joshua5201.github.io/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Rails] Taipei.rb 心得 Rails 安全的過去與現在]]></title>
@@ -1289,36 +2039,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 <p>差點沒被搞瘋&hellip;&hellip;..</p>
 
 <p>Linux有些地方真的會讓人想抓狂阿阿阿阿！！！！！</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[Linux] Archlinux安裝KDE4.11]]></title>
-    <link href="http://joshua5201.github.io/blog/2013/10/25/linux-archlinux-installation-kde411/"/>
-    <updated>2013-10-25T11:01:00+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2013/10/25/linux-archlinux-installation-kde411</id>
-    <content type="html"><![CDATA[<p>以前用KDE的經驗非常差（KDE4.3的時代）印象中就是個又頓又buggy的東西。
-這次心血來潮裝裝看，發現現在的KDE不但順，BUG也少很多。整個使用經驗非常愉快。
-不過既然Linux遇到中文 不免俗的（？）會遇到不少問題。就分享一下解決方案和一些有的沒的。</p>
-
-<p>關於安裝過程就不贅述了，請自行參考<a href="https://wiki.archlinux.org/index.php/KDE">Arch Wiki的條目</a>。</p>
-
-<ol>
-<li>Firefox很醜（照理說就是所有的GTK程式都會這樣）
-可以參考這個條目<a href="https://wiki.archlinux.org/index.php/Uniform_Look_for_Qt_and_GTK_Applications">Uniform Look for Qt and GTK Applications</a>
-安裝完oxygen-gtk和kde-gtk-config之後，到Settings -> Application Appearance -> gtk 裡把theme換成oxygen-gtk就好</li>
-<li>Dolphin亂碼（Amarok不能播放檔名非ascii字元的歌 是同個問題）
-直接在<code>~/.xprofile</code>裡加上<code>export LC_ALL=en_US.utf-8 (或 zh_TW.utf-8之類的)</code></li>
-<li>網路管理員
-這裡我用wicd和wicd-kde(<a href="https://aur.archlinux.org/packages/wicd-kde/">AUR</a>)</li>
-<li>yakuake
-好用的下柆式Terminal Emulator，配合F12快速鍵非常方便實用。</li>
-<li>Custom keyboard Shorcuts
-想把Konsole弄到F10上，在K選單暗右鍵開Edit Applications，在那個條目的右邊Advanced分頁就可以自訂。</li>
-</ol>
-
-
-<p>有些一時忘掉了 以後有機會再補</p>
 ]]></content>
   </entry>
   

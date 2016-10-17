@@ -9,8 +9,8 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="Amarok can&rsquo;t play mp3 in Archlinux with gstreamer-* packages installed. Solution:
-According to the ArchWiki page about Gstreamer, gstreamer &hellip;">
+  <meta name="description" content="其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的Source Han Sans TWHK 好看、又有台灣的中文寫法。
+但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,89 @@ According to the ArchWiki page about Gstreamer, gstreamer &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/06/linux-system-wide-font-config/">[Linux] Fontconfig - Linux系統的中文字型設定、解決console程式缺字問題</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-06T03:29:53+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:29 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的<a href="https://github.com/adobe-fonts/source-han-sans/">Source Han Sans TWHK</a> 好看、又有台灣的中文寫法。
+但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。
+在Linux下是透過<a href="https://www.archlinux.org/packages/extra/i686/fontconfig/">fontconfig</a>這個套件來管理跟控制字型，所以這個問題主要是因為預設的<a href="https://wiki.archlinux.org/index.php/Font_configuration">Font Config</a>中的很多中文字型可能已經過時，或者是沒裝，或者因為是中國的簡體字型所以不好看或者是會缺字。
+在<code>/etc/fonts/conf.d</code>下能看到主要的字型設定檔，用xml的方式設定。這裡不贅述設定的細節，可以自己參考<code>man fonts-config</code>。而中文以及其他非拉丁字母字型的對應在<code>65-nonlatin.conf</code>裡頭。</p>
+
+<p>長的像這樣：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+</span><span class='line'><span class="cp">&lt;!DOCTYPE fontconfig SYSTEM &quot;fonts.dtd&quot;&gt;</span>
+</span><span class='line'><span class="nt">&lt;fontconfig&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;alias&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;family&gt;</span>serif<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;prefer&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;family&gt;</span>字型名稱<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/prefer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/alias&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;alias&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;family&gt;</span>sans-serif<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;prefer&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;family&gt;</span>字型名稱<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/prefer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/alias&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;alias&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;family&gt;</span>monospace<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;prefer&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;family&gt;</span>字型名稱<span class="nt">&lt;/family&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/prefer&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/alias&gt;</span>
+</span><span class='line'><span class="nt">&lt;/fontconfig&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>所以要讓系統能顯示正確的字型，就在指定font family（sans, sans-serif, monospace）底下的prefer裡加上自己喜歡的字型。因為套件庫裡找不到台灣寫法的等寬黑體，所以就將用了文泉驛等寬微米黑（WenQuanYi Micro Hei Mono, <a href="https://www.archlinux.org/packages/community/any/wqy-microhei/">wqy-microhei</a>）。重開應用程式（如Konsole）就能看到正確的字型摟。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -594,56 +677,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/25/linux-archlinux-installation-kde411/">[Linux] Archlinux安裝KDE4.11</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-10-25T11:01:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:01 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>以前用KDE的經驗非常差（KDE4.3的時代）印象中就是個又頓又buggy的東西。
-這次心血來潮裝裝看，發現現在的KDE不但順，BUG也少很多。整個使用經驗非常愉快。
-不過既然Linux遇到中文 不免俗的（？）會遇到不少問題。就分享一下解決方案和一些有的沒的。</p>
-
-<p>關於安裝過程就不贅述了，請自行參考<a href="https://wiki.archlinux.org/index.php/KDE">Arch Wiki的條目</a>。</p>
-
-<ol>
-<li>Firefox很醜（照理說就是所有的GTK程式都會這樣）
-可以參考這個條目<a href="https://wiki.archlinux.org/index.php/Uniform_Look_for_Qt_and_GTK_Applications">Uniform Look for Qt and GTK Applications</a>
-安裝完oxygen-gtk和kde-gtk-config之後，到Settings -> Application Appearance -> gtk 裡把theme換成oxygen-gtk就好</li>
-<li>Dolphin亂碼（Amarok不能播放檔名非ascii字元的歌 是同個問題）
-直接在<code>~/.xprofile</code>裡加上<code>export LC_ALL=en_US.utf-8 (或 zh_TW.utf-8之類的)</code></li>
-<li>網路管理員
-這裡我用wicd和wicd-kde(<a href="https://aur.archlinux.org/packages/wicd-kde/">AUR</a>)</li>
-<li>yakuake
-好用的下柆式Terminal Emulator，配合F12快速鍵非常方便實用。</li>
-<li>Custom keyboard Shorcuts
-想把Konsole弄到F10上，在K選單暗右鍵開Edit Applications，在那個條目的右邊Advanced分頁就可以自訂。</li>
-</ol>
-
-
-<p>有些一時忘掉了 以後有機會再補</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -661,6 +694,10 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/12/rails-security-at-taipei-rb/">[Rails] Taipei.rb 心得 Rails 安全的過去與現在</a>
       </li>
     
@@ -674,10 +711,6 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
     
       <li class="post">
         <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
       </li>
     
   </ul>

@@ -9,9 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="http://zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1149 這題最難的地方在於方向 (我是J睿捏我才會的) 起點放入queue
-從queue拿出點 四周可以通行的點步數都+1
-固定方向把接下來的點都放入queue &hellip;">
+  <meta name="description" content="zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152 樹型依賴背包 看了學長的培訓講義才會的 #include &lt;stdio.h&gt; #include &lt;vector&gt; #include &lt; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +65,87 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uprc-1152/">[Code] UPRC-1152 佈置問題</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2012-03-07T20:30:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:30 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152">zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152</a></p>
+
+<p>樹型依賴背包</p>
+
+<p>看了學長的<a href="http://pisces.ck.tp.edu.tw/%7Epeng/index.php?action=showfile&amp;file=f188adc37106a26bb977e1327591c00f960509e3a">培訓講義</a>才會的</p>
+
+<p><a href=""></a></p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+#include &lt;vector&gt;  
+#include &lt;algorithm&gt;  
+using namespace std;  
+
+int dp[501][5001];  
+int v[501], w[501];  
+int n, m;  
+vector&lt;int&gt; G[501];  
+int dfs(int mom, int W)  
+{  
+ for (int i = 0; i &lt; G[mom].size(); i++) {  
+ int chl = G[mom][i];  
+ dp[chl][W] = dp[mom][W];  
+ dp[mom][W] = max(dp[mom][W], dfs(chl, W));  
+ }  
+ if (w[mom] &gt; W) {  
+ return 0;  
+ }  
+ return dp[mom][W - w[mom]] + v[mom];  
+}  
+int main()  
+{  
+ int t;  
+ scanf("%d", &amp;t);  
+ while (t--) {  
+ scanf("%d%d", &amp;n, &amp;m);  
+ v[0] = w[0] = 0;  
+ int dep;  
+ for (int i = 1; i &lt;= n; i++) {  
+ scanf("%d%d%d", &amp;dep, &amp;w[i], &amp;v[i]);  
+ G[dep].push_back(i);  
+ }  
+ for (int i = 1; i &lt;= m; i++) {  
+ dp[0][i] = 0;  
+ dp[0][i] = max(dp[0][i], dfs(0, i));  
+ }  
+ printf("%d\n", dp[0][m]);  
+ for (int i = 0; i &lt;= n; i++) {  
+ G[i].clear();  
+ }  
+ }  
+ return 0;  
+}  
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -813,54 +892,6 @@ joshua ALL=(ALL) NOPASSWD:ALL
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/12/03/gnulinuxubuntudebian-netinstall/">[GNU/Linux]Ubuntu/Debian Netinstall (Unetbootin)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2010-12-03T14:56:00+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2010</span></span> <span class='time'>2:56 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>每次想安裝ubuntu/debian時<br/>
-都要花很多時間下載光碟映像<br/>
-如果用debian的netinst光碟<br/>
-放入usb又會出現問題<br/>
-用這個方法<br/>
-就比較不麻煩了</p>
-
-<p>1.下載Unetbootin<br/>
-<a href="http://unetbootin.sourceforge.net/">http://unetbootin.sourceforge.net/</a><br/>
-從這下載的比較新<br/>
-你也可以用</p>
-
-<p><code># sudo aptitude install unetbootin</code></p>
-
-<ol>
-<li>解壓縮後打開<br/>
-在distribution選ubuntu/debian<br/>
-在version選xxxx_netinstall</li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -878,6 +909,10 @@ joshua ALL=(ALL) NOPASSWD:ALL
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/12/rails-security-at-taipei-rb/">[Rails] Taipei.rb 心得 Rails 安全的過去與現在</a>
       </li>
     
@@ -891,10 +926,6 @@ joshua ALL=(ALL) NOPASSWD:ALL
     
       <li class="post">
         <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
       </li>
     
   </ul>

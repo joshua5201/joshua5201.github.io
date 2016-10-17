@@ -9,21 +9,9 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="1
-2
-3
-4
-5
-6
-7
-8
-9
-# installing
-sudo pacman -S imagemagick
-# converting from png to jpg
-convert image.png image.jpg
-#resizing
-convert image.png - &hellip;">
+  <meta name="description" content="以前用KDE的經驗非常差（KDE4.3的時代）印象中就是個又頓又buggy的東西。
+這次心血來潮裝裝看，發現現在的KDE不但順，BUG也少很多。整個使用經驗非常愉快。
+不過既然Linux遇到中文 不免俗的（？）會遇到不少問題。就分享一下解決方案和一些有的沒的。 關於安裝過程就不贅述了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +67,56 @@ convert image.png - &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/25/linux-archlinux-installation-kde411/">[Linux] Archlinux安裝KDE4.11</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-25T11:01:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>11:01 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以前用KDE的經驗非常差（KDE4.3的時代）印象中就是個又頓又buggy的東西。
+這次心血來潮裝裝看，發現現在的KDE不但順，BUG也少很多。整個使用經驗非常愉快。
+不過既然Linux遇到中文 不免俗的（？）會遇到不少問題。就分享一下解決方案和一些有的沒的。</p>
+
+<p>關於安裝過程就不贅述了，請自行參考<a href="https://wiki.archlinux.org/index.php/KDE">Arch Wiki的條目</a>。</p>
+
+<ol>
+<li>Firefox很醜（照理說就是所有的GTK程式都會這樣）
+可以參考這個條目<a href="https://wiki.archlinux.org/index.php/Uniform_Look_for_Qt_and_GTK_Applications">Uniform Look for Qt and GTK Applications</a>
+安裝完oxygen-gtk和kde-gtk-config之後，到Settings -> Application Appearance -> gtk 裡把theme換成oxygen-gtk就好</li>
+<li>Dolphin亂碼（Amarok不能播放檔名非ascii字元的歌 是同個問題）
+直接在<code>~/.xprofile</code>裡加上<code>export LC_ALL=en_US.utf-8 (或 zh_TW.utf-8之類的)</code></li>
+<li>網路管理員
+這裡我用wicd和wicd-kde(<a href="https://aur.archlinux.org/packages/wicd-kde/">AUR</a>)</li>
+<li>yakuake
+好用的下柆式Terminal Emulator，配合F12快速鍵非常方便實用。</li>
+<li>Custom keyboard Shorcuts
+想把Konsole弄到F10上，在K選單暗右鍵開Edit Applications，在那個條目的右邊Advanced分頁就可以自訂。</li>
+</ol>
+
+
+<p>有些一時忘掉了 以後有機會再補</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -602,87 +640,6 @@ $sudo vim metacity-theme-1.xml
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/07/code-uprc-1152/">[Code] UPRC-1152 佈置問題</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-07T20:30:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:30 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152">zerosea.tfcis.org:8080/JudgeOnline/showproblem?problem_id=1152</a></p>
-
-<p>樹型依賴背包</p>
-
-<p>看了學長的<a href="http://pisces.ck.tp.edu.tw/%7Epeng/index.php?action=showfile&amp;file=f188adc37106a26bb977e1327591c00f960509e3a">培訓講義</a>才會的</p>
-
-<p><a href=""></a></p>
-
-<pre><code>#include &lt;stdio.h&gt;  
-#include &lt;vector&gt;  
-#include &lt;algorithm&gt;  
-using namespace std;  
-
-int dp[501][5001];  
-int v[501], w[501];  
-int n, m;  
-vector&lt;int&gt; G[501];  
-int dfs(int mom, int W)  
-{  
- for (int i = 0; i &lt; G[mom].size(); i++) {  
- int chl = G[mom][i];  
- dp[chl][W] = dp[mom][W];  
- dp[mom][W] = max(dp[mom][W], dfs(chl, W));  
- }  
- if (w[mom] &gt; W) {  
- return 0;  
- }  
- return dp[mom][W - w[mom]] + v[mom];  
-}  
-int main()  
-{  
- int t;  
- scanf("%d", &amp;t);  
- while (t--) {  
- scanf("%d%d", &amp;n, &amp;m);  
- v[0] = w[0] = 0;  
- int dep;  
- for (int i = 1; i &lt;= n; i++) {  
- scanf("%d%d%d", &amp;dep, &amp;w[i], &amp;v[i]);  
- G[dep].push_back(i);  
- }  
- for (int i = 1; i &lt;= m; i++) {  
- dp[0][i] = 0;  
- dp[0][i] = max(dp[0][i], dfs(0, i));  
- }  
- printf("%d\n", dp[0][m]);  
- for (int i = 0; i &lt;= n; i++) {  
- G[i].clear();  
- }  
- }  
- return 0;  
-}  
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -700,6 +657,10 @@ int main()
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/07/12/rails-security-at-taipei-rb/">[Rails] Taipei.rb 心得 Rails 安全的過去與現在</a>
       </li>
     
@@ -713,10 +674,6 @@ int main()
     
       <li class="post">
         <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/28/building-and-running-apitrace-for-android/">[Android] Building and Running Apitrace for Android</a>
       </li>
     
   </ul>
