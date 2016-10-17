@@ -188,6 +188,15 @@
 
 <p>再來就是針對我們要 deploy 的 App 的設定檔。這裡給一個有 https 的設定，跟 http 的設定範例。這個設定檔包含一些常見的設定。我還想弄把 static 跟 動態網域分開的，但是我目前還沒玩過，用過之後再來補上設定。</p>
 
+<p>這些設定都是要放在 <code>/etc/nginx/sites-available</code> 底下，通常名字就一樣取網址+底線+ stage 。</p>
+
+<p>要 enable 的站就像這樣做符號連結：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ln -s /etc/nginx/sites-available/some-good-app.example.org_staging /etc/nginx/sites-enabled/some-good-app.example.org_staging
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h2>https 的範例：</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
