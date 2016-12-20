@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-12-21T01:29:06+08:00</updated>
+  <updated>2016-12-21T01:32:32+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -96,7 +96,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>有好一點，但是後來還是忍不住要改看看，原本想跟 Linus 同個作法，但是發現我的是要加一個元素到最後面，跟他的稍微不一樣，因為頭有可能是 <code>NULL</code> 。</p>
+<p>有好一點。</p>
+
+<p>後來還是忍不住要改看看，原本想跟 Linus 同個作法，但是發現我的是要加一個元素到最後面，跟他的稍微不一樣，因為頭有可能是 <code>NULL</code> 。</p>
 
 <p>就想不如給他加個頭：</p>
 
