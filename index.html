@@ -9,7 +9,24 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="因為常常在要佈署網站時，有一些相似的流程，想說紀錄一下。這是個簡單的筆記，也許有遺漏的地方，請多多指出。 Linux Distribution 對於 Production Server ，我比較喜歡用穩定一點的 CentOS ，但是很多別人的伺服器都是 Ubuntu LTS ，所以基本上這個 &hellip;">
+  <meta name="description" content="在寫 Compiler 的時候，因為用到了一些平常沒用到的 C 的功能，像是 union ，於是我就貼 Code 給朋友說「欸，原來 union 可以這樣用，以前都沒想過」，然後就貼了如下的 code 片段： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +82,140 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2016/12/21/c-linked-list-note/">[C] Linked List 小筆記</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-21T01:16:51+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:16 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在寫 Compiler 的時候，因為用到了一些平常沒用到的 C 的功能，像是 <code>union</code> ，於是我就貼 Code 給朋友說「欸，原來 <code>union</code> 可以這樣用，以前都沒想過」，然後就貼了如下的 code 片段：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">make_attr</span><span class="p">(</span><span class="k">enum</span> <span class="n">AttrType</span> <span class="n">attr_type</span><span class="p">,</span> <span class="k">union</span> <span class="n">AttrData</span> <span class="n">data</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="cm">/* 這個 function 不是重點 */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">arg_list</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">arg_list</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>朋友：「我覺得你這段 linked list 的 code 好髒，感覺 <code>if</code> 到 <code>else</code> 那段可以改進，好像之前看到 Linus Torvalds 的一篇。」</p>
+
+<p>註：就是這篇 <a href="https://medium.com/@bartobri/applying-the-linus-tarvolds-good-taste-coding-requirement-99749f37684a#.lp4dnaau3">Applying the Linus Torvalds “Good Taste” Coding Requiremen</a></p>
+
+<p>我一開始覺得很麻煩，因為作業趕不完，我就先改善成這樣：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">arg_list</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>有好一點，但是後來還是忍不住要改看看，原本想跟 Linus 同個作法，但是發現我的是要加一個元素到最後面，跟他的稍微不一樣，因為頭有可能是 <code>NULL</code> 。</p>
+
+<p>就想不如給他加個頭：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">curr</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣看起來舒服多了，以後就這樣寫吧 XD。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1860,40 +2011,6 @@ EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/06/06/setting-up-reverse-dns-ptr-record-in-digitalocean/">[Note] Setting Up Reverse DNS (PTR) Record in Digitalocean</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-06-06T12:25:58+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:25 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have a godaddy domain tehsiao.org and a Fedora host with dns server on <a href="https://cloud.digitalocean.com">Digitalocean</a>.</p>
-
-<p>You need only to rename your digitalocean droplet to your domain(tehsiao.org here), you simply finish setting up PTR record.</p>
-
-<p>Reference:
-<a href="https://www.digitalocean.com/community/questions/how-do-i-setup-a-ptr-record-with-my-exisiting-domain-name">digitalocean community - How do I setup a PTR record with my exisiting domain name?</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1909,6 +2026,10 @@ EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/12/21/c-linked-list-note/">[C] Linked List 小筆記</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
       </li>
     
@@ -1922,10 +2043,6 @@ EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精�
     
       <li class="post">
         <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r)</a>
       </li>
     
   </ul>

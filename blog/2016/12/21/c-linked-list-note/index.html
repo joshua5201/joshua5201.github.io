@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>[C] Linked List 小筆記 - 炸蝦碎碎念。</title>
+  <meta name="author" content="Tsung-en Hsiao">
+
+  
+  <meta name="description" content="在寫 Compiler 的時候，因為用到了一些平常沒用到的 C 的功能，像是 union ，於是我就貼 Code 給朋友說「欸，原來 union 可以這樣用，以前都沒想過」，然後就貼了如下的 code 片段： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://joshua5201.github.io/blog/2016/12/21/c-linked-list-note/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="炸蝦碎碎念。" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">炸蝦碎碎念。</a></h1>
+  
+    <h2>[Notes, GNU/Linux, Open Source, Ruby on Rails, Computer Science, Archlinux]</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="joshua5201.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">[C] Linked List 小筆記</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-12-21T01:16:51+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:16 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>在寫 Compiler 的時候，因為用到了一些平常沒用到的 C 的功能，像是 <code>union</code> ，於是我就貼 Code 給朋友說「欸，原來 <code>union</code> 可以這樣用，以前都沒想過」，然後就貼了如下的 code 片段：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">make_attr</span><span class="p">(</span><span class="k">enum</span> <span class="n">AttrType</span> <span class="n">attr_type</span><span class="p">,</span> <span class="k">union</span> <span class="n">AttrData</span> <span class="n">data</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="cm">/* 這個 function 不是重點 */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">arg_list</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">arg_list</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>朋友：「我覺得你這段 linked list 的 code 好髒，感覺 <code>if</code> 到 <code>else</code> 那段可以改進，好像之前看到 Linus Torvalds 的一篇。」</p>
+
+<p>註：就是這篇 <a href="https://medium.com/@bartobri/applying-the-linus-tarvolds-good-taste-coding-requirement-99749f37684a#.lp4dnaau3">Applying the Linus Torvalds “Good Taste” Coding Requiremen</a></p>
+
+<p>我一開始覺得很麻煩，因為作業趕不完，我就先改善成這樣：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">arg_list</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>有好一點，但是後來還是忍不住要改看看，原本想跟 Linus 同個作法，但是發現我的是要加一個元素到最後面，跟他的稍微不一樣，因為頭有可能是 <code>NULL</code> 。</p>
+
+<p>就想不如給他加個頭：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">curr</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這樣看起來舒服多了，以後就這樣寫吧 XD。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Tsung-en Hsiao</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-12-21T01:16:51+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2016</span></span> <span class='time'>1:16 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/10/18/my-deploy-environment/" title="Previous Post: [Note] 網站佈署環境小筆記">&laquo; [Note] 網站佈署環境小筆記</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/12/21/c-linked-list-note/">[C] Linked List 小筆記</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/07/12/rails-security-at-taipei-rb/">[Rails] Taipei.rb 心得 Rails 安全的過去與現在</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/28/getting-started-with-web-using-sinatra/">Web入門：使用Sinatra</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/joshua5201">@joshua5201</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'joshua5201',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Tsung-en Hsiao -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'joshua5201';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://joshua5201.github.io/blog/2016/12/21/c-linked-list-note/';
+        var disqus_url = 'http://joshua5201.github.io/blog/2016/12/21/c-linked-list-note/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>

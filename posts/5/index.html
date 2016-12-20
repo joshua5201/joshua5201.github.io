@@ -9,15 +9,10 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="每次想安裝ubuntu/debian時
-都要花很多時間下載光碟映像
-如果用debian的netinst光碟
-放入usb又會出現問題
-用這個方法
-就比較不麻煩了 1.下載Unetbootin
-http://unetbootin.sourceforge.net/
-從這下載的比較新
-你也可以用 # &hellip;">
+  <meta name="description" content="最近裝了debian
+習慣在了terminal下用sudo root@debian~# visudo #在最後一行加上 joshua ALL=(ALL) NOPASSWD:ALL #按ctrl+o寫入再按ctrl+x離開 從今以後
+不僅有sudo可以用
+而且還不用密碼！ 參考資料 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -73,6 +68,49 @@ http://unetbootin.sourceforge.net/
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2010/12/03/gnulinuxdebiansudo/">[GNU/Linux]在debian用sudo</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2010-12-03T15:04:00+08:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2010</span></span> <span class='time'>3:04 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近裝了debian<br/>
+習慣在了terminal下用sudo</p>
+
+<pre><code>root@debian~# visudo  
+#在最後一行加上  
+joshua ALL=(ALL) NOPASSWD:ALL  
+#按ctrl+o寫入再按ctrl+x離開  
+</code></pre>
+
+<p>從今以後<br/>
+不僅有sudo可以用<br/>
+而且還不用密碼！</p>
+
+<p>參考資料<br/>
+<a href="http://linux.vbird.org/linux_basic/0410accountmanager.php#sudo">鳥哥的linux私房菜</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -338,6 +376,10 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/12/21/c-linked-list-note/">[C] Linked List 小筆記</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
       </li>
     
@@ -351,10 +393,6 @@ gnupod 也可以用來放歌進去 但個人偏好使用另外一個工具rebuil
     
       <li class="post">
         <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r)</a>
       </li>
     
   </ul>

@@ -9,9 +9,7 @@
   <meta name="author" content="Tsung-en Hsiao">
 
   
-  <meta name="description" content="以前用KDE的經驗非常差（KDE4.3的時代）印象中就是個又頓又buggy的東西。
-這次心血來潮裝裝看，發現現在的KDE不但順，BUG也少很多。整個使用經驗非常愉快。
-不過既然Linux遇到中文 不免俗的（？）會遇到不少問題。就分享一下解決方案和一些有的沒的。 關於安裝過程就不贅述了， &hellip;">
+  <meta name="description" content="剛剛手殘用觸控板在聲音圖示上滑來滑去(把音量調高又調低) 然後就突然沒聲音了！！！ 如果你也遇到這個問題 先看看alsamixer裏面有沒有被靜音吧= = 看了一大堆其他設定都不行 結果是這麼簡單的原因 差點沒被搞瘋&hellip;&hellip;.. Linux有些地方真的會讓人想抓狂阿阿阿阿 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +65,45 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/27/linux-kde-no-sound/">[Linux] KDE 沒聲音</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-10-27T16:11:00+08:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>4:11 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>剛剛手殘用觸控板在聲音圖示上滑來滑去(把音量調高又調低)</p>
+
+<p>然後就突然沒聲音了！！！</p>
+
+<p>如果你也遇到這個問題 先看看alsamixer裏面有沒有被靜音吧= =</p>
+
+<p>看了一大堆其他設定都不行 結果是這麼簡單的原因</p>
+
+<p>差點沒被搞瘋&hellip;&hellip;..</p>
+
+<p>Linux有些地方真的會讓人想抓狂阿阿阿阿！！！！！</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -583,63 +620,6 @@ int main()
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/03/16/gnulinux-mate-themes-in-archlinux/">[GNU/Linux] MATE Themes in ArchLinux</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2012-03-16T08:27:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:27 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>用了一陣子的gnome3 實在綁手綁腳<br/>
-也開始想念gnome2了 <br/>
-TOI爆了以後有時間 就來試試gnome2的fork&mdash;<a href="http://mate-desktop.org/">MATE Desktop Environment</a></p>
-
-<p>安裝過程就看<a href="https://wiki.archlinux.org/index.php/MATE">Archwiki</a>就好 這裡不詳述<br/>
-裝display manager 結果gdm、mdm(MATE display manager)都有問題= =<br/>
-只有lxdm又快又穩定 不過長得太醜 懶得弄主題什麼的<br/>
-最後決定直接用startx 這樣登入的時候也比較酷(？</p>
-
-<p>用起來很順暢 遇到的問題也只有主題的部份 <br/>
-發現預設主題(ex: Clearlooks)的都不能用<br/>
-無意中發現了解決方案：</p>
-
-<p>這裡以經典主題——Clearlooks為例</p>
-
-<pre><code>$cd /usr/share/themes/Clearlooks  
-$ls  
-gtk-2.0 index.theme marco-1 #會出現這三樣東西  
-$mv marco-1 metacity-1 #猜測是MATE把metacity改名為marco   
- #但主題程式未同步更改導致讀取不到主題檔案的錯誤  
-$cd metacity-1  
-$ls  
-marco-theme-1.xml  
-$mv marco-theme-1.xml metacity-theme-1.xml  
-$sudo vim metacity-theme-1.xml  
-#把標籤改成  
-#記得文件最後一行的關閉標籤也要改  
-這樣就可以用我最愛的Clearlooks了XD
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -657,6 +637,10 @@ $sudo vim metacity-theme-1.xml
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2016/12/21/c-linked-list-note/">[C] Linked List 小筆記</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2016/10/18/my-deploy-environment/">[Note] 網站佈署環境小筆記</a>
       </li>
     
@@ -670,10 +654,6 @@ $sudo vim metacity-theme-1.xml
     
       <li class="post">
         <a href="/blog/2016/01/01/notes-on-logwatch/">[整理] Linux上常用的server Log監視工具：logwatch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/08/30/carriage-return-r-in-linux/">Carriage Return (\r)</a>
       </li>
     
   </ul>
