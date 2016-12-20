@@ -197,16 +197,14 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-<span class='line-number'>11</span>
 </pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
 </span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="n">head</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">arg_list</span> <span class="p">};</span>
 </span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">head</span><span class="p">;</span>
 </span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
 </span><span class='line'>    <span class="k">return</span> <span class="n">head</span><span class="p">.</span><span class="n">next</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
