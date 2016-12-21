@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-12-21T01:42:50+08:00</updated>
+  <updated>2016-12-21T16:27:30+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -12,122 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[[C] Linked List 小筆記]]></title>
-    <link href="http://joshua5201.github.io/blog/2016/12/21/c-linked-list-note/"/>
-    <updated>2016-12-21T01:16:51+08:00</updated>
-    <id>http://joshua5201.github.io/blog/2016/12/21/c-linked-list-note</id>
-    <content type="html"><![CDATA[<p>在寫 Compiler 作業的時候，因為用到了一些平常沒用到的 C 的功能，像是 <code>union</code> ，於是我就貼 Code 給朋友說「欸，原來 <code>union</code> 可以這樣用，以前都沒想過」，然後就貼了如下的 code 片段：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">make_attr</span><span class="p">(</span><span class="k">enum</span> <span class="n">AttrType</span> <span class="n">attr_type</span><span class="p">,</span> <span class="k">union</span> <span class="n">AttrData</span> <span class="n">data</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="cm">/* 這個 function 不是重點 */</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">arg_list</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">arg_list</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>朋友：「我覺得你這段 linked list 的 code 好髒，感覺 <code>if</code> 到 <code>else</code> 那段可以改進，好像之前看到 Linus Torvalds 的一篇。」</p>
-
-<p>註：就是這篇 <a href="https://medium.com/@bartobri/applying-the-linus-tarvolds-good-taste-coding-requirement-99749f37684a#.lp4dnaau3">Applying the Linus Torvalds “Good Taste” Coding Requiremen</a></p>
-
-<p>我一開始覺得很麻煩，因為作業趕不完，我就先改善成這樣：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">new_attr</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">arg_list</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">new_attr</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="n">arg_list</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">new_attr</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">arg_list</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>有好一點。</p>
-
-<p>後來還是忍不住要改看看，原本想跟 Linus 同個作法，但是發現我的是要加一個元素到最後面，跟他的稍微不一樣，因為頭有可能是 <code>NULL</code> 。</p>
-
-<p>就想不如給他加個頭：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="nf">push_arg</span><span class="p">(</span><span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">arg_list</span><span class="p">,</span> <span class="k">struct</span> <span class="n">IDPair</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="n">head</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">next</span> <span class="o">=</span> <span class="n">arg_list</span> <span class="p">};</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">Attribute</span> <span class="o">*</span><span class="n">curr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">head</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">curr</span> <span class="o">=</span> <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">curr</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">make_attr</span><span class="p">(</span><span class="n">S_ARG</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="k">union</span> <span class="n">AttrData</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">head</span><span class="p">.</span><span class="n">next</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>這樣看起來舒服多了，以後就這樣寫吧 XD。</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[[Note] 網站佈署環境小筆記]]></title>
@@ -2145,6 +2029,25 @@ so install gst-* packages just sovled the problem (I am using KDE Plasma 5 and p
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[Linux] KDE 沒聲音]]></title>
+    <link href="http://joshua5201.github.io/blog/2013/10/27/linux-kde-no-sound/"/>
+    <updated>2013-10-27T16:11:00+08:00</updated>
+    <id>http://joshua5201.github.io/blog/2013/10/27/linux-kde-no-sound</id>
+    <content type="html"><![CDATA[<p>剛剛手殘用觸控板在聲音圖示上滑來滑去(把音量調高又調低)</p>
+
+<p>然後就突然沒聲音了！！！</p>
+
+<p>如果你也遇到這個問題 先看看alsamixer裏面有沒有被靜音吧= =</p>
+
+<p>看了一大堆其他設定都不行 結果是這麼簡單的原因</p>
+
+<p>差點沒被搞瘋&hellip;&hellip;..</p>
+
+<p>Linux有些地方真的會讓人想抓狂阿阿阿阿！！！！！</p>
 ]]></content>
   </entry>
   
