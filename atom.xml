@@ -4,7 +4,7 @@
   <title><![CDATA[炸蝦碎碎念。]]></title>
   <link href="http://joshua5201.github.io/atom.xml" rel="self"/>
   <link href="http://joshua5201.github.io/"/>
-  <updated>2016-12-21T16:27:30+08:00</updated>
+  <updated>2017-03-19T21:52:59+08:00</updated>
   <id>http://joshua5201.github.io/</id>
   <author>
     <name><![CDATA[Tsung-en Hsiao]]></name>
@@ -1646,10 +1646,13 @@ EDIT: 被同學吐槽為什麼現在才知道這種東西，真是學藝不精�
     <link href="http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config/"/>
     <updated>2015-06-06T03:29:53+08:00</updated>
     <id>http://joshua5201.github.io/blog/2015/06/06/linux-system-wide-font-config</id>
-    <content type="html"><![CDATA[<p>其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的<a href="https://github.com/adobe-fonts/source-han-sans/">Source Han Sans TWHK</a> 好看、又有台灣的中文寫法。
-但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。
-在Linux下是透過<a href="https://www.archlinux.org/packages/extra/i686/fontconfig/">fontconfig</a>這個套件來管理跟控制字型，所以這個問題主要是因為預設的<a href="https://wiki.archlinux.org/index.php/Font_configuration">Font Config</a>中的很多中文字型可能已經過時，或者是沒裝，或者因為是中國的簡體字型所以不好看或者是會缺字。
-在<code>/etc/fonts/conf.d</code>下能看到主要的字型設定檔，用xml的方式設定。這裡不贅述設定的細節，可以自己參考<code>man fonts-config</code>。而中文以及其他非拉丁字母字型的對應在<code>65-nonlatin.conf</code>裡頭。</p>
+    <content type="html"><![CDATA[<p>其實在桌面環境中，用KDE或其他DE提供的字型設定就很足夠了，我偏好Adobe的<a href="https://github.com/adobe-fonts/source-han-sans/">Source Han Sans TWHK</a> 好看、又有台灣的中文寫法。</p>
+
+<p>但是在console裡用的中文，比如說在vim裡的中文字型或者是有些沒有吃到桌面字型設定的程式，就會有缺字或很難看的情形。</p>
+
+<p>在Linux下是透過<a href="https://www.archlinux.org/packages/extra/i686/fontconfig/">fontconfig</a>這個套件來管理跟控制字型，所以這個問題主要是因為預設的<a href="https://wiki.archlinux.org/index.php/Font_configuration">Font Config</a>中的很多中文字型可能已經過時，或者是沒裝，或者因為是中國的簡體字型所以不好看或者是會缺字。</p>
+
+<p>在<code>/etc/fonts/conf.d</code>下能看到主要的字型設定檔，用xml的方式設定。這裡不贅述設定的細節，可以自己參考<code>man fonts-config</code>。而中文以及其他非拉丁字母字型的對應在<code>65-nonlatin.conf</code>裡頭。這些檔案是整個系統的全域設定，我建議可在 <code>~/.config/fontconfig/fonts.conf</code> 裡用同樣的格式設定，如果沒有 fontconfig 資料夾的話要自己建立。</p>
 
 <p>長的像這樣：</p>
 
